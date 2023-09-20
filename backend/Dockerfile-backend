@@ -29,10 +29,6 @@ RUN composer install
 RUN sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 RUN echo 'alias artisan="php artisan"' >> ~/.zshrc
 
-# Configuration de Git
-RUN git config --global user.name "Adrian Larenaudie" \
-    && git config --global user.email "adrian.larenaudie@gmail.com"
-
 # Activez les modules Apache nécessaires pour Laravel
 RUN a2enmod rewrite
 
