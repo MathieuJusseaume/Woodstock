@@ -1,3 +1,0 @@
-[submodule "frontend"]
-    path = ./frontend
-    url = url_du_sous_module_git
