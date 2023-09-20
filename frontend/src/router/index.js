@@ -3,6 +3,9 @@ import { createRouter, createWebHashHistory } from 'vue-router'
 import LoginView from "../views/LoginView.vue";
 import OrdersView from "../views/OrdersView.vue";
 import ClientsView from "../views/ClientsView.vue";
+import SingleClientView from "../views/SingleClientView.vue";
+import SingleOrderView from "../views/SingleOrderView.vue";
+import LayoutView from "../views/LayoutView.vue";
 //import { authService } from "../services/auth.js";
 
 // ici notre gardien va vérifier si il y a un token dans le local storage
@@ -19,19 +22,36 @@ import ClientsView from "../views/ClientsView.vue";
 // déclaration des routes
 const routes = [
     {
-        path: "/commandes",
-        name: "OrdersView",
-        component: OrdersView
-    },
-    {
-        path: "/clients",
-        name: "ClientsView",
-        component: ClientsView
-    },
-    {
         path: "/login",
         name: "login",
         component: LoginView
+    },
+    {
+        path: "/",
+        name: "layout",
+        component: LayoutView,
+        children: [
+            {
+                path: "commandes",
+                name: "OrdersView",
+                component: OrdersView
+            },
+            {
+                path: "commandes/:id",
+                name: "SingleOrderView",
+                component: SingleOrderView
+            },
+            {
+                path: "clients",
+                name: "OrdersView",
+                component: ClientsView
+            },
+            {
+                path: "clients/:id",
+                name: "SingleClientView",
+                component: SingleClientView
+            },
+        ]
     },
     {
         // si la route demandé n'existe pas on redirige vers la home (on pourrait aussi jouer une vue erreur)
