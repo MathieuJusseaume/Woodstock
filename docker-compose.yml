@@ -1,0 +1,51 @@
+version: '3'
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile-backend
+    ports:
+      - "8080:80"  # Port du serveur Apache laravel
+    volumes:
+      - ./backend:/var/www/html
+    depends_on:
+      - mysql
+    networks:
+      - my_network
+
+  mysql:
+    image: mysql:8.0
+    environment:
+      - MYSQL_DATABASE=test
+      - MYSQL_USER=adrian
+      - MYSQL_PASSWORD=secret
+      - MYSQL_ROOT_PASSWORD=root
+    ports:
+      - "33066:3306"  # Port MySQL
+    networks:
+      - my_network
+
+  adminer:
+    image: adminer:4.8.1
+    depends_on:
+      - mysql
+    ports:
+      - "9081:8080"
+    networks:
+      - my_network
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile-frontend
+    ports:
+      - "8082:8080"  # Port du serveur de développement Vue.js (8082:8080)
+    volumes:
+      - ./frontend:/app/frontend
+    depends_on:
+      - backend
+    networks:
+      - my_network
+
+networks:
+  my_network:
