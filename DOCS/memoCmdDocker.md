@@ -24,3 +24,7 @@ DB_PORT=3306
 DB_DATABASE=test
 DB_USERNAME=adrian
 DB_PASSWORD=secret
+
+**.ENV:**  
+
+Après modification : php artisan config:clear
