@@ -1,8 +1,8 @@
 <template>
     <div class="formLayout">
         <header class="formLayout__header">
-            <h1 class="formLayout__title">{{ formTitle }}</h1>
-            <div class="formLayout__closebutton">close modale button</div>
+            <h1 class="formLayout__title">{{ formName }}</h1>
+            <button class="formLayout__closebutton" @click="closeModal">fermer le formulaire</button>
         </header>
     
         <!-- Switch "editCommand -> <EDtidCOmmandeform" -->
@@ -10,16 +10,30 @@
 
         <!-- TODO CREER LES COMPOSANT POUR CHACUN DES FORMULAIRES -->
    <!--      <OrderCreateForm v-if="formNname === 'OrderCreateForm'" />
-        <OrderUpdateForm v-if="formName === 'OrderUpdateForm'" />
-        <ClientCreateForm v-if="formName === 'ClientCreateForm'" />
-        <ClientUpdateForm v-if="formName === 'ClientUpdateForm'" /> -->
+        <OrderUpdateForm v-if="formName === 'OrderUpdateForm'" /> -->
+        <CreateClientFormCpt v-if="formName === 'CreateClientForm'" />
+        <EditClienFormCpt v-if="formName === 'EditClienForm'" /> 
 
     </div>
 </template>
 
 <script>
+import CreateClientFormCpt from "@/components/forms/CreateClientFormCpt.vue";
+import EditClienFormCpt from "@/components/forms/EditClienFormCpt.vue";
+import { useUtilsStore } from "@/stores/utilsStore";
+
 export default {
     name: "ModalFormLayoutCpt",
+    components: {
+        CreateClientFormCpt,
+        EditClienFormCpt
+    },
+    computed: {
+        formName() {
+            const utilsStore = useUtilsStore();
+            return utilsStore.getFormName;
+        }
+    },
 /*     props: {
         formName: {
             type: String,
@@ -32,10 +46,11 @@ export default {
         }
     },
     methods: {
-        // example(){
-            
-        // }
-    }
+        closeModal() {
+            const utilsStore = useUtilsStore();
+            utilsStore.setFormName("");
+        }
+    },
     
 };
 </script>
