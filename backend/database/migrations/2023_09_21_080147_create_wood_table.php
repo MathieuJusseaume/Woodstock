@@ -11,12 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('roles', function (Blueprint $table) {
+        Schema::create('wood', function (Blueprint $table) {
             $table->id();
-            $tablme->string('name'); 
+            $table->double('unit_price', 10, 2);
             $table->timestamps();
 
-            
+            $table->foreign('company_id')->references('id')->on('companies')->onUpdate('cascade');
         });
     }
 
@@ -25,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('roles');
+        Schema::dropIfExists('wood');
     }
 };

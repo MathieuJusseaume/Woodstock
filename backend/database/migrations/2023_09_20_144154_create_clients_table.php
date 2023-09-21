@@ -24,6 +24,7 @@ return new class extends Migration
             $table->integer('billing_zip_code'); 
             $table->string('billing_city'); 
             $table->timestamps();
+            
             $table->foreign('company_id')->references('id')->on('companies')->onUpdate('cascade');
             
         });
