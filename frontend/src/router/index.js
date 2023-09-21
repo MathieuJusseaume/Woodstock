@@ -1,4 +1,4 @@
-import { createRouter, createWebHashHistory } from 'vue-router'
+import { createRouter, createWebHistory  } from 'vue-router'
 
 import LoginView from "../views/LoginView.vue";
 import OrdersView from "../views/OrdersView.vue";
@@ -28,6 +28,10 @@ const routes = [
     },
     {
         path: "/",
+        redirect: "/commandes"
+    },
+    {
+        path: "/",
         name: "layout",
         component: LayoutView,
         children: [
@@ -43,7 +47,7 @@ const routes = [
             },
             {
                 path: "clients",
-                name: "OrdersView",
+                name: "ClientsView",
                 component: ClientsView
             },
             {
@@ -61,23 +65,23 @@ const routes = [
 
 // Gestion de l'historisation du routing
 const router = createRouter({
-    history: createWebHashHistory(),
+    history: createWebHistory(),
     routes
 });
 
-// router.beforeEach((to, from, next) => {
-//     // sur toutes les routes déclenchement du gardien
-//     if(to.matched[0].name !== "login") {
-//         authGuard();
-//     }
-//     // sur la route login on s'assure que le client n'est pas déjà connecté sinon on redirige vers la list des starships
-//     if(to.matched[0].name === "login") {
-//         const isLogged = authService.isLogged();
-//         if(isLogged) {
-//             router.push("/");
-//         }
-//     }
-//     next();
-// });
+router.beforeEach((to, from, next) => {
+    // sur toutes les routes déclenchement du gardien
+/*         if(to.matched[0].name !== "login") {
+            authGuard();
+        }
+        // sur la route login on s'assure que le client n'est pas déjà connecté sinon on redirige vers la list des starships
+        if(to.matched[0].name === "login") {
+            const isLogged = authService.isLogged();
+                    if(isLogged) {
+                router.push("/");
+            }
+        } */
+     next();
+});
 
 export default router
