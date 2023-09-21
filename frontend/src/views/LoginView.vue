@@ -1,17 +1,14 @@
 <template>
-    <div>
-        <h1>ici la page de : {{ name }}</h1>
-    </div>
+    <LoginFormCpt/>
 </template>
 
-
 <script>
+import LoginFormCpt from "@/components/forms/LoginFormCpt.vue";
+
 export default {
     name: "LoginView",
-    data() {
-        return {
-            name: "LOGINVIEW"
-        }
+    components: {
+        LoginFormCpt,
     },
 }
 </script>
