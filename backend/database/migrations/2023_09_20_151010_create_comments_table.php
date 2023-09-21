@@ -16,7 +16,11 @@ return new class extends Migration
             $table->text('content');
             $table->timestamps();
 
-            $table->foreign('order_id')->references('id')->on('orders')->onUpdate('cascade');
+            $table->foreignId('order_id')
+                ->constrained()
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
+
         });
     }
 
@@ -26,5 +30,9 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('comments');
+        Schema::table('comments', function (Blueprint $table) {
+            $table->dropForeign(['order_id']);
+            $table->dropColumn('order_id');
+        });
     }
 };

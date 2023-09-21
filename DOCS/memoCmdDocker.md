@@ -14,3 +14,13 @@
 => libérer les droit dans un dossier se placer dans le dossier & lancer `sudo chmod -R 777 .`  
 => connaitre les ports écoutés `sudo lsof -i -P -n | grep LISTEN`  
 => forcé l'arret de l'écoute sur un port `sudo kill -9 `sudo lsof -t -i:<numéro du port>`  
+
+
+**BDD:**  
+
+DB_CONNECTION=mysql
+DB_HOST=mysql
+DB_PORT=3306
+DB_DATABASE=test
+DB_USERNAME=adrian
+DB_PASSWORD=secret

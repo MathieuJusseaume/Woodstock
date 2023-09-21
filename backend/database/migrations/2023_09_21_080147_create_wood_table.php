@@ -16,7 +16,11 @@ return new class extends Migration
             $table->double('unit_price', 10, 2);
             $table->timestamps();
 
-            $table->foreign('company_id')->references('id')->on('companies')->onUpdate('cascade');
+            $table->foreignId('company_id')
+                ->constrained()
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
+
         });
     }
 
@@ -26,5 +30,9 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('wood');
+        Schema::table('wood', function (Blueprint $table) {
+            $table->dropForeign(['company_id']);
+            $table->dropColumn('company_id');
+        });
     }
 };

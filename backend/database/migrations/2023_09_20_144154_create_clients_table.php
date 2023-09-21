@@ -16,17 +16,19 @@ return new class extends Migration
             $table->string('first_name');
             $table->string('last_name');
             $table->string('email')->unique();
-            $table->string('phone'); 
-            $table->string('delivery_address'); 
-            $table->integer('delivery_zip_code'); 
-            $table->string('delivery_city'); 
-            $table->string('billing_address'); 
-            $table->integer('billing_zip_code'); 
-            $table->string('billing_city'); 
+            $table->string('phone');
+            $table->string('delivery_address');
+            $table->integer('delivery_zip_code');
+            $table->string('delivery_city');
+            $table->string('billing_address');
+            $table->integer('billing_zip_code');
+            $table->string('billing_city');
             $table->timestamps();
-            
-            $table->foreign('company_id')->references('id')->on('companies')->onUpdate('cascade');
-            
+
+            $table->foreignId('company_id')
+                ->constrained()
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
         });
     }
 
@@ -36,5 +38,9 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('clients');
+        Schema::table('clients', function (Blueprint $table) {
+            $table->dropForeign(['company_id']);
+            $table->dropColumn('company_id');
+        });
     }
 };

@@ -23,9 +23,26 @@ return new class extends Migration
             $table->boolean('payment_status')->default(0);
             $table->timestamps();
 
-            $table->foreign('user_id')->references('id')->on('users')->onUpdate('cascade');
-            $table->foreign('client_id')->references('id')->on('clients')->onUpdate('cascade');
-            $table->foreign('delivery_status_id')->references('id')->on('delivery_statuses')->onUpdate('cascade');
+            $table->foreignId('user_id')
+                ->constrained()
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
+
+            $table->foreignId('client_id')
+                ->constrained()
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
+
+            $table->foreignId('delivery_status_id')
+                ->constrained()
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
+
+            $table->foreignId('company_id')
+                ->constrained()
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
+
         });
     }
 
@@ -35,5 +52,16 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('orders');
+        Schema::table('orders', function (Blueprint $table) {
+            $table->dropForeign(['company_id']);
+            $table->dropColumn('company_id');
+            $table->dropForeign(['delivery_status_id']);
+            $table->dropColumn('delivery_status_id');
+            $table->dropForeign(['client_id']);
+            $table->dropColumn('client_id');
+            $table->dropForeign(['user_id']);
+            $table->dropColumn('user_id');
+
+        });
     }
 };

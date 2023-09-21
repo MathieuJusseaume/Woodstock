@@ -16,12 +16,21 @@ return new class extends Migration
             $table->string('first_name');
             $table->string('last_name');
             $table->string('email')->unique();
-            $table->string('phone'); 
+            $table->string('phone');
             $table->string('password');
             $table->rememberToken();
             $table->timestamps();
-            $table->foreign('company_id')->references('id')->on('companies')->onUpdate('cascade');
-            $table->foreign('role_id')->references('id')->on('roles')->onUpdate('cascade');
+
+            $table->foreignId('role_id')
+                ->constrained()
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
+
+            $table->foreignId('company_id')
+                ->constrained()
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
+
         });
     }
 
@@ -31,5 +40,11 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('users');
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropForeign(['company_id']);
+            $table->dropColumn('company_id');
+            $table->dropForeign(['role_id']);
+            $table->dropColumn('role_id');
+        });
     }
 };
