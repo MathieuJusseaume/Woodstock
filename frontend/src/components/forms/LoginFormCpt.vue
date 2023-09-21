@@ -2,7 +2,7 @@
     <div class="blocklogin">
 
         <header class="blocklogin__header">
-            <img class="blocklogin__header__logo" alt="logo">
+            <img src="../../assets/logoWoodStockManager.png" class="blocklogin__header__logo" alt="logo">
         </header>
 
         <form @submit.prevent="loginSubmit" class="blocklogin__form">
@@ -29,6 +29,7 @@
 </template>
 
 <script>
+import { useAuthenticationStore } from "@/stores/authenticationStore";
 export default {
     name: "LoginFormCpt",
     data() {
@@ -40,8 +41,68 @@ export default {
         onChangeEmail(){
             
         },
-        onChangePassword (){}
+        onChangePassword (){
+
+        },
+        loginSubmit() {
+            const authenticationStore = useAuthenticationStore();
+            authenticationStore.loginAction();
+        }
     }
     
 };
 </script>
+
+<style scoped>
+.blocklogin {
+    margin: 3rem;
+}
+.errorMessage {
+    color: red;
+}
+.blocklogin__form {
+    min-width: 250px;
+    max-width: 400px; 
+    width: 50%;
+    margin: auto; 
+}
+label {
+    text-align: left;
+}
+.form__field {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    margin: .8rem 0;
+}
+.form__field__input {
+    width: 100%;
+    height: 1.6rem;
+    border: none;
+    background-color: rgb(241, 241, 241);
+    border-radius: .2rem;
+}
+.form__field__submit {
+    cursor: pointer;
+    margin: .5rem 0;
+    border: solid 2px #bd9855;
+    border-radius: 2rem;
+    padding: .3rem .8rem;
+    font-size: 1rem;
+    font-family: 'Clowey', sans-serif;
+    font-weight: 600;
+    height: 42px;
+    margin-left: 1rem;
+    background-color: #bd9855;
+    color: #fff;
+    width: fit-content;
+    min-width: 150px;
+    align-self: center;
+    transition: .2s;
+}
+.form__field__submit:hover {
+    background-color:#fff;
+    color: #bd9855;
+    border: 2px solid #bd9855;
+}
+</style>

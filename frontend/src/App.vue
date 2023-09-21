@@ -1,17 +1,28 @@
 <template>
     <div class="application">
-        <RouterView />
+        <RouterView v-show="!isLoading" />
+        <LoaderSpinnerCpt v-show="isLoading" />
     </div>
 </template>
 
 <script>
-import { RouterView } from 'vue-router';
+import { RouterView } from "vue-router";
+import LoaderSpinnerCpt from "@/components/LoaderSpinnerCpt.vue";
+import { useUtilsStore } from "./stores/utilsStore";
 
 export default {
     name: 'App',
     components: {
         RouterView,
+        LoaderSpinnerCpt
     },
+    computed: {
+        isLoading() {
+            const utilsStore = useUtilsStore();
+            return utilsStore.getIsLoading;
+        }
+    }
+
 };
 </script>
 
