@@ -2,7 +2,6 @@ import { defineStore } from "pinia";
 import { useUtilsStore } from "./utilsStore";
 
 export const useAuthenticationStore = defineStore("authentication", {
-   
     state: () => ({
         email: "",
         password: "",
@@ -19,10 +18,10 @@ export const useAuthenticationStore = defineStore("authentication", {
         }
     },
     actions: {
-        setEmailValue: (email) => {
+        setEmailValue(email) {
             this.email = email;
         },
-        setPasswordValue: (password) => {
+        setPasswordValue(password) {
             this.password = password;
         },
         async loginAction() {

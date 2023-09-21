@@ -12,7 +12,6 @@ export const useUtilsStore = defineStore("utils", {
         getIsLoading: (state) => {
             return state.isLoading;
         },
-
     },
     actions: {
         setFormName(formNameValue) {

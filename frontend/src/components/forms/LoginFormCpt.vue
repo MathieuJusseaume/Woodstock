@@ -37,12 +37,24 @@ export default {
             infos: ""
         }
     },
-    methods: {
-        onChangeEmail(){
-            
+    computed: {
+        email() {
+            const authenticationStore = useAuthenticationStore();
+            return authenticationStore.getEmailValue;
         },
-        onChangePassword (){
-
+        password() {
+            const authenticationStore = useAuthenticationStore();
+            return authenticationStore.getPasswordValue;
+        }
+    },
+    methods: {
+        onChangeEmail(event){
+            const authenticationStore = useAuthenticationStore();
+            return authenticationStore.setEmailValue(event.target.value);
+        },
+        onChangePassword (event){
+            const authenticationStore = useAuthenticationStore();
+            return authenticationStore.setPasswordValue(event.target.value);
         },
         loginSubmit() {
             const authenticationStore = useAuthenticationStore();
