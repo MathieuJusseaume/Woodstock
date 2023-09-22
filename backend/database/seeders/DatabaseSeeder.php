@@ -36,20 +36,82 @@ class DatabaseSeeder extends Seeder
 
         ];
 
+        $roles = [
+            [
+                'name' => 'Admin',
+                'created_at' => now(),
+                'updated_at' => null,
+            ],
+        ];
+
+        
+
+        $deliveryStatuses = [
+            [
+                'name' => 'Livrée',
+                'created_at' => now(),
+                'updated_at' => null,
+            ],
+            [
+                'name' => 'A livrer',
+                'created_at' => now(),
+                'updated_at' => null,
+            ],
+            [
+                'name' => 'Problème',
+                'created_at' => now(),
+                'updated_at' => null,
+            ],
+        ];
+
+        DB::table('delivery_statuses')->insert($deliveryStatuses);
+        DB::table('roles')->insert($roles);
         DB::table('companies')->insert($companiesSeeders);
+
+
+
         $companies = Company::All();
 
         $companies->each(function ($company) {
-            $user = User::factory()->count(1)->create(['company_id' => $company->id]);
-            $clients = Client::factory()->count(3)->create(['company_id' => $company->id, 'user_id' => $user->id]);
-            $clients->each(function ($client) use ($company) {
-                $orders = Order::factory()->count(2)->create([
-                    'client_id' => $client->id,
-                    'company_id' => $company->id,
-                    'user_id' => $user->id,
-                ]);
-            });
-        }
-        );
+            $users = User::factory()->count(1)->create(['company_id' => $company->id]);
+            $clients = Client::factory()->count(3)->create(['company_id' => $company->id]);
+
+            foreach($clients as $client) {
+                $date = fake()->dateTime();
+                $orders = [
+                    [
+                        'order_number' => rand(1,500),
+                        'order_date' => $date,
+                        'delivery_date' => $date->modify('+30 day'),
+                        'quantity' => rand(1,100),
+                        'log_size' => fake()->randomElement([25, 33, 50, 100]),
+                        'order_price' => rand(40, 500),
+                        'delivery_price' => rand(20, 100),
+                        'payment_status' => fake()->boolean(),
+                        'delivery_status_id' => rand(1, 3),
+                        'client_id' => $client->id,
+                        'company_id' => $company->id,
+                        'user_id' => $users[0]->id,
+                    ], 
+
+                    [
+                        'order_number' => rand(1,500),
+                        'order_date' => $date,
+                        'delivery_date' => $date->modify('+30 day'),
+                        'quantity' => rand(1,100),
+                        'log_size' => fake()->randomElement([25, 33, 50, 100]),
+                        'order_price' => rand(40, 500),
+                        'delivery_price' => rand(20, 100),
+                        'payment_status' => fake()->boolean(),
+                        'delivery_status_id' => rand(1, 3),
+                        'client_id' => $client->id,
+                        'company_id' => $company->id,
+                        'user_id' => $users[0]->id
+                    ], 
+                ]; 
+                DB::table('orders')->insert($orders);
+            } 
+        });
     }
 }
+

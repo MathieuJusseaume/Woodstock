@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
 /**
@@ -22,7 +23,7 @@ class UserFactory extends Factory
             'last_name' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
             'phone' => '05 23 55 67 89',
-            'password' => Hash::make("password"), // password
+            'password' => Hash::make("password"),
             'role_id' => 1,
             'created_at' => now(),
             'updated_at' => null,
