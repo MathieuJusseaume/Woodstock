@@ -13,6 +13,7 @@
         <OrderUpdateForm v-if="formName === 'OrderUpdateForm'" /> -->
         <CreateClientFormCpt v-if="formName === 'CreateClientForm'" />
         <EditClienFormCpt v-if="formName === 'EditClienForm'" /> 
+        <AccountFormCpt v-if="formName === 'AccountForm'" />
 
     </div>
 </template>
@@ -21,12 +22,14 @@
 import CreateClientFormCpt from "@/components/forms/CreateClientFormCpt.vue";
 import EditClienFormCpt from "@/components/forms/EditClienFormCpt.vue";
 import { useUtilsStore } from "@/stores/utilsStore";
+import AccountFormCpt from './AccountFormCpt.vue';
 
 export default {
     name: "ModalFormLayoutCpt",
     components: {
         CreateClientFormCpt,
-        EditClienFormCpt
+        EditClienFormCpt,
+        AccountFormCpt
     },
     computed: {
         formName() {

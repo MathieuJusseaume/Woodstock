@@ -3,19 +3,26 @@
         <img class="headerlayout__img" src="../assets/logoWoodStockManager.png" alt="">
 
         <div class="headerlayout__account__buttons">
-            <button class="headerlayout__account__buttons__useraccount" type="button">Mon compte</button>
+            <button @click="openEditConnectedUserAccount" class="headerlayout__account__buttons__useraccount" type="button">Mon compte</button>
             <button class="headerlayout__account__buttons__logout" type="button">Deconnexion</button>
         </div>
     </header>
 </template>
 
 <script>
+import { useUtilsStore } from "@/stores/utilsStore";
+
 export default {
     name: "HeaderCpt",
     data() {
         return {};
     },
-    methods: {},
+    methods: {
+        openEditConnectedUserAccount() {
+            const utilsStore = useUtilsStore();
+            utilsStore.setFormName("AccountForm");
+        }
+    },
 };
 </script>
 
