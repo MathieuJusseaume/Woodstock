@@ -92,6 +92,7 @@ class DatabaseSeeder extends Seeder
                         'client_id' => $client->id,
                         'company_id' => $company->id,
                         'user_id' => $users[0]->id,
+                        'created_at' => now()
                     ], 
 
                     [
@@ -106,7 +107,8 @@ class DatabaseSeeder extends Seeder
                         'delivery_status_id' => rand(1, 3),
                         'client_id' => $client->id,
                         'company_id' => $company->id,
-                        'user_id' => $users[0]->id
+                        'user_id' => $users[0]->id, 
+                        'created_at' => now()
                     ], 
                 ]; 
                 DB::table('orders')->insert($orders);
