@@ -1,7 +1,7 @@
 <template>
     <div>
-        <h1>Ici c'est le LAYOUT</h1>
         <HeaderCpt />
+        <h1>Ici c'est le LAYOUT</h1>
         <DesktopNavigationCpt />
         <RouterView />
         <ModalFormLayoutCpt v-if="formName"/>

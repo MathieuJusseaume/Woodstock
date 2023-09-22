@@ -29,7 +29,7 @@ export default {
 <style>
 .headerlayout {
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
 }
 .headerlayout__img {
     width: 200px;
@@ -44,11 +44,10 @@ export default {
     margin: .5rem 0;
     border-radius: 2rem;
     padding: .3rem .8rem;
-    font-size: 1rem;
+    font-size: .7rem;
     font-family: 'Clowey', sans-serif;
     font-weight: 600;
     height: 42px;
-    margin-left: 1rem;
     width: fit-content;
     min-width: 150px;
     align-self: center;
