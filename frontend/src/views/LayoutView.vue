@@ -1,6 +1,7 @@
 <template>
     <div>
         <h1>Ici c'est le LAYOUT</h1>
+        <HeaderCpt />
         <DesktopNavigationCpt />
         <RouterView />
         <ModalFormLayoutCpt v-if="formName"/>
@@ -12,12 +13,14 @@ import { RouterView } from "vue-router";
 import ModalFormLayoutCpt from "@/components/forms/ModalFormLayoutCpt.vue";
 import DesktopNavigationCpt from "@/components/DesktopNavigationCpt.vue";
 import { useUtilsStore } from "../stores/utilsStore.js";
+import HeaderCpt from "@/components/HeaderCpt.vue";
 export default {
     name: "LayoutView",
     components: {
         RouterView,
         ModalFormLayoutCpt,
-        DesktopNavigationCpt
+        DesktopNavigationCpt,
+        HeaderCpt
     },
     // formName sera une valeur a récupérer dans l'un de nos store
     computed: {
