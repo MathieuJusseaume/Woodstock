@@ -1,8 +1,8 @@
 <template>
     <div>
-        <h1>Ici c'est le compsant datatable pour {{ infos }}</h1>
+        <h1>Liste des clients</h1>
         <div>
-            <DataTable id="dataTable" :columns="columns" :options="options" :data="fakeOrders" class="display" width="100%">
+            <DataTable id="dataTable" :columns="columns" :options="options" :data="orders" class="display" width="100%">
                 <thead>
                     <tr>
                         <th>Lastname</th>
@@ -30,6 +30,7 @@ import DataTablesCore from "datatables.net";
 import 'datatables.net-responsive';
 
 DataTable.use(DataTablesCore);
+import { useClientsStore } from "@/stores/clientsStore.js";
 
 export default {
     name: "ClientsListCpt",
@@ -42,7 +43,6 @@ export default {
                 dom: 'Bftip',
                 responsive: true,
                 select: true,
-
             },
             columns: [
                 { data: "last_name" },
@@ -71,48 +71,9 @@ export default {
         };
     },
     computed: {
-        fakeOrders() {
-            return [
-                {
-                    id: 0,
-                    last_name: "ing",
-                    first_name: "string",
-                    delivery_adress: "string",
-                    delivery_zip_code: 0,
-                    delivery_city: "string",
-                    billing_adress: "string",
-                    billing_zip_code: 0,
-                    billing_city: "string",
-                    email: "string",
-                    phone: "string",
-                },
-                {
-                    id: 1,
-                    last_name: "string",
-                    first_name: "string",
-                    delivery_adress: "string",
-                    delivery_zip_code: 0,
-                    delivery_city: "string",
-                    billing_adress: "string",
-                    billing_zip_code: 0,
-                    billing_city: "string",
-                    email: "string",
-                    phone: "string",
-                },
-                {
-                    id: 2,
-                    last_name: "string",
-                    first_name: "string",
-                    delivery_adress: "string",
-                    delivery_zip_code: 0,
-                    delivery_city: "string",
-                    billing_adress: "string",
-                    billing_zip_code: 0,
-                    billing_city: "string",
-                    email: "string",
-                    phone: "string",
-                },
-            ];
+        orders() {
+            const clientStore = useClientsStore();
+            return clientStore.getClients;
         },
     },
     methods: {
@@ -121,6 +82,8 @@ export default {
         }
     },
     mounted() {
+        const clientStore = useClientsStore();
+        clientStore.getClientsAction();
         const dataTable = document.querySelector(".dataTable");
         dataTable.addEventListener("click", (event) => {
             if(event.target.classList.contains("updateclientbutton")) {
