@@ -18,13 +18,8 @@
 
 **BDD:**  
 
-DB_CONNECTION=mysql
-DB_HOST=mysql
-DB_PORT=3306
-DB_DATABASE=test
-DB_USERNAME=adrian
-DB_PASSWORD=secret
+Mise en place de la BDD : 
 
-**.ENV:**  
-
-Après modification : php artisan config:clear
+Terminal : 
+docker compose exec backend zsh 
+scripts/create-or-update-.env-migration-seeder-factory.sh
