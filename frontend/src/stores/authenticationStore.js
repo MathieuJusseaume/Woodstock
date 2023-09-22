@@ -31,14 +31,14 @@ export const useAuthenticationStore = defineStore("authentication", {
                 utilsStore.toggleIsLoadingValue();
                 await new Promise(resolve => setTimeout(resolve, 1000));
             } catch (error) {
-                
+                console.log(error);
             } finally {
                 utilsStore.toggleIsLoadingValue();
             }
         },
         logoutAction() {
-            
+
         }
-        
+
     }
 });
