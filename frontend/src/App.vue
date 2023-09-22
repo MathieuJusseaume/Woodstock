@@ -13,7 +13,7 @@ import { useUtilsStore } from "./stores/utilsStore";
 export default {
     name: 'App',
     components: {
-        RouterView,
+         RouterView,
         LoaderSpinnerCpt
     },
     computed: {
