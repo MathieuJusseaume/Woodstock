@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Models\User; 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
 
 class LoginControllerTest extends TestCase
@@ -40,4 +41,21 @@ class LoginControllerTest extends TestCase
         $response = $this->post('api/login', $data);
         $response->assertNoContent($status = 200);
     }
+
+    public function test_update_user_success(): void
+    {
+        
+        $user = User::factory()->create(['company_id'=>1]); 
+        Sanctum::actingAs($user);
+
+        $data = [
+            'first_name' => "Hélène",
+            'first_connection' => 0
+        ];
+
+        $response = $this->put('api/users/1', $data);
+        $response->assertStatus(200);
+        
+    }
+
 }
