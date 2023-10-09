@@ -9,6 +9,7 @@
 
         <div class="createclientform__field__names form__field__flex">
             <div class="form__field">
+                <p v-if="errors.clientFirstName">{{ errors.clientFirstName }}</p>
                 <label for="clientFirstName">Prénom</label>
                 <input id="clientFirstName" class="form__field__input" placeholder="" autocomplete
                     @change.prevent="onChangeFields" type="text" :value="fieldsValues.clientFirstName">
@@ -55,7 +56,6 @@
                         @change.prevent="onChangeFields" type="text" :value="fieldsValues.clientBillingCity">
                 </div>
             </div>
-
         </div>
 
 
@@ -90,10 +90,14 @@
 
 <script>
 import { useClientsStore } from "@/stores/clientsStore.js";
-import { missingValuesInForm } from "@/utils/inputForm.js";
+import { useUtilsStore } from "@/stores/utilsStore.js";
 
 export default {
     name: "CreateClientFormCpt",
+    mounted() {
+        const clientStore = useClientsStore();
+        clientStore.resetform();
+    },
     data() {
         return {
 
@@ -112,7 +116,8 @@ export default {
 
         onSubmitForm() {
             const clientStore = useClientsStore();
-            clientStore.setErrorsForm(missingValuesInForm(clientStore.createClientForm));
+            const utilsStore = useUtilsStore();
+            utilsStore.setErrorsForm(clientStore.createClientForm);
             clientStore.submitNewClient();
             clientStore.resetform();
         },
@@ -121,6 +126,10 @@ export default {
         fieldsValues() {
             const clientStore = useClientsStore();
             return clientStore.getCreateClientForm;
+        },
+        errors() {
+            const utilsStore = useUtilsStore();
+            return utilsStore.getErrors;
         },
     }
 

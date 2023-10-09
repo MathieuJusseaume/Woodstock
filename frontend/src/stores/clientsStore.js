@@ -29,8 +29,7 @@ export const useClientsStore = defineStore("clients", {
 			clientDeliveryCity: ""
 
 		},
-		errors: {
-		}
+
 	}),
 	getters: {
 		getClients: (state) => {
@@ -42,6 +41,7 @@ export const useClientsStore = defineStore("clients", {
 		getUpdateClientForm: (state) => {
 			return state.updateClientForm;
 		},
+
 	},
 	actions: {
 		async getClientsAction() {
@@ -104,6 +104,12 @@ export const useClientsStore = defineStore("clients", {
 		async submitNewClient() {
 			try {
 				await new Promise(resolve => setTimeout(resolve, 1000));
+
+				// if(status === 200){
+				// reset form si tout est ok
+				// resetform(createClientForm)
+				// }
+
 			} catch (error) {
 				throw new Error(error.message);
 			}
@@ -135,8 +141,6 @@ export const useClientsStore = defineStore("clients", {
 				}
 			}
 		},
-		setErrorsForm(errorsObject){
-			this.errors = {...errorsObject};
-		}
+
 	}
 });
