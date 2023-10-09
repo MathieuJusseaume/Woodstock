@@ -1,6 +1,5 @@
 import { mount } from '@vue/test-utils'
 import { expect, test, describe, it } from 'vitest';
-import  router  from '@/router/index';
 import HeaderCpt from '@/components/HeaderCpt.vue';
 
 describe("MyComponent", async () => {
