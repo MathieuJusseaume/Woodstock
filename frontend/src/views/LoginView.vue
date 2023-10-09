@@ -1,6 +1,5 @@
 <template>
     <LoginFormCpt/>
-    <div></div>
 </template>
 
 <script>
