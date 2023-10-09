@@ -29,6 +29,8 @@ export const useClientsStore = defineStore("clients", {
 			clientDeliveryCity: ""
 
 		},
+		errors: {
+		}
 	}),
 	getters: {
 		getClients: (state) => {
@@ -99,6 +101,13 @@ export const useClientsStore = defineStore("clients", {
 		},
 		async deleteClientAction() {
 		},
+		async submitNewClient() {
+			try {
+				await new Promise(resolve => setTimeout(resolve, 1000));
+			} catch (error) {
+				throw new Error(error.message);
+			}
+		},
 		getClientById(clientId) {
 			console.log(clientId);
 		},
@@ -125,6 +134,9 @@ export const useClientsStore = defineStore("clients", {
 					clientDeliveryCity: ""
 				}
 			}
+		},
+		setErrorsForm(errorsObject){
+			this.errors = {...errorsObject};
 		}
 	}
 });
