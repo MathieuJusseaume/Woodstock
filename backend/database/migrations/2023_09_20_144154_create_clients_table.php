@@ -11,27 +11,24 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('clients', function (Blueprint $table) {
             $table->id();
             $table->string('first_name');
             $table->string('last_name');
-            $table->boolean('first_login')->default(true);
             $table->string('email')->unique();
             $table->string('phone');
-            $table->string('password');
-            $table->rememberToken();
+            $table->string('delivery_address');
+            $table->integer('delivery_zip_code');
+            $table->string('delivery_city');
+            $table->string('billing_address');
+            $table->integer('billing_zip_code');
+            $table->string('billing_city');
             $table->timestamps();
-
-            $table->foreignId('role_id')
-                ->constrained()
-                ->onUpdate('cascade')
-                ->onDelete('cascade');
 
             $table->foreignId('company_id')
                 ->constrained()
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
-
         });
     }
 
@@ -40,12 +37,10 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('users');
-        Schema::table('users', function (Blueprint $table) {
+        Schema::dropIfExists('clients');
+        Schema::table('clients', function (Blueprint $table) {
             $table->dropForeign(['company_id']);
             $table->dropColumn('company_id');
-            $table->dropForeign(['role_id']);
-            $table->dropColumn('role_id');
         });
     }
 };
