@@ -1,6 +1,7 @@
 import { defineStore } from "pinia";
 import { useUtilsStore } from "./utilsStore";
-import Cookies from 'js-cookie';
+import Cookies from "js-cookie";
+import axios from "axios";
 
 export const useAuthenticationStore = defineStore("authentication", {
     state: () => ({
@@ -15,7 +16,7 @@ export const useAuthenticationStore = defineStore("authentication", {
             return state.password;
         },
         getToken: () => {
-            return Cookies.get('woodStockAuthToken');
+            return Cookies.get("woodStockAuthToken");
         }
     },
     actions: {
@@ -27,12 +28,9 @@ export const useAuthenticationStore = defineStore("authentication", {
         },
         async loginAction() {
             const utilsStore = useUtilsStore();
-            console.log(utilsStore);
             try {
                 utilsStore.toggleIsLoadingValue();
                 await new Promise(resolve => setTimeout(resolve, 1000));
-                const jwtToken = "ghfdhslerdgyrudjklflsdlhsgldhitvhnglj";
-                Cookies.set('woodStockAuthToken', jwtToken, { secure: true, httpOnly: true });
             } catch (error) {
                 console.log(error);
             } finally {
@@ -40,8 +38,11 @@ export const useAuthenticationStore = defineStore("authentication", {
             }
         },
         logoutAction() {
-            Cookies.remove('woodStockAuthToken');     
-        }
+
+        },
+        async isLoggedAction() {
+
+        },
 
     }
 });

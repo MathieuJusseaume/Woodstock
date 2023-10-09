@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory  } from 'vue-router'
+import Cookies from 'js-cookie';
 
 import LoginView from "../views/LoginView.vue";
 import OrdersView from "../views/OrdersView.vue";
@@ -6,18 +7,18 @@ import ClientsView from "../views/ClientsView.vue";
 import SingleClientView from "../views/SingleClientView.vue";
 import SingleOrderView from "../views/SingleOrderView.vue";
 import LayoutView from "../views/LayoutView.vue";
-//import { authService } from "../services/auth.js";
 
 // ici notre gardien va vérifier si il y a un token dans le local storage
-/* const authGuard = () => {
-    let token = localStorage.getItem("access_token");
+const authGuard = () => {
+    let token = Cookies.get('woodStockAuthToken');
+    //console.log(token);
     // si il est présent on retourne true en permettant à la route d'être jouée
     if(token) {
         return true;
     }
     // sinon on redirige vers la page de connexion
     router.push("/login");
-} */
+}
 
 // déclaration des routes
 const routes = [
@@ -71,16 +72,16 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
     // sur toutes les routes déclenchement du gardien
-/*         if(to.matched[0].name !== "login") {
+         if(to.matched[0].name !== "login") {
             authGuard();
         }
-        // sur la route login on s'assure que le client n'est pas déjà connecté sinon on redirige vers la list des starships
+        // sur la route login on s'assure que le client n'est pas déjà connecté sinon on redirige vers la list des commandes
         if(to.matched[0].name === "login") {
-            const isLogged = authService.isLogged();
-                    if(isLogged) {
-                router.push("/");
+            let isLogged = Cookies.get('woodStockAuthToken');
+            if(isLogged) {
+                router.push("/commandes");
             }
-        } */
+        }
      next();
 });
 
