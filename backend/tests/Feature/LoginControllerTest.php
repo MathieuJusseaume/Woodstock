@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\User; 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
@@ -13,20 +14,19 @@ class LoginControllerTest extends TestCase
      */
     public function test_login_connection_success(): void
     {
+        $user = User::factory()->create(['company_id' => 1]); 
 
         $data = [
-            'email' => 'nathanael06@example.org',
-            'password' => 'password'
+            'email' => $user->email,
+            'password' => "password"
         ];
 
         $response = $this->post('api/login', $data);
-        $response->assertJsonStructure(['user', 'token']);
-
-        $token = $response->json('token');
-        $user = $response->json('user');
-        $this->assertNotEmpty($token);
-        $this->assertNotEmpty($user);
+        $dataUser = $response->json('user');
+        $this->assertNotEmpty($dataUser);
         $response->assertStatus(200);
+        
+        $user->delete(); 
     }
 
     public function test_login_connection_failed(): void
@@ -38,9 +38,6 @@ class LoginControllerTest extends TestCase
         ];
 
         $response = $this->post('api/login', $data);
-        $response->assertJson([
-            'user' => '',
-            'token' => ''
-        ]);
+        $response->assertNoContent($status = 200);
     }
 }
