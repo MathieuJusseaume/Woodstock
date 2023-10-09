@@ -1,5 +1,5 @@
 <template>
-    <form @submit.prevent="" class="blockcreateclient__form">
+    <form @submit.prevent="onSubmitForm" class="blockcreateclient__form">
 
         <!-- <div class="form__field">
             <label for="clientNames">Nom et Prénom</label>
@@ -112,14 +112,15 @@ export default {
 
         // TODO : Mettre en place un faux submit
         // TODO : Gérer les erreurs au submit, manque des infos dans les champs
-        // TODO : Test des méthodes pour emplir le store
+        // TODO : Sécurité
+        // TODO : Test des méthodes pour remplir le store
 
         onSubmitForm() {
+          console.log("submit form")
             const clientStore = useClientsStore();
             const utilsStore = useUtilsStore();
             utilsStore.setErrorsForm(clientStore.createClientForm);
             clientStore.submitNewClient();
-            clientStore.resetform();
         },
     },
     computed: {
@@ -132,7 +133,6 @@ export default {
             return utilsStore.getErrors;
         },
     }
-
 };
 </script>
 

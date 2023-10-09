@@ -6,7 +6,6 @@ export const useUtilsStore = defineStore("utils", {
 		formName: "",
 		isLoading: false,
 		errors: {
-			clientFirstName: ""
 		}
 	}),
 	getters: {
@@ -22,14 +21,12 @@ export const useUtilsStore = defineStore("utils", {
 	},
 	actions: {
 		setFormName(formNameValue) {
-
 			this.formName = formNameValue;
 		},
 		toggleIsLoadingValue() {
 			this.isLoading = !this.isLoading;
 		},
 		setErrorsForm(completeForm) {
-
 			this.errors = { ...missingValuesInForm(completeForm) };
 		}
 	}
