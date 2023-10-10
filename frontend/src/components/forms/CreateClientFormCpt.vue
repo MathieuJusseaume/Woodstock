@@ -101,7 +101,6 @@
 import { useClientsStore } from "@/stores/clientsStore.js";
 import { useUtilsStore } from "@/stores/utilsStore.js";
 import sanitizeHtml from 'sanitize-html';
-
 import {allCreateClientFields } from '@/utils/formFields.js';
 
 export default {
@@ -125,9 +124,6 @@ export default {
             clientStore.setNewClient(cleanInputValue, event.target.id);
         },
 
-        // DONE : Mettre en place un faux submit
-        // DONE : Gérer les erreurs au submit, manque des infos dans les champs
-        // DONE : Sécurité
         // TODO : Test des méthodes pour remplir le store
 
         onSubmitForm() {
