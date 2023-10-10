@@ -12,4 +12,7 @@ Fichier
 front
 à déterminer
 back
-à déterminer
+- table en BDD sont en snakecase
+- colonne en BDD sont en snakecase
+- variable dans le code en camelcase
+- fonction en camelcase

@@ -14,3 +14,12 @@
 => libérer les droit dans un dossier se placer dans le dossier & lancer `sudo chmod -R 777 .`  
 => connaitre les ports écoutés `sudo lsof -i -P -n | grep LISTEN`  
 => forcé l'arret de l'écoute sur un port `sudo kill -9 `sudo lsof -t -i:<numéro du port>`  
+
+
+**BDD:**  
+
+Mise en place de la BDD : 
+
+Terminal : 
+docker compose exec backend zsh 
+scripts/create-or-update-.env-migration-seeder-factory.sh
