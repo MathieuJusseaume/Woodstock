@@ -5,15 +5,31 @@ export const useClientsStore = defineStore("clients", {
     state: () => ({
         clients: [],
         createClientForm: {
-            lastName: "",
-            firstName: "",
-            /* etc. */
+            clientLastName: "",
+            clientFirstName: "",
+            clientEmail: "",
+            clientPhoneNumber: "",
+            clientBillingAdress: "",
+            clientBillingZipCode: "",
+            clientBillingCity: "",
+            clientDeliveryAdress: "",
+            clientDeliveryZipCode: "",
+            clientDeliveryCity: ""
         },
         updateClientForm: {
-            lastName: "",
-            firstName: "",
-            /* etc. */
+            clientLastName: "",
+            clientFirstName: "",
+            clientEmail: "",
+            clientPhoneNumber: "",
+            clientBillingAdress: "",
+            clientBillingZipCode: "",
+            clientBillingCity: "",
+            clientDeliveryAdress: "",
+            clientDeliveryZipCode: "",
+            clientDeliveryCity: ""
+
         },
+
     }),
     getters: {
         getClients: (state) => {
@@ -25,6 +41,7 @@ export const useClientsStore = defineStore("clients", {
         getUpdateClientForm: (state) => {
             return state.updateClientForm;
         },
+
     },
     actions: {
         async getClientsAction() {
@@ -81,17 +98,54 @@ export const useClientsStore = defineStore("clients", {
             }
         },
         async updateClientAction() {
-
         },
         async deleteClientAction() {
-
         },
-        getClientById() {
+        async submitNewClient() {
+            const utilsStore = useUtilsStore();
+            try {
+                utilsStore.toggleIsLoadingValue();
 
+                await new Promise(resolve => setTimeout(resolve, 1000));
+
+                // if(status === 200){
+                // reset form si tout est ok
+                // resetform(createClientForm)
+                // }
+
+            } catch (error) {
+                throw new Error(error.message);
+            } finally {
+                utilsStore.toggleIsLoadingValue();
+            }
         },
-        //on utilisera cette méthode lors de l'update d'un nouveau clien
+        getClientById(clientId) {
+            console.log(clientId);
+        },
+        //on utilisera cette méthode lors de l'update d'un nouveau client
         setClientsAfterUpdate() {
-
         },
+        setNewClient(value, field) {
+            this.createClientForm[field] = value;
+        },
+        resetform(formToReset) {
+            this[formToReset] = {
+                clientLastName: "",
+                clientFirstName: "",
+                clientEmail: "",
+                clientPhoneNumber: "",
+                clientBillingAdressInfos: {
+                    clientBilingAdress: "",
+                    clientBillingZipCode: "",
+                    clientBillingCity: ""
+                },
+                clientDeliveryAdressInfos: {
+                    clientDeliveryAdress: "",
+                    clientDeliveryZipCode: "",
+                    clientDeliveryCity: ""
+                }
+            }
+        },
+
     }
 });
