@@ -1,9 +1,13 @@
 import { defineStore } from "pinia";
+import { getErrorsObject } from "@/utils/getErrorObject.js";
+import { regex } from '@/utils/formFields.js';
 
 export const useUtilsStore = defineStore("utils", {
     state: () => ({
         formName: "",
-        isLoading: false
+        isLoading: false,
+        errors: {
+        }
     }),
     getters: {
         getFormName: (state) => {
@@ -12,6 +16,9 @@ export const useUtilsStore = defineStore("utils", {
         getIsLoading: (state) => {
             return state.isLoading;
         },
+        getErrors: (state) => {
+            return state.errors;
+        },
     },
     actions: {
         setFormName(formNameValue) {
@@ -19,6 +26,9 @@ export const useUtilsStore = defineStore("utils", {
         },
         toggleIsLoadingValue() {
             this.isLoading = !this.isLoading;
+        },
+        setErrorsForm(completeForm, fieldsOfForm) {
+            this.errors = { ...getErrorsObject(completeForm, fieldsOfForm, regex) };
         }
     }
 });
