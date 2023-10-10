@@ -29,12 +29,19 @@
 </template>
 
 <script>
+import router from "@/router";
 import { useAuthenticationStore } from "@/stores/authenticationStore";
 export default {
     name: "LoginFormCpt",
     data() {
         return {
             infos: ""
+        }
+    },
+    updated() {
+        const isLogged = localStorage.getItem("isLogged");
+        if(isLogged) {
+            router.push("/commandes");
         }
     },
     computed: {

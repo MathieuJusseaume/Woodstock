@@ -9,6 +9,7 @@
 import { RouterView } from "vue-router";
 import LoaderSpinnerCpt from "@/components/LoaderSpinnerCpt.vue";
 import { useUtilsStore } from "./stores/utilsStore";
+import { useConnectedUserStore } from "./stores/connectedUserStore";
 
 export default {
     name: 'App',
@@ -19,6 +20,7 @@ export default {
     computed: {
         isLoading() {
             const utilsStore = useUtilsStore();
+            useConnectedUserStore();
             return utilsStore.getIsLoading;
         }
     }

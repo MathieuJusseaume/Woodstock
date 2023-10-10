@@ -4,13 +4,15 @@
 
         <div class="headerlayout__account__buttons">
             <button @click="openEditConnectedUserAccount" class="headerlayout__account__buttons__useraccount" type="button">Mon compte</button>
-            <button class="headerlayout__account__buttons__logout" type="button">Deconnexion</button>
+            <button @click="logout" class="headerlayout__account__buttons__logout" type="button">Deconnexion</button>
         </div>
     </header>
 </template>
 
 <script>
 import { useUtilsStore } from "@/stores/utilsStore";
+import { useAuthenticationStore } from "@/stores/authenticationStore";
+import router from "@/router";
 
 export default {
     name: "HeaderCpt",
@@ -21,6 +23,11 @@ export default {
         openEditConnectedUserAccount() {
             const utilsStore = useUtilsStore();
             utilsStore.setFormName("AccountForm");
+        },
+        logout() {
+            const authenticationStore = useAuthenticationStore();
+            authenticationStore.logoutAction();
+            router.push("/login");
         }
     },
 };
