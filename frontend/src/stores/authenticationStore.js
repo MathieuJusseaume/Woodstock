@@ -8,6 +8,7 @@ export const useAuthenticationStore = defineStore("authentication", {
     state: () => ({
         email: "littel.lexie@example.com",
         password: "password",
+        errorMessage: ""
     }),
     getters: {
         getEmailValue: (state) => {
@@ -16,6 +17,9 @@ export const useAuthenticationStore = defineStore("authentication", {
         getPasswordValue: (state) => {
             return state.password;
         },
+        getErrorMessage: (state) => {
+            return state.errorMessage;
+        }
     },
     actions: {
         toggleIsLogged() {
@@ -34,22 +38,26 @@ export const useAuthenticationStore = defineStore("authentication", {
             const utilsStore = useUtilsStore();
             try {
                 utilsStore.toggleIsLoadingValue();
-                await new Promise(resolve => setTimeout(resolve, 500));
                 const response = await Axios.post(`/login`, { email: this.email, password: this.password });
-                
+
                 console.log(`loginAction -> ${JSON.stringify(response, null, 2)}`);
 
-                this.setEmailValue("");
-                this.setPasswordValue("");
-                localStorage.setItem("woodstockJwt", response.data.token);
+                if(response.data) {
+                    this.setEmailValue("");
+                    this.setPasswordValue("");
+                    localStorage.setItem("woodstockJwt", response.data.token);
+                } else {
+                    throw new Error('Empty response');
+                }
                 //localStorage.setItem("woodstockSessionToken", response.data.sessionToken);
-                const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyLCJ1c2VyaWQiOjF9.fERikhVnvaBsYXk8wmGpgJyug2xBLq3Lx0oKBpnfsew";
+/*                 const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyLCJ1c2VyaWQiOjF9.fERikhVnvaBsYXk8wmGpgJyug2xBLq3Lx0oKBpnfsew";
                 let decoded = VueJwtDecode.decode(token);
-                console.log(decoded);
+                console.log(decoded); */
 
                 this.getUserByIdAction();
 
             } catch (error) {
+                this.errorMessage = "Identifiants invalides";
                 console.log(`loginAction -> ${error}`);
             } finally {
                 utilsStore.toggleIsLoadingValue();
@@ -79,16 +87,27 @@ export const useAuthenticationStore = defineStore("authentication", {
             }
 
         },
+        // TODO
         async refreshConnexionAction() {
-            // TODO
-            
+            const utilsStore = useUtilsStore();
             try {
-                const token = localStorage.getItem("woodstockJwt");
-                if(token) {
+                utilsStore.toggleIsLoadingValue();  
+                //const sessionToken = localStorage.getItem("woodstockSessionToken");
+                /* if(sessionToken) {
+                    console.log("coucou");
+                    // todo call http here
+                    localStorage.setItem("woodstockJwt", response.data.jwtToken);
+                    localStorage.setItem("woodstockSessionToken", response.data.sessionToken);
+                } else {
+                    throw new Error("No session token");
+                } */
 
-                }       
             } catch (error) {
-                
+                localStorage.removeItem("woodstockJwt");
+                localStorage.removeItem("woodstockSessionToken");
+                console.log(`refreshConnexionAction -> ${error}`);
+            } finally {
+                utilsStore.toggleIsLoadingValue();
             }
         },
     }

@@ -10,6 +10,7 @@ import { RouterView } from "vue-router";
 import LoaderSpinnerCpt from "@/components/LoaderSpinnerCpt.vue";
 import { useUtilsStore } from "./stores/utilsStore";
 import { useConnectedUserStore } from "./stores/connectedUserStore";
+import { useAuthenticationStore } from "./stores/authenticationStore";
 
 export default {
     name: 'App',
@@ -23,6 +24,10 @@ export default {
             useConnectedUserStore();
             return utilsStore.getIsLoading;
         }
+    },
+    mounted() {
+        const authenticationStore = useAuthenticationStore();
+        authenticationStore.refreshConnexionAction();
     }
 
 };

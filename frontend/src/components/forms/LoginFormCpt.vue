@@ -6,6 +6,7 @@
         </header>
 
         <form @submit.prevent="loginSubmit" class="blocklogin__form">
+            <p class="form__field__error" v-show="errorMessage">{{ errorMessage }}</p>
             <div class="form__field">
                 <label for="loginEmail">Email*</label>
                 <input id="loginEmail" class="form__field__input" autocomplete @change="onChangeEmail" type="text" :value="email">
@@ -52,6 +53,10 @@ export default {
         password() {
             const authenticationStore = useAuthenticationStore();
             return authenticationStore.getPasswordValue;
+        },
+        errorMessage() {
+            const authenticationStore = useAuthenticationStore();
+            return authenticationStore.getErrorMessage;
         }
     },
     methods: {
@@ -76,8 +81,10 @@ export default {
 .blocklogin {
     margin: 3rem;
 }
-.errorMessage {
+.form__field__error {
     color: red;
+    text-align: left;
+    font-size: .7rem;
 }
 .blocklogin__form {
     min-width: 250px;
