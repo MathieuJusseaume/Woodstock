@@ -1,5 +1,6 @@
 import { defineStore } from "pinia";
 import { useUtilsStore } from "./utilsStore";
+import Axios from "../_services/callerService";
 
 export const useConnectedUserStore = defineStore("connectedUser", {
     state: () => ({
@@ -23,7 +24,7 @@ export const useConnectedUserStore = defineStore("connectedUser", {
                 await new Promise(resolve => setTimeout(resolve, 1000));
                 const token = localStorage.getItem("woodstockJwt");
                 const decodedToken = token;
-                const response = await axios.put(`http://192.168.1.15:8080/api/user/${decodedToken.userId}`, { "Authorization": `Bearer ${token}` });
+                const response = await Axios.put(`/user/${decodedToken.userId}`, { "Authorization": `Bearer ${token}` });
                 
                 this.setUpdateUserFormField(response.data.user.email, "userEmail");
                 this.setUpdateUserFormField(response.data.user.last_name, "userLastName");

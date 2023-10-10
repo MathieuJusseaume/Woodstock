@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import { useUtilsStore } from "./utilsStore";
-import axios from "axios";
+import Axios from "../_services/callerService";
 import { useConnectedUserStore } from "./connectedUserStore";
 import VueJwtDecode from "vue-jwt-decode";
 
@@ -35,7 +35,7 @@ export const useAuthenticationStore = defineStore("authentication", {
             try {
                 utilsStore.toggleIsLoadingValue();
                 await new Promise(resolve => setTimeout(resolve, 500));
-                const response = await axios.post(`http://192.168.1.15:8080/api/login`, { email: this.email, password: this.password });
+                const response = await Axios.post(`/login`, { email: this.email, password: this.password });
                 
                 console.log(`loginAction -> ${JSON.stringify(response, null, 2)}`);
 
@@ -63,7 +63,7 @@ export const useAuthenticationStore = defineStore("authentication", {
                 const connectedUserStore = useConnectedUserStore();
                 const token = localStorage.getItem("woodstockJwt");
                 const decodedToken = token;
-                const response = await axios.get(`http://192.168.1.15:8080/api/user/${decodedToken.userId}`, { "Authorization": `Bearer ${token}` });
+                const response = await Axios.get(`/user/${decodedToken.userId}`, { "Authorization": `Bearer ${token}` });
                 
                 connectedUserStore.setUpdateUserFormField(response.data.user.email, "userEmail");
                 connectedUserStore.setUpdateUserFormField(response.data.user.last_name, "userLastName");
