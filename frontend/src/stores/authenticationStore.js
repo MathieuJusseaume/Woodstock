@@ -2,6 +2,7 @@ import { defineStore } from "pinia";
 import { useUtilsStore } from "./utilsStore";
 import axios from "axios";
 import { useConnectedUserStore } from "./connectedUserStore";
+import VueJwtDecode from "vue-jwt-decode";
 
 export const useAuthenticationStore = defineStore("authentication", {
     state: () => ({
@@ -42,6 +43,11 @@ export const useAuthenticationStore = defineStore("authentication", {
                 this.setPasswordValue("");
                 localStorage.setItem("woodstockJwt", response.data.token);
                 //localStorage.setItem("woodstockSessionToken", response.data.sessionToken);
+                const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyLCJ1c2VyaWQiOjF9.fERikhVnvaBsYXk8wmGpgJyug2xBLq3Lx0oKBpnfsew";
+                let decoded = VueJwtDecode.decode(token);
+                console.log(decoded);
+
+                this.getUserByIdAction();
 
             } catch (error) {
                 console.log(`loginAction -> ${error}`);
@@ -72,6 +78,18 @@ export const useAuthenticationStore = defineStore("authentication", {
                 utilsStore.toggleIsLoadingValue();
             }
 
+        },
+        async refreshConnexionAction() {
+            // TODO
+            
+            try {
+                const token = localStorage.getItem("woodstockJwt");
+                if(token) {
+
+                }       
+            } catch (error) {
+                
+            }
         },
     }
 });

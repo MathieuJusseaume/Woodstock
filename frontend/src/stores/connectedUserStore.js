@@ -21,6 +21,17 @@ export const useConnectedUserStore = defineStore("connectedUser", {
             try {
                 utilsStore.toggleIsLoadingValue();
                 await new Promise(resolve => setTimeout(resolve, 1000));
+                const token = localStorage.getItem("woodstockJwt");
+                const decodedToken = token;
+                const response = await axios.put(`http://192.168.1.15:8080/api/user/${decodedToken.userId}`, { "Authorization": `Bearer ${token}` });
+                
+                this.setUpdateUserFormField(response.data.user.email, "userEmail");
+                this.setUpdateUserFormField(response.data.user.last_name, "userLastName");
+                this.setUpdateUserFormField(response.data.user.first_name, "userFirstName");
+                this.setUpdateUserFormField(response.data.user.phone, "userPhoneNumber");
+
+                console.log(`updateUserAction -> ${JSON.stringify(response, null, 2)}`);  
+
             } catch (error) {
                 console.log(error);
             } finally {
