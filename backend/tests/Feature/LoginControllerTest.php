@@ -16,7 +16,6 @@ class LoginControllerTest extends TestCase
     public function test_login_connection_success(): void
     {
         $user = User::factory()->create(['company_id' => 1]); 
-
         $data = [
             'email' => $user->email,
             'password' => "password"
@@ -38,7 +37,7 @@ class LoginControllerTest extends TestCase
         ];
 
         $response = $this->post('api/login', $data);
-        $response->assertNoContent($status = 200);
+        $this->assertGuest();
     }
 
 }

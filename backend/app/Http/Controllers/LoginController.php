@@ -33,11 +33,10 @@ Handle an authentication attempt.
      // Récupérez l'utilisateur actuellement authentifié
 
       return response()->json([
-        'user' => $user,
         'token' => $token 
-      ]);
+      ], 200);
     }
-    return null;
+    return response()->json(401);
   }
 }
 

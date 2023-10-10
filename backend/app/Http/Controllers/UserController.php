@@ -23,16 +23,19 @@ class UserController extends Controller
         $validated = $request->validate([
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
-            'first_login' => 'required|integer|boolean',
+            'first_login' => 'required|boolean',
             'phone' => 'required|string|max:255',
             'password' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
+            'email' => 'required|string|email|max:255|unique:users,email,',
+            'role_id' =>'required|integer', 
+            'company_id' => 'required|integer',
+
         ]);
 
         // Update the user
-        User::Create($validated);
+        $user= User::Create($validated);
 
-        return response()->json(['message' => 'User created successfully'], 200);
+        return response()->json(['message' => 'User created successfully', 'user'=> $user], 200);
     }
 
     /**
@@ -79,6 +82,6 @@ class UserController extends Controller
      */
     public function destroy(Client $client)
     {
-        //
+        $user->delete();
     }
 }
