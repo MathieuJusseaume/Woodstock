@@ -26,8 +26,8 @@ export const useUtilsStore = defineStore("utils", {
 		toggleIsLoadingValue() {
 			this.isLoading = !this.isLoading;
 		},
-		setErrorsForm(completeForm) {
-			this.errors = { ...missingValuesInForm(completeForm) };
+		setErrorsForm(completeForm, fieldsOfForm) {
+			this.errors = { ...missingValuesInForm(completeForm, fieldsOfForm) };
 		}
 	}
 });

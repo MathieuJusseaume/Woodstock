@@ -4,7 +4,7 @@
         <!-- <div class="form__field">
             <label for="clientNames">Nom et Prénom</label>
             <input id="clientNames" class="form__field__input" placeholder="" autocomplete @change="onChangeFields"
-                type="text" :value="`${fieldsValues.lastName} ${fieldsValues.firstName}`">
+                type="text" v-model="`${fieldsValues.lastName} ${fieldsValues.firstName}`">
         </div> -->
 
         <div class="createclientform__field__names form__field__flex">
@@ -12,14 +12,14 @@
                 <p v-show="errors.clientFirstName">{{ errors.clientFirstName }}</p>
                 <label for="clientFirstName">Prénom</label>
                 <input id="clientFirstName" class="form__field__input" placeholder="" autocomplete
-                    @change.prevent="onChangeFields" type="text" :value="fieldsValues.clientFirstName">
+                    @change.prevent="onChangeFields" type="text" v-model="fieldsValues.clientFirstName">
             </div>
 
             <div class="form__field">
                 <p v-show="errors.clientLastName">{{ errors.clientLastName }}</p>
                 <label for="clientLastName">Nom</label>
                 <input id="clientLastName" class="form__field__input" placeholder="" autocomplete
-                    @change.prevent="onChangeFields" type="text" :value="fieldsValues.clientLastName">
+                    @change.prevent="onChangeFields" type="text" v-model="fieldsValues.clientLastName">
             </div>
         </div>
 
@@ -28,14 +28,14 @@
                 <p v-show="errors.clientPhoneNumber">{{ errors.clientPhoneNumber }}</p>
                 <label for="clientPhoneNumber">Téléphone</label>
                 <input id="clientPhoneNumber" placeholder="" class="form__field__input" autocomplete
-                    @change.prevent="onChangeFields" type="text" :value="fieldsValues.clientPhoneNumber">
+                    @change.prevent="onChangeFields" type="text" v-model="fieldsValues.clientPhoneNumber">
             </div>
 
             <div class="form__field">
                 <p v-show="errors.clientEmail">{{ errors.clientEmail }}</p>
                 <label for="clientEmail">Adresse email</label>
                 <input id="clientEmail" placeholder="" class="form__field__input" autocomplete
-                    @change.prevent="onChangeFields" type="text" :value="fieldsValues.clientEmail">
+                    @change.prevent="onChangeFields" type="text" v-model="fieldsValues.clientEmail">
             </div>
         </div>
 
@@ -44,7 +44,7 @@
                 <p v-show="errors.clientBillingAdress">{{ errors.clientBillingAdress }}</p>
                 <label for="clientBillingAdress">Adresse de facturation</label>
                 <input id="clientBillingAdress" placeholder="" class="form__field__input" autocomplete
-                    @change.prevent="onChangeFields" type="text" :value="fieldsValues.clientBillingAdress">
+                    @change.prevent="onChangeFields" type="text" v-model="fieldsValues.clientBillingAdress">
             </div>
 
             <div class="form__field__billing_zipcode__city form__field__flex">
@@ -52,14 +52,14 @@
                     <p v-show="errors.clientBillingZipCode">{{ errors.clientBillingZipCode }}</p>
                     <label for="clientBillingZipCode">Code postal</label>
                     <input id="clientBillingZipCode" placeholder="" class="form__field__input" autocomplete
-                        @change.prevent="onChangeFields" type="text" :value="fieldsValues.clientBillingZipCode">
+                        @change.prevent="onChangeFields" type="text" v-model="fieldsValues.clientBillingZipCode">
                 </div>
 
                 <div class="form__field">
                     <p v-show="errors.clientBillingCity">{{ errors.clientBillingCity }}</p>
                     <label for="clientBillingCity">Ville</label>
                     <input id="clientBillingCity" placeholder="" class="form__field__input" autocomplete
-                        @change.prevent="onChangeFields" type="text" :value="fieldsValues.clientBillingCity">
+                        @change.prevent="onChangeFields" type="text" v-model="fieldsValues.clientBillingCity">
                 </div>
             </div>
         </div>
@@ -70,7 +70,7 @@
                 <p v-show="errors.clientDeliveryAdress">{{ errors.clientDeliveryAdress }}</p>
                 <label for="clientDeliveryAdress">Adresse de livraison</label>
                 <input id="clientDeliveryAdress" placeholder="" class="form__field__input" autocomplete
-                    @change.prevent="onChangeFields" type="text" :value="fieldsValues.clientDeliveryAdress">
+                    @change.prevent="onChangeFields" type="text" v-model="fieldsValues.clientDeliveryAdress">
             </div>
 
             <div class="form__field__delivery__zipcode__city form__field__flex">
@@ -78,14 +78,14 @@
                     <p v-show="errors.clientDeliveryZipCode">{{ errors.clientDeliveryZipCode }}</p>
                     <label for="clientDeliveryZipCode">Code postal</label>
                     <input id="clientDeliveryZipCode" placeholder="" class="form__field__input" autocomplete
-                        @change.prevent="onChangeFields" type="text" :value="fieldsValues.clientDeliveryZipCode">
+                        @change.prevent="onChangeFields" type="text" v-model="fieldsValues.clientDeliveryZipCode">
                 </div>
 
                 <div class="form__field">
                     <p v-show="errors.clientDeliveryCity">{{ errors.clientDeliveryCity }}</p>
                     <label for="clientDeliveryCity">Ville</label>
                     <input id="clientDeliveryCity" placeholder="" class="form__field__input" autocomplete
-                        @change.prevent="onChangeFields" type="text" :value="fieldsValues.clientDeliveryCity">
+                        @change.prevent="onChangeFields" type="text" v-model="fieldsValues.clientDeliveryCity">
                 </div>
             </div>
         </div>
@@ -101,6 +101,8 @@
 import { useClientsStore } from "@/stores/clientsStore.js";
 import { useUtilsStore } from "@/stores/utilsStore.js";
 import sanitizeHtml from 'sanitize-html';
+
+import {allCreateClientFields } from '@/utils/formFields.js';
 
 export default {
     name: "CreateClientFormCpt",
@@ -132,7 +134,7 @@ export default {
             console.log("submit form")
             const clientStore = useClientsStore();
             const utilsStore = useUtilsStore();
-            utilsStore.setErrorsForm(clientStore.createClientForm);
+            utilsStore.setErrorsForm(clientStore.createClientForm, allCreateClientFields);
             clientStore.submitNewClient();
         },
     },
