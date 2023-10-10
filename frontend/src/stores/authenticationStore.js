@@ -26,34 +26,52 @@ export const useAuthenticationStore = defineStore("authentication", {
         setPasswordValue(password) {
             this.password = password;
         },
+        logoutAction() {
+            localStorage.removeItem("woodstockJwt");
+        },
         async loginAction() {
             const utilsStore = useUtilsStore();
-            const connectedUserStore = useConnectedUserStore();
             try {
                 utilsStore.toggleIsLoadingValue();
                 await new Promise(resolve => setTimeout(resolve, 500));
-                const response = await axios.post("http://192.168.1.15:8080/api/login", { email: this.email, password: this.password });
-                console.log(response);
-                // fill data into connected user store
-                if(response.data.user) {
-                    connectedUserStore.setUpdateUserFormField(response.data.user.email, "userEmail");
-                    connectedUserStore.setUpdateUserFormField(response.data.user.last_name, "userLastName");
-                    connectedUserStore.setUpdateUserFormField(response.data.user.first_name, "userFirstName");
-                    connectedUserStore.setUpdateUserFormField(response.data.user.phone, "userPhoneNumber");
-                    this.setEmailValue("");
-                    this.setPasswordValue("");
-                    localStorage.setItem("isLogged", true);
-                } else {
-                    console.log("Error empty response");
-                }
+                const response = await axios.post(`http://192.168.1.15:8080/api/login`, { email: this.email, password: this.password });
+                
+                console.log(`loginAction -> ${JSON.stringify(response, null, 2)}`);
+
+                this.setEmailValue("");
+                this.setPasswordValue("");
+                localStorage.setItem("woodstockJwt", response.data.token);
+                //localStorage.setItem("woodstockSessionToken", response.data.sessionToken);
+
             } catch (error) {
-                console.log(error);
+                console.log(`loginAction -> ${error}`);
             } finally {
                 utilsStore.toggleIsLoadingValue();
             }
         },
-        logoutAction() {
-            localStorage.removeItem("isLogged");
-        }
+        async getUserByIdAction() {
+            const utilsStore = useUtilsStore();
+            try {
+                utilsStore.toggleIsLoadingValue();
+                await new Promise(resolve => setTimeout(resolve, 500));
+                const connectedUserStore = useConnectedUserStore();
+                const token = localStorage.getItem("woodstockJwt");
+                const decodedToken = token;
+                const response = await axios.get(`http://192.168.1.15:8080/api/user/${decodedToken.userId}`, { "Authorization": `Bearer ${token}` });
+                
+                connectedUserStore.setUpdateUserFormField(response.data.user.email, "userEmail");
+                connectedUserStore.setUpdateUserFormField(response.data.user.last_name, "userLastName");
+                connectedUserStore.setUpdateUserFormField(response.data.user.first_name, "userFirstName");
+                connectedUserStore.setUpdateUserFormField(response.data.user.phone, "userPhoneNumber");
+
+                console.log(`getUserByIdAction -> ${JSON.stringify(response, null, 2)}`);  
+
+            } catch (error) {
+                console.log(`getUserByIdAction -> ${error}`);
+            } finally {
+                utilsStore.toggleIsLoadingValue();
+            }
+
+        },
     }
 });
