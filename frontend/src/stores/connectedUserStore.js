@@ -31,7 +31,7 @@ export const useConnectedUserStore = defineStore("connectedUser", {
                 this.setUpdateUserFormField(response.data.user.first_name, "userFirstName");
                 this.setUpdateUserFormField(response.data.user.phone, "userPhoneNumber");
 
-                console.log(`updateUserAction -> ${JSON.stringify(response, null, 2)}`);  
+                console.log(`updateUserAction -> ${JSON.stringify(response, null, 2)}`);
 
             } catch (error) {
                 console.log(error);
@@ -41,6 +41,14 @@ export const useConnectedUserStore = defineStore("connectedUser", {
         },
         setUpdateUserFormField(value, field) {
             this.updateUserForm[field] = value;
-        }
+        },
+        resetform() {
+            this.updateUserForm = {
+                userLastName: "",
+                userFirstName: "",
+                userEmail: "",
+                userPhoneNumber: "",
+            }
+        },
     }
 });

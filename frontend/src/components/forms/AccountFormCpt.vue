@@ -4,24 +4,28 @@
         <form @submit.prevent="updateUserSubmit" class="blockaccountform__form">
 
             <div class="form__field">
+                    <p class="form__field__error" v-show="errors.userLastName">{{ errors.userLastName }}</p>
                     <label for="userLastName">Nom*</label>
-                    <input id="userLastName" class="form__field__input" autocomplete @change="onChangeField" type="text" :value="fieldsValues.userLastName">
+                    <input id="userLastName" class="form__field__input" autocomplete @change="onChangeField" type="text" v-model="fieldsValues.userLastName">
                 </div>
 
                 <div class="form__field">
+                    <p class="form__field__error" v-show="errors.userFirstName">{{ errors.userFirstName }}</p>
                     <label for="userFirstName">Prénom*</label>
-                    <input id="userFirstName" class="form__field__input" autocomplete @change="onChangeField" type="text" :value="fieldsValues.userFirstName">
+                    <input id="userFirstName" class="form__field__input" autocomplete @change="onChangeField" type="text" v-model="fieldsValues.userFirstName">
                 </div>
 
                 <div class="form__field">
+                    <p class="form__field__error" v-show="errors.userEmail">{{ errors.userEmail }}</p>
                     <label for="userEmail">Email*</label>
-                    <input id="userEmail" class="form__field__input" autocomplete @change="onChangeField" type="text" :value="fieldsValues.userEmail">
+                    <input id="userEmail" class="form__field__input" autocomplete @change="onChangeField" type="text" v-model="fieldsValues.userEmail">
                 </div>
 
                 
                 <div class="form__field">
+                    <p class="form__field__error" v-show="errors.userPhoneNumber">{{ errors.userPhoneNumber }}</p>
                     <label for="userPhoneNumber">Téléphone*</label>
-                    <input id="userPhoneNumber" class="form__field__input" autocomplete @change="onChangeField" type="text" :value="fieldsValues.userPhoneNumber">
+                    <input id="userPhoneNumber" class="form__field__input" autocomplete @change="onChangeField" type="text" v-model="fieldsValues.userPhoneNumber">
                 </div>
 
                 <div class="form__field">
@@ -34,6 +38,10 @@
 
 <script>
 import { useConnectedUserStore } from "@/stores/connectedUserStore.js";
+import { useUtilsStore } from "@/stores/utilsStore.js";
+import sanitizeHtml from 'sanitize-html';
+import { allUpdateConnctedUserFields } from '@/utils/formFields.js';
+
 export default {
     name: "AccountFormCpt",
     data() {
@@ -41,20 +49,35 @@ export default {
 
         }
     },
+    mounted() {
+        const connectedUserStore = useConnectedUserStore();
+        connectedUserStore.resetform();
+    },
     computed: {
         fieldsValues() {
             const connectedUserStore = useConnectedUserStore();
             return connectedUserStore.getUpdateUserForm;
         },
+        errors() {
+            const utilsStore = useUtilsStore();
+            return utilsStore.getErrors;
+        },
     },
     methods: {
         onChangeField(event){
             const connectedUserStore = useConnectedUserStore();
-            return connectedUserStore.setUpdateUserFormField(event.target.value, event.target.id);
+            const cleanInputValue = sanitizeHtml(event.target.value, { allowedTags: [] });
+            return connectedUserStore.setUpdateUserFormField(cleanInputValue, event.target.id);
         },
         updateUserSubmit() {
+            const utilsStore = useUtilsStore();
             const connectedUserStore = useConnectedUserStore();
-            connectedUserStore.updateUserAction();
+            // set up format errors 
+            utilsStore.setErrorsForm(connectedUserStore.getUpdateUserForm, allUpdateConnctedUserFields);
+            // if no format errors call update action
+            if(!utilsStore.getErrors) {
+                connectedUserStore.updateUserAction();
+            }     
         }
     }
     
@@ -65,8 +88,10 @@ export default {
 .blockaccountform {
     margin: 3rem;
 }
-.errorMessage {
+.form__field__error {
     color: red;
+    text-align: left;
+    font-size: .7rem;
 }
 .blockaccountform__form {
     min-width: 250px;

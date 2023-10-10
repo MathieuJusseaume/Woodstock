@@ -48,3 +48,22 @@ export const allCreateClientFields = {
     },
 
 };
+
+export const allUpdateConnctedUserFields = {
+    "userLastName": {
+        "regex": regex.regexString,
+        "errorMessage": "Le nom ne doit pas contenir de caractères spéciaux"
+    },
+    "userFirstName": {
+        "regex": regex.regexString,
+        "errorMessage": "Le prénom ne doit pas contenir de caractères spéciaux"
+    },
+    "userEmail": {
+        "regex": regex.regexEmail,
+        "errorMessage": "L'email n'est pas conforme"
+    },
+    "userPhoneNumber": {
+        "regex": regex.regexInt,
+        "errorMessage": "Le numéro de téléphone ne doit pas contenir de caractères spéciaux"
+    },
+};

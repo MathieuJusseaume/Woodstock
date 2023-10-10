@@ -22,7 +22,10 @@ export const useUtilsStore = defineStore("utils", {
     },
     actions: {
         setFormName(formNameValue) {
-            this.formName = formNameValue;
+            if(this.formName !== formNameValue) {
+                this.errors = {};
+            }
+            this.formName = formNameValue;  
         },
         toggleIsLoadingValue() {
             this.isLoading = !this.isLoading;
