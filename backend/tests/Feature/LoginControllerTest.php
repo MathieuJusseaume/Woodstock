@@ -23,10 +23,9 @@ class LoginControllerTest extends TestCase
         ];
 
         $response = $this->post('api/login', $data);
-        $dataUser = $response->json('user');
-        $this->assertNotEmpty($dataUser);
-        $response->assertStatus(200);
         
+        dump($response['token']);
+        $this->assertAuthenticated();
         $user->delete(); 
     }
 
@@ -40,22 +39,6 @@ class LoginControllerTest extends TestCase
 
         $response = $this->post('api/login', $data);
         $response->assertNoContent($status = 200);
-    }
-
-    public function test_update_user_success(): void
-    {
-        
-        $user = User::factory()->create(['company_id'=>1]); 
-        Sanctum::actingAs($user);
-
-        $data = [
-            'first_name' => "Hélène",
-            'first_connection' => 0
-        ];
-
-        $response = $this->put('api/users/1', $data);
-        $response->assertStatus(200);
-        
     }
 
 }

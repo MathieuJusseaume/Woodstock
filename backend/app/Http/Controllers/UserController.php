@@ -12,7 +12,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        //
+        
     }
 
     /**
@@ -20,15 +20,33 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
+            'first_login' => 'required|integer|boolean',
+            'phone' => 'required|string|max:255',
+            'password' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
+        ]);
+
+        // Update the user
+        User::Create($validated);
+
+        return response()->json(['message' => 'User created successfully'], 200);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Client $client)
+    public function show(User $user)
     {
-        //
+        try{
+            $user = User::find($user);
+            return $user; 
+        } catch(Error $e) {
+            return response()->json(['error' => 'failed show user'], 401);
+        }
+
     }
 
     /**
@@ -36,19 +54,24 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        $validated = $request->validate([
-            'first_name' => 'string|max:255',
-            'last_name' => 'string|max:255',
-            'first_login' => 'integer|boolean',
-            'phone' => 'string|max:255',
-            'password' => 'string|max:255',
-            'email' => 'string|email|max:255|unique:users,email,' . $user->id,
-        ]);
+        try {
+            $validated = $request->validate([
+                'first_name' => 'string|max:255',
+                'last_name' => 'string|max:255',
+                'first_login' => 'boolean',
+                'phone' => 'string|max:255',
+                'password' => 'string|max:255',
+                'email' => 'string|email|max:255|unique:users,email,' . $user->id,
+            ]);
+    
+            // Update the user
+            $user->update($validated);
+    
+            return response()->json(['message' => 'User updated successfully', 'user'=> $user], 200);
+        } catch (ValidationException $e) {
+            return response()->json(['error' => 'failed updating user'], 401);
+        }
 
-        // Update the user
-        $user->update($validated);
-
-        return response()->json(['message' => 'User updated successfully']);
     }
 
     /**
