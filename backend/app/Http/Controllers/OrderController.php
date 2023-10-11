@@ -23,15 +23,6 @@ class OrderController extends Controller
         ]);
     }
 
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        // This method is empty, as it's not used for creating orders.
-    }
-
     /**
      * Store a newly created resource in storage.
      */
@@ -70,27 +61,6 @@ class OrderController extends Controller
         $order = Order::find($order);
         return response()->json([
             'order' => $order,
-        ]);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Order $id)
-    {
-        // Get the authenticated user.
-        $authUser = Auth::user();
-        // Retrieve the order by its ID and related data for editing.
-        $order = Order::find($id);
-        $clientsList = Client::where('company_id', $authUser->company_id)->get();
-        $deliveryStatusList = DeliveryStatus::all();
-        $usersList = User::where('company_id', $authUser->company_id)->get();
-    
-        return response()->json([
-            'order' => $order,
-            'clientsList' => $clientsList, 
-            'deliveryStatusList' => $deliveryStatusList,
-            'usersList' => $usersList,
         ]);
     }
 

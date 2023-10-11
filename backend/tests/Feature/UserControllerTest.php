@@ -78,8 +78,10 @@ class UserControllerTest extends TestCase
 
         $response = $this->postJson('api/users', $data);
         $response->assertStatus(200);
+
         $userDelete = User::where('email', 'hello@email.com')->first();
         $userDelete->delete(); 
+        $user->delete(); 
     }
 
     public function test_store_user_bad_data_type_failed(): void
@@ -122,4 +124,35 @@ class UserControllerTest extends TestCase
         $response->assertUnauthorized();
         $response->assertStatus(401);
     }
+
+
+    public function test_destroy_user_success()
+    {
+        // Creating a user with a company ID.
+        $user = User::factory()->create(['company_id' => 1]);
+        // Authenticating as the created user.
+        $this->actingAs($user);
+        // Sending a DELETE request to delete a non-existing order.
+        $response = $this->delete("api/users/{$user->id}");
+        // Asserting that the response status is 200 (OK).
+        $response->assertStatus(200);
+        // Cleaning up by deleting the created user.
+        $user->delete(); 
+    }
+
+    public function test_destroy_user_failed()
+    {
+        // Creating a user with a company ID.
+        $user = User::factory()->create(['company_id' => 1]);
+        // Authenticating as the created user.
+
+        // Sending a DELETE request to delete a non-existing order.
+        $response = $this->deleteJson("api/users/{$user->id}");
+        // Asserting that the response status is 404 (Not Found).
+        $response->assertUnauthorized();
+        $response->assertStatus(401);
+        // Cleaning up by deleting the created user.
+        $user->delete(); 
+    }
+
 }
