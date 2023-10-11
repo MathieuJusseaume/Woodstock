@@ -2,10 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\LoginController;
-use App\Http\Controllers\ClientController;
-
-
+use App\Http\Controllers\{LoginController, UserController, ClientController};
 
 /*
 |--------------------------------------------------------------------------
@@ -20,6 +17,7 @@ use App\Http\Controllers\ClientController;
 
 Route::middleware('auth:sanctum')->group(function() {
     Route::apiResources([
+        'users' => UserController::class, 
         'clients' => ClientController::class, 
     ]);
 });
