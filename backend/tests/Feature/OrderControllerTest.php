@@ -68,7 +68,7 @@ class OrderControllerTest extends TestCase
         // Asserting that the response status is 200 (OK).
         $response->assertStatus(200);
         // Finding and deleting the created order to clean up.
-        $orderDelete = Order::where('order_number', 2)->first();
+        $orderDelete = Order::where('order_number', 1000)->first();
         $orderDelete->delete();
         // Cleaning up by deleting the created user.
         $user->delete();
