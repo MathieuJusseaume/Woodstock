@@ -90,6 +90,7 @@ export default {
                 console.log("Id du client à modifier => " + event.target.id);
             } else if (event.target.classList.contains("deleteclientbutton")) {
                 console.log("Id du client à supprimer => " + event.target.id);
+                clientStore.deleteClientAction(event.target.id);
             }
 
         });

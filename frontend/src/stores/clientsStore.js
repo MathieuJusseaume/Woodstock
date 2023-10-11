@@ -63,7 +63,19 @@ export const useClientsStore = defineStore("clients", {
         },
         async updateClientAction() {
         },
-        async deleteClientAction() {
+        async deleteClientAction(userIdToDelete) {
+            const utilsStore = useUtilsStore();
+            try {
+                utilsStore.toggleIsLoadingValue();             
+                const token = localStorage.getItem("woodStockPlainTextToken");
+                const response = await Axios.delete(`/api/clients/${userIdToDelete}`, { headers : { "Authorization": `Bearer ${token}` } });
+                console.log(`deleteClientAction -> ${JSON.stringify(response, null, 2)}`);
+                this.clients = this.clients.filter(client => client.id !== parseInt(userIdToDelete, 10));
+            } catch (error) {
+                console.log(error);
+            } finally {
+                utilsStore.toggleIsLoadingValue();
+            }
         },
         async submitNewClient() {
             const utilsStore = useUtilsStore();
