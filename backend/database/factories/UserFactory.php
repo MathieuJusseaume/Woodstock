@@ -25,6 +25,7 @@ class UserFactory extends Factory
             'phone' => '05 23 55 67 89',
             'password' => Hash::make("password"),
             'role_id' => 1,
+            'company_id' => 1,
             'created_at' => now(),
             'updated_at' => null,
         ];

@@ -2,7 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\{LoginController, UserController};
+use App\Http\Controllers\{LoginController, UserController, OrderController, ClientController};
 
 /*
 |--------------------------------------------------------------------------
@@ -16,9 +16,14 @@ use App\Http\Controllers\{LoginController, UserController};
 */
 
 Route::middleware('auth:sanctum')->group(function() {
-    Route::apiResources([
+    Route::apiResources([ 
+        'orders' => OrderController::class, 
         'users' => UserController::class, 
+        'clients' => ClientController::class, 
     ]);
 });
 
+
+
 Route::post('/login', [LoginController::class, 'authenticate']);
+
