@@ -34,7 +34,7 @@ export const useConnectedUserStore = defineStore("connectedUser", {
                     userPhoneNumber: connectedUser.phone,
                 };
             } catch (error) {
-                if(error.status === 401) {
+                if(error?.response?.status === 401) {
                     utilsStore.redirectToLogin();
                 }
                 console.log(error);
@@ -58,7 +58,7 @@ export const useConnectedUserStore = defineStore("connectedUser", {
                 }
                 const response = await Axios.put(`/api/users/${userId}`, body, { headers : { "Authorization": `Bearer ${token}` } });
                 console.log(response);
-                const connectedUser = response.data[0];
+                const connectedUser = response.data.user;
                 this.updateUserForm = {
                     userLastName: connectedUser.last_name,
                     userFirstName: connectedUser.first_name,
@@ -69,7 +69,7 @@ export const useConnectedUserStore = defineStore("connectedUser", {
                 console.log(`updateUserAction -> ${JSON.stringify(response, null, 2)}`);
 
             } catch (error) {
-                if(error.status === 401) {
+                if(error?.response?.status === 401) {
                     utilsStore.redirectToLogin();
                 }
                 console.log(error);

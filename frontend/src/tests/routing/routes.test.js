@@ -18,7 +18,16 @@ describe("Routes test", async () => {
         // Attendere que le composant de la nouvelle route soit rendu
         await router.isReady();
         // check si le composant de la nouvelle route est rendu
-        const loginViewComponent = wrapper.findComponent({ name: "LoginView" });
-        expect(loginViewComponent.exists()).toBe(true);
-      });  
+        const currentRoute = router.currentRoute.value;
+        expect(currentRoute.name).toBe("login");
+      });
+    it("Navigate to login view", async () => {
+        await router.push('/commande');
+        localStorage.setItem();
+        // Attendere que le composant de la nouvelle route soit rendu
+        await router.isReady();
+        // check si le composant de la nouvelle route est rendu
+        const currentRoute = router.currentRoute.value;
+        expect(currentRoute.name).toBe("layout");
+    });  
 });
