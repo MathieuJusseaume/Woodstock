@@ -33,27 +33,23 @@ export const useAuthenticationStore = defineStore("authentication", {
             this.password = password;
         },
         logoutAction() {
-            localStorage.removeItem("woodstockJwt");
+            localStorage.removeItem("woodStockPlainTextToken");
         },
         async loginAction() {
             const utilsStore = useUtilsStore();
             try {
                 utilsStore.toggleIsLoadingValue();
-
-                const resp = await Axios.get(`/sanctum/csrf-cookie`);
-
                 const response = await Axios.post(`/api/login`, { email: this.email, password: this.password });
                 console.log(`loginAction -> ${JSON.stringify(response, null, 2)}`);
                 if(response.data) {
                     this.setEmailValue("");
                     this.setPasswordValue("");
-                    localStorage.setItem("woodstockJwt", response.data.token.plainTextToken);
+                    localStorage.setItem("woodStockPlainTextToken", response.data.token.plainTextToken);
                     localStorage.setItem("connectedUserId", response.data.token.accessToken.tokenable_id);
+                    router.push("/commandes");
                 } else {
                     throw new Error('Empty response');
                 }
-                this.getUserByIdAction();
-                router.push("/commandes")
             } catch (error) {
                 this.errorMessage = "Identifiants invalides";
                 console.log(`loginAction -> ${error}`);
@@ -61,42 +57,7 @@ export const useAuthenticationStore = defineStore("authentication", {
                 utilsStore.toggleIsLoadingValue();
             }
         },
-        async getUserByIdAction() {
-            const utilsStore = useUtilsStore();
-            try {
-                utilsStore.toggleIsLoadingValue();
-                await new Promise(resolve => setTimeout(resolve, 500));
-                const connectedUserStore = useConnectedUserStore();
-
-                const token = localStorage.getItem("woodstockJwt");
-                const userId = localStorage.getItem("connectedUserId");
-                console.log(token);
-                console.log(userId);
-                const response = await Axios.get(`/api/users/${userId}`, { 
-                    headers : { 
-                        "Content-Type": "application/json", 
-                        "Accept": "application/json", 
-                        "Authorization": `Bearer ${token}`
-                        }
-                    }
-                );
-                
-               /*  connectedUserStore.setUpdateUserFormField(response.data.user.email, "userEmail");
-                connectedUserStore.setUpdateUserFormField(response.data.user.last_name, "userLastName");
-                connectedUserStore.setUpdateUserFormField(response.data.user.first_name, "userFirstName");
-                connectedUserStore.setUpdateUserFormField(response.data.user.phone, "userPhoneNumber"); */
-
-                console.log(`getUserByIdAction -> ${JSON.stringify(response, null, 2)}`);  
-
-            } catch (error) {
-                console.log(`getUserByIdAction -> ${error}`);
-                console.log(error);
-            } finally {
-                utilsStore.toggleIsLoadingValue();
-            }
-
-        },
-        // TODO
+        // TODO not implemented on back end side
         async refreshConnexionAction() {
             const utilsStore = useUtilsStore();
             try {
@@ -106,14 +67,14 @@ export const useAuthenticationStore = defineStore("authentication", {
                 /* if(sessionToken) {
                     console.log("coucou");
                     // todo call http here
-                    localStorage.setItem("woodstockJwt", response.data.jwtToken);
+                    localStorage.setItem("woodStockPlainTextToken", response.data.jwtToken);
                     localStorage.setItem("woodstockSessionToken", response.data.sessionToken);
                 } else {
                     throw new Error("No session token");
                 } */
 
             } catch (error) {
-                localStorage.removeItem("woodstockJwt");
+                localStorage.removeItem("woodStockPlainTextToken");
                 localStorage.removeItem("woodstockSessionToken");
                 console.log(`refreshConnexionAction -> ${error}`);
             } finally {

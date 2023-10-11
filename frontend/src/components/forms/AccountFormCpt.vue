@@ -52,6 +52,7 @@ export default {
     mounted() {
         const connectedUserStore = useConnectedUserStore();
         connectedUserStore.resetform();
+        connectedUserStore.getUserByIdAction();
     },
     computed: {
         fieldsValues() {
@@ -75,7 +76,7 @@ export default {
             // set up format errors 
             utilsStore.setErrorsForm(connectedUserStore.getUpdateUserForm, allUpdateConnctedUserFields);
             // if no format errors call update action
-            if(!utilsStore.getErrors) {
+            if(!utilsStore.getIsErrors) {
                 connectedUserStore.updateUserAction();
             }     
         }

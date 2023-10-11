@@ -7,7 +7,8 @@ export const useUtilsStore = defineStore("utils", {
         formName: "",
         isLoading: false,
         errors: {
-        }
+        },
+        isErrors: false,
     }),
     getters: {
         getFormName: (state) => {
@@ -19,6 +20,9 @@ export const useUtilsStore = defineStore("utils", {
         getErrors: (state) => {
             return state.errors;
         },
+        getIsErrors: (state) => {
+            return state.isErrors;
+        }
     },
     actions: {
         setFormName(formNameValue) {
@@ -32,6 +36,11 @@ export const useUtilsStore = defineStore("utils", {
         },
         setErrorsForm(completeForm, fieldsOfForm) {
             this.errors = { ...getErrorsObject(completeForm, fieldsOfForm, regex) };
+            if(Object.keys(this.errors).length === 0) {
+                this.isErrors = false;
+            } else {
+                this.isErrors = true;
+            }
         }
     }
 });
