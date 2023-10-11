@@ -8,6 +8,21 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Order extends Model
 {
+    protected $fillable = [
+        'order_number',
+        'order_date',
+        'delivery_date',
+        'quantity',
+        'log_size',
+        'order_price',
+        'payment_status',
+        'delivery_price',
+        'user_id',
+        'client_id',
+        'delivery_status_id',
+        'company_id'
+    ];
+    
     use HasFactory;
 
     public function client()
