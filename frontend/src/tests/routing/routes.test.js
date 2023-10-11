@@ -18,7 +18,7 @@ describe("Routes test", async () => {
         // Attendere que le composant de la nouvelle route soit rendu
         await router.isReady();
         // check si le composant de la nouvelle route est rendu
-        const loginViewComponent = wrapper.findComponent({ name: "LoginView"});
+        const loginViewComponent = wrapper.findComponent({ name: "LoginView" });
         expect(loginViewComponent.exists()).toBe(true);
       });  
 });

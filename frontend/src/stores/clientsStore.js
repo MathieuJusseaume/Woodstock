@@ -56,6 +56,9 @@ export const useClientsStore = defineStore("clients", {
                     this.clients.push(client);
                 });   
             } catch (error) {
+                if(error.response.status === 401) {
+                    utilsStore.redirectToLogin();
+                }
                 console.log(error);
             } finally {
                 utilsStore.toggleIsLoadingValue();
@@ -72,6 +75,9 @@ export const useClientsStore = defineStore("clients", {
                 console.log(`deleteClientAction -> ${JSON.stringify(response, null, 2)}`);
                 this.clients = this.clients.filter(client => client.id !== parseInt(userIdToDelete, 10));
             } catch (error) {
+                if(error.response.status === 401) {
+                    utilsStore.redirectToLogin();
+                }
                 console.log(error);
             } finally {
                 utilsStore.toggleIsLoadingValue();

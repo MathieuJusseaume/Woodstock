@@ -5,7 +5,7 @@ import router from "@/router";
 
 export const useAuthenticationStore = defineStore("authentication", {
     state: () => ({
-        email: "hintz.rhett@example.org",
+        email: "bhowell@example.net",
         password: "password",
         errorMessage: ""
     }),

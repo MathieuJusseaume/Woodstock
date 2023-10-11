@@ -34,7 +34,9 @@ export const useConnectedUserStore = defineStore("connectedUser", {
                     userPhoneNumber: connectedUser.phone,
                 };
             } catch (error) {
-                console.log(`getUserByIdAction -> ${error}`);
+                if(error.status === 401) {
+                    utilsStore.redirectToLogin();
+                }
                 console.log(error);
             } finally {
                 utilsStore.toggleIsLoadingValue();
@@ -67,6 +69,9 @@ export const useConnectedUserStore = defineStore("connectedUser", {
                 console.log(`updateUserAction -> ${JSON.stringify(response, null, 2)}`);
 
             } catch (error) {
+                if(error.status === 401) {
+                    utilsStore.redirectToLogin();
+                }
                 console.log(error);
             } finally {
                 utilsStore.toggleIsLoadingValue();

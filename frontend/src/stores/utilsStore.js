@@ -1,6 +1,7 @@
 import { defineStore } from "pinia";
 import { getErrorsObject } from "@/utils/getErrorObject.js";
 import { regex } from '@/utils/formFields.js';
+import router from "@/router";
 
 export const useUtilsStore = defineStore("utils", {
     state: () => ({
@@ -41,6 +42,11 @@ export const useUtilsStore = defineStore("utils", {
             } else {
                 this.isErrors = true;
             }
+        },
+        redirectToLogin() {
+            localStorage.removeItem("woodStockPlainTextToken");
+            localStorage.removeItem("connectedUserId");
+            router.push("/login");
         }
     }
 });

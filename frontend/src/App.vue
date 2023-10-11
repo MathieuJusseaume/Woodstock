@@ -27,7 +27,7 @@ export default {
     },
     mounted() {
         const authenticationStore = useAuthenticationStore();
-        authenticationStore.refreshConnexionAction();
+        // authenticationStore.refreshConnexionAction();
     }
 
 };
