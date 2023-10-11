@@ -3,10 +3,11 @@ import { useUtilsStore } from "./utilsStore";
 import Axios from "../_services/callerService";
 import { useConnectedUserStore } from "./connectedUserStore";
 import VueJwtDecode from "vue-jwt-decode";
+import router from "@/router";
 
 export const useAuthenticationStore = defineStore("authentication", {
     state: () => ({
-        email: "littel.lexie@example.com",
+        email: "hintz.rhett@example.org",
         password: "password",
         errorMessage: ""
     }),
@@ -38,24 +39,21 @@ export const useAuthenticationStore = defineStore("authentication", {
             const utilsStore = useUtilsStore();
             try {
                 utilsStore.toggleIsLoadingValue();
-                const response = await Axios.post(`/login`, { email: this.email, password: this.password });
 
+                const resp = await Axios.get(`/sanctum/csrf-cookie`);
+
+                const response = await Axios.post(`/api/login`, { email: this.email, password: this.password });
                 console.log(`loginAction -> ${JSON.stringify(response, null, 2)}`);
-
                 if(response.data) {
                     this.setEmailValue("");
                     this.setPasswordValue("");
-                    localStorage.setItem("woodstockJwt", true);
+                    localStorage.setItem("woodstockJwt", response.data.token.plainTextToken);
+                    localStorage.setItem("connectedUserId", response.data.token.accessToken.tokenable_id);
                 } else {
                     throw new Error('Empty response');
                 }
-                //localStorage.setItem("woodstockSessionToken", response.data.sessionToken);
-/*                 const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyLCJ1c2VyaWQiOjF9.fERikhVnvaBsYXk8wmGpgJyug2xBLq3Lx0oKBpnfsew";
-                let decoded = VueJwtDecode.decode(token);
-                console.log(decoded); */
-
                 this.getUserByIdAction();
-
+                router.push("/commandes")
             } catch (error) {
                 this.errorMessage = "Identifiants invalides";
                 console.log(`loginAction -> ${error}`);
@@ -69,19 +67,30 @@ export const useAuthenticationStore = defineStore("authentication", {
                 utilsStore.toggleIsLoadingValue();
                 await new Promise(resolve => setTimeout(resolve, 500));
                 const connectedUserStore = useConnectedUserStore();
+
                 const token = localStorage.getItem("woodstockJwt");
-                const decodedToken = token;
-                const response = await Axios.get(`/user/${decodedToken.userId}`, { "Authorization": `Bearer ${token}` });
+                const userId = localStorage.getItem("connectedUserId");
+                console.log(token);
+                console.log(userId);
+                const response = await Axios.get(`/api/users/${userId}`, { 
+                    headers : { 
+                        "Content-Type": "application/json", 
+                        "Accept": "application/json", 
+                        "Authorization": `Bearer ${token}`
+                        }
+                    }
+                );
                 
-                connectedUserStore.setUpdateUserFormField(response.data.user.email, "userEmail");
+               /*  connectedUserStore.setUpdateUserFormField(response.data.user.email, "userEmail");
                 connectedUserStore.setUpdateUserFormField(response.data.user.last_name, "userLastName");
                 connectedUserStore.setUpdateUserFormField(response.data.user.first_name, "userFirstName");
-                connectedUserStore.setUpdateUserFormField(response.data.user.phone, "userPhoneNumber");
+                connectedUserStore.setUpdateUserFormField(response.data.user.phone, "userPhoneNumber"); */
 
                 console.log(`getUserByIdAction -> ${JSON.stringify(response, null, 2)}`);  
 
             } catch (error) {
                 console.log(`getUserByIdAction -> ${error}`);
+                console.log(error);
             } finally {
                 utilsStore.toggleIsLoadingValue();
             }
