@@ -54,7 +54,7 @@ class OrderControllerTest extends TestCase
         $this->actingAs($user);
         // Data for creating a new order.
         $orderData = [
-            'order_number' => 2,
+            'order_number' => 1000,
             'order_date' => '2034-04-15',
             'delivery_date' => '2034-04-24',
             'quantity' => 15,
@@ -143,8 +143,23 @@ class OrderControllerTest extends TestCase
         $user = User::factory()->create(['company_id' => 1]);
         // Authenticating as the created user.
         $this->actingAs($user);
+        // Data for creating a new order.
+        $orderData = [
+            'order_number' => 2,
+            'order_date' => '2034-04-15',
+            'delivery_date' => '2034-04-24',
+            'quantity' => 15,
+            'log_size' => 16,
+            'order_price' => 500,
+            'delivery_price' => 600,
+            'client_id' => 1,
+        ];
+        // Sending a POST request to 'api/orders' with order data.
+        $response = $this->postJson('api/orders', $orderData);
+        // Finding order.
+        $orderDelete = Order::where('order_number', 2)->first();
         // Sending a DELETE request to delete an order.
-        $response = $this->delete('api/orders/4');
+        $response = $this->delete("api/orders/{$orderDelete->id}");
         // Asserting that the response status is 200 (OK).
         $response->assertStatus(200);
         // Cleaning up by deleting the created user.
