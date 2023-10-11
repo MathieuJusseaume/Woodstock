@@ -70,17 +70,17 @@ class ClientController extends Controller
         }
 
         $validatedData = $request->validate([
-            'last_name' => 'required|string|max:50',
-            'first_name' => 'required|string|max:50',
-            'delivery_address' => 'required|string|max:50',
-            'delivery_zip_code' => 'required|numeric|digits:5',
-            'delivery_city' => 'required|string|max:50',
-            'billing_address' => 'required|string|max:50',
-            'billing_zip_code' => 'required|numeric|digits:5',
-            'billing_city' => 'required|string|max:50',
-            'email' => 'required|email:rfc,dns',
-            'phone' => 'required|string|max:10',
-            'company_id' => 'required|numeric'
+            'last_name' => 'string|max:50',
+            'first_name' => 'string|max:50',
+            'delivery_address' => 'string|max:50',
+            'delivery_zip_code' => 'numeric|digits:5',
+            'delivery_city' => 'string|max:50',
+            'billing_address' => 'string|max:50',
+            'billing_zip_code' => 'numeric|digits:5',
+            'billing_city' => 'string|max:50',
+            'email' => 'email:rfc,dns',
+            'phone' => 'string|max:10',
+            'company_id' => 'numeric'
         ]);
 
         $client->update($validatedData);
