@@ -92,7 +92,7 @@ class UserController extends Controller
             }
         } catch (\Exception $e) {
             // Handle the exception here
-            return response()->json(['error' => 'Failed deleting order'], 500);
+            return response()->json(['error' => 'Failed deleting user'], 500);
         }
     }
 }

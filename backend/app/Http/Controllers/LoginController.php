@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\JWTAuth;
 
 class LoginController extends Controller
 {
@@ -37,6 +36,16 @@ Handle an authentication attempt.
       ], 200);
     }
     return response()->json(401);
+  }
+
+  public function logout(Request $request)
+  {
+      $user = Auth::user();
+      // Revoke the user's personal access token
+      $user->tokens->each(function ($token) {
+          $token->delete();
+      });
+      return response()->json(['message' => 'Logged out successfully'], 200);
   }
 }
 
