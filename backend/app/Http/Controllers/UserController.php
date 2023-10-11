@@ -12,7 +12,8 @@ class UserController extends Controller
      */
     public function index()
     {
-        
+        $users = User::all();
+        return response()->json(['message' => 'Users recorvery successfully', 'users'=> $users], 200);
     }
 
     /**
@@ -49,7 +50,6 @@ class UserController extends Controller
         } catch(Error $e) {
             return response()->json(['error' => 'failed show user'], 401);
         }
-
     }
 
     /**
@@ -80,8 +80,19 @@ class UserController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Client $client)
+    public function destroy(User $user)
     {
-        $user->delete();
+        try {
+            if ($user) {
+                // Delete the user if it exists.
+                $user->delete(); 
+                return response()->json(['message' => 'Delete successfully'], 200);
+            } else {
+                return response()->json(['message' => 'user not found'], 404);
+            }
+        } catch (\Exception $e) {
+            // Handle the exception here
+            return response()->json(['error' => 'Failed deleting order'], 500);
+        }
     }
 }

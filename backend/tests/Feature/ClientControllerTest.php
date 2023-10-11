@@ -22,9 +22,6 @@ class ClientControllerTest extends TestCase
         $user = User::factory()->create();
         $this->actingAs($user);
 
-
-
-
         $clientData = [
             'last_name' => 'Doll',
             'first_name' => 'Barbie',
@@ -45,6 +42,7 @@ class ClientControllerTest extends TestCase
             ->assertJson($clientData);
 
         Client::where('email', 'barbie@gmail.com')->delete();
+        $user->delete();
     }
 
 
@@ -71,6 +69,7 @@ class ClientControllerTest extends TestCase
         $response = $this->postJson('/api/clients', $clientData);
 
         $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
+        $user->delete();
     }
 
     public function test_can_get_client()
@@ -88,6 +87,9 @@ class ClientControllerTest extends TestCase
 
         $response->assertStatus(Response::HTTP_OK)
             ->assertJson($client->toArray());
+
+        $user->delete();
+        $client->delete();
     }
 
     public function test_can_update_client()
@@ -118,6 +120,9 @@ class ClientControllerTest extends TestCase
 
         $response->assertStatus(Response::HTTP_OK)
             ->assertJson($updatedData);
+
+        $user->delete();
+        $client->delete();
     }
 
     public function test_can_delete_client()
@@ -131,5 +136,11 @@ class ClientControllerTest extends TestCase
 
         $response->assertStatus(Response::HTTP_OK)
             ->assertJson(['message' => 'Client deleted']);
+        
+        $user->delete();
+        $client->delete();
     }
+
+
+    
 }

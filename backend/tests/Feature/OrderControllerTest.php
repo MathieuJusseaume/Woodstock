@@ -163,7 +163,7 @@ class OrderControllerTest extends TestCase
         // Asserting that the response status is 200 (OK).
         $response->assertStatus(200);
         // Cleaning up by deleting the created user.
-        $user->delete();
+        $user->delete(); 
     }
 
     public function test_destroy_order_failed()
@@ -177,6 +177,6 @@ class OrderControllerTest extends TestCase
         // Asserting that the response status is 404 (Not Found).
         $response->assertStatus(404);
         // Cleaning up by deleting the created user.
-        $user->delete();
+        $user->delete(); 
     }
 }
