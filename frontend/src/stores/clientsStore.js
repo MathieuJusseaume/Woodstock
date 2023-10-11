@@ -1,5 +1,6 @@
 import { defineStore } from "pinia";
 import { useUtilsStore } from "./utilsStore";
+import Axios from "../_services/callerService";
 
 export const useClientsStore = defineStore("clients", {
     state: () => ({
@@ -47,50 +48,13 @@ export const useClientsStore = defineStore("clients", {
         async getClientsAction() {
             const utilsStore = useUtilsStore();
             try {
-                utilsStore.toggleIsLoadingValue();
-                await new Promise(resolve => setTimeout(resolve, 1000));
-                const data = [
-                    {
-                        id: 0,
-                        last_name: "ing",
-                        first_name: "string",
-                        delivery_adress: "string",
-                        delivery_zip_code: 0,
-                        delivery_city: "string",
-                        billing_adress: "string",
-                        billing_zip_code: 0,
-                        billing_city: "string",
-                        email: "string",
-                        phone: "string",
-                    },
-                    {
-                        id: 1,
-                        last_name: "string",
-                        first_name: "string",
-                        delivery_adress: "string",
-                        delivery_zip_code: 0,
-                        delivery_city: "string",
-                        billing_adress: "string",
-                        billing_zip_code: 0,
-                        billing_city: "string",
-                        email: "string",
-                        phone: "string",
-                    },
-                    {
-                        id: 2,
-                        last_name: "string",
-                        first_name: "string",
-                        delivery_adress: "string",
-                        delivery_zip_code: 0,
-                        delivery_city: "string",
-                        billing_adress: "string",
-                        billing_zip_code: 0,
-                        billing_city: "string",
-                        email: "string",
-                        phone: "string",
-                    },
-                ];
-                this.clients = data;
+                utilsStore.toggleIsLoadingValue();               
+                const token = localStorage.getItem("woodStockPlainTextToken");
+                const response = await Axios.get(`/api/clients`, { headers : { "Authorization": `Bearer ${token}` } });
+                console.log(`getClientsAction -> ${JSON.stringify(response, null, 2)}`);
+                response.data.forEach(client => {
+                    this.clients.push(client);
+                });   
             } catch (error) {
                 console.log(error);
             } finally {

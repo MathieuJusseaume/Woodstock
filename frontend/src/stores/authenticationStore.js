@@ -1,8 +1,6 @@
 import { defineStore } from "pinia";
 import { useUtilsStore } from "./utilsStore";
 import Axios from "../_services/callerService";
-import { useConnectedUserStore } from "./connectedUserStore";
-import VueJwtDecode from "vue-jwt-decode";
 import router from "@/router";
 
 export const useAuthenticationStore = defineStore("authentication", {

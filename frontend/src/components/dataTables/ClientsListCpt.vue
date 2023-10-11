@@ -47,10 +47,10 @@ export default {
             columns: [
                 { data: "last_name" },
                 { data: "first_name" },
-                { data: "delivery_adress" },
+                { data: "delivery_address" },
                 { data: "delivery_zip_code" },
                 { data: "delivery_city" },
-                { data: "billing_adress" },
+                { data: "billing_address" },
                 { data: "billing_zip_code" },
                 { data: "billing_city" },
                 { data: "email" },
