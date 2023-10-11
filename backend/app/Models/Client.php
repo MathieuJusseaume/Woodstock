@@ -9,20 +9,20 @@ use Illuminate\Database\Eloquent\Model;
 class Client extends Model
 {
     use HasFactory;
-    
     protected $fillable = [
-        'first_name',
         'last_name',
-        'email',
-        'phone',
+        'first_name',
         'delivery_address',
         'delivery_zip_code',
         'delivery_city',
         'billing_address',
         'billing_zip_code',
         'billing_city',
-        'company_id',
+        'email',
+        'phone',
+        'company_id'
     ];
+
 
     public function company()
     {

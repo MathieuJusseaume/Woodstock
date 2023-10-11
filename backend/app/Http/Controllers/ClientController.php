@@ -12,54 +12,93 @@ class ClientController extends Controller
      */
     public function index()
     {
-        //
+        $clients = Client::all();
+        return response()->json($clients);
+
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
 
     /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
     {
-        //
+        $validatedData = $request->validate([
+            'last_name' => 'required|string|max:50',
+            'first_name' => 'required|string|max:50',
+            'delivery_address' => 'required|string|max:50',
+            'delivery_zip_code' => 'required|numeric|digits:5',
+            'delivery_city' => 'required|string|max:50',
+            'billing_address' => 'required|string|max:50',
+            'billing_zip_code' => 'required|numeric|digits:5',
+            'billing_city' => 'required|string|max:50',
+            'email' => 'required|email:rfc,dns',
+            'phone' => 'required|string|max:10',
+            'company_id' => 'required|numeric'
+        ]);
+
+        $client = Client::create($validatedData);
+
+        return response()->json($client, 201);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Client $client)
+    public function show($id)
     {
-        //
-    }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Client $client)
-    {
-        //
+        $client = Client::find($id);
+
+        if (!$client) {
+            return response()->json(['error' => 'Client not found'], 404);
+        }
+
+        return response()->json($client);
+
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Client $client)
+    public function update(Request $request, $id)
     {
-        //
-    }
+        $client = Client::find($id);
+
+        if (!$client) {
+            return response()->json(['error' => 'Client not found'], 404);
+        }
+
+        $validatedData = $request->validate([
+            'last_name' => 'required|string|max:50',
+            'first_name' => 'required|string|max:50',
+            'delivery_address' => 'required|string|max:50',
+            'delivery_zip_code' => 'required|numeric|digits:5',
+            'delivery_city' => 'required|string|max:50',
+            'billing_address' => 'required|string|max:50',
+            'billing_zip_code' => 'required|numeric|digits:5',
+            'billing_city' => 'required|string|max:50',
+            'email' => 'required|email:rfc,dns',
+            'phone' => 'required|string|max:10',
+            'company_id' => 'required|numeric'
+        ]);
+
+        $client->update($validatedData);
+
+        return response()->json($client);    }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Client $client)
+    public function destroy($id)
     {
-        //
-    }
+        $client = Client::find($id);
+
+        if (!$client) {
+            return response()->json(['error' => 'Client not found'], 404);
+        }
+
+        $client->delete();
+
+        return response()->json(['message' => 'Client deleted'], 200);    }
 }
