@@ -1,3 +1,4 @@
+// https://laravel.com/docs/10.x/sanctum#spa-authentication
 import axios from 'axios';
 
 const Axios = axios.create({

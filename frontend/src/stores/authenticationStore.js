@@ -45,7 +45,7 @@ export const useAuthenticationStore = defineStore("authentication", {
                 if(response.data) {
                     this.setEmailValue("");
                     this.setPasswordValue("");
-                    localStorage.setItem("woodstockJwt", response.data.token);
+                    localStorage.setItem("woodstockJwt", true);
                 } else {
                     throw new Error('Empty response');
                 }
@@ -91,7 +91,8 @@ export const useAuthenticationStore = defineStore("authentication", {
         async refreshConnexionAction() {
             const utilsStore = useUtilsStore();
             try {
-                utilsStore.toggleIsLoadingValue();  
+                utilsStore.toggleIsLoadingValue(); 
+                await new Promise(resolve => setTimeout(resolve, 1000)); 
                 //const sessionToken = localStorage.getItem("woodstockSessionToken");
                 /* if(sessionToken) {
                     console.log("coucou");
