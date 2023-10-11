@@ -22,10 +22,10 @@ class ClientFactory extends Factory
             'email' => fake()->unique()->safeEmail(),
             'phone' => fake()->phoneNumber(),
             'delivery_address' => fake()->address(),
-            'delivery_zip_code' => 123345,
+            'delivery_zip_code' => 12335,
             'delivery_city' => fake()->country(),
             'billing_address' => fake()->address(),
-            'billing_zip_code' => 123345,
+            'billing_zip_code' => 12345,
             'billing_city' => fake()->country(),
             'company_id' => random_int(1, 2),
         ];
