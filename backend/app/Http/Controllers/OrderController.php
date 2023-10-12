@@ -19,7 +19,9 @@ class OrderController extends Controller
         $authUser = Auth::user();
         try {
             // Retrieve orders for the user's company.
-            $orders = Order::where('company_id', $authUser->company_id)->get();
+            $orders = Order::with(['deliveryStatus', 'client', 'comments', 'user'])
+                ->where('company_id', $authUser->company_id)
+                ->get();
             return response()->json(['message' => 'Orders recorvery successfully', 'order' => $orders], 200);
         } catch (Error $error) {
             return response()->json(['error' => 'failed to get orders']);
@@ -69,9 +71,9 @@ class OrderController extends Controller
         $authUser = Auth::user();
 
         try {
-
+            $orderWithData = Order::with(['deliveryStatus', 'client', 'comments', 'user'])->find($order->id);
             return $order->company_id == $authUser->company_id
-                ? response()->json(['order' => $order])
+                ? response()->json(['order' => $orderWithData])
                 : response()->json(['error' => 'Forbidden'], 403);
         } catch (Error $e) {
             return response()->json(['error' => 'failed show order'], 401);

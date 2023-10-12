@@ -47,7 +47,7 @@ return [
     */
 
     'expiration' => 15,
-
+    'rt_expiration' => null,
     /*
     |--------------------------------------------------------------------------
     | Sanctum Middleware

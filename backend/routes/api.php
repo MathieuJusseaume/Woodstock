@@ -26,3 +26,5 @@ Route::middleware('auth:sanctum')->group(function() {
 
 Route::post('/login', [LoginController::class, 'authenticate']);
 
+Route::middleware('auth:sanctum')->get('/refresh-token', 'AuthController@refresh');
+
