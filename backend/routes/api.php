@@ -16,14 +16,13 @@ use App\Http\Controllers\{LoginController, UserController, OrderController, Clie
 */
 
 Route::middleware('auth:sanctum')->group(function() {
+    Route::post('/logout', [LoginController::class, 'logout']);
     Route::apiResources([ 
         'orders' => OrderController::class, 
         'users' => UserController::class, 
         'clients' => ClientController::class, 
     ]);
 });
-
-
 
 Route::post('/login', [LoginController::class, 'authenticate']);
 

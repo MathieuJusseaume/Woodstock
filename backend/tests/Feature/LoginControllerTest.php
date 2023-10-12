@@ -22,7 +22,6 @@ class LoginControllerTest extends TestCase
         ];
 
         $response = $this->post('api/login', $data);
-        
         $this->assertAuthenticated();
         $user->delete(); 
     }
@@ -37,6 +36,31 @@ class LoginControllerTest extends TestCase
 
         $response = $this->post('api/login', $data);
         $this->assertGuest();
+    }
+
+    public function test_logout_connection_success(): void
+    {
+        $user = User::factory()->create(['company_id' => 1]); 
+        $data = [
+            'email' => $user->email,
+            'password' => "password"
+        ];
+
+        $response = $this->postJson('api/login', $data);
+        $this->assertAuthenticated();
+
+        $response = $this->postJson('api/logout');
+        $this->assertEquals($response['message'], 'Logged out successfully'); 
+        $response->assertStatus(200);
+        $user->delete(); 
+    }
+
+    public function test_logout_failed(): void
+    {
+        $response = $this->postJson('api/logout');
+        $response->assertUnauthorized();
+        $response->assertStatus(401);
+
     }
 
 }
