@@ -16,9 +16,12 @@ class ClientController extends Controller
     public function index()
     {
         $authUser = Auth::user();
-
-        $client = Client::where('company_id', $authUser->company_id)->get();
-        return response()->json(['message' => 'Clients recorvery successfully', 'client' => $client], 200);
+        try {
+            $client = Client::where('company_id', $authUser->company_id)->get();
+            return response()->json(['message' => 'Clients recorvery successfully', 'client' => $client], 200);
+        } catch (Error $error) {
+            return response()->json(['error' => 'failed to get client']);
+        }
     }
 
 
@@ -77,22 +80,19 @@ class ClientController extends Controller
         $authUser = Auth::user();
         $client = Client::find($id);
 
-        if (!$client) {
-            return response()->json(['error' => 'Client not found'], 404);
-        }
-
-        $validatedData = $request->validate([
-            'last_name' => 'string|max:50',
-            'first_name' => 'string|max:50',
-            'delivery_address' => 'string|max:50',
-            'delivery_zip_code' => 'numeric|digits:5',
-            'delivery_city' => 'string|max:50',
-            'billing_address' => 'string|max:50',
-            'billing_zip_code' => 'numeric|digits:5',
-            'billing_city' => 'string|max:50',
-            'email' => 'email:rfc,dns',
-            'phone' => 'string|max:10',
-        ]);
+        try {
+            $validated = $request->validate([
+                'last_name' => 'string|max:50',
+                'first_name' => 'string|max:50',
+                'delivery_address' => 'string|max:50',
+                'delivery_zip_code' => 'numeric|digits:5',
+                'delivery_city' => 'string|max:50',
+                'billing_address' => 'string|max:50',
+                'billing_zip_code' => 'numeric|digits:5',
+                'billing_city' => 'string|max:50',
+                'email' => 'email:rfc,dns',
+                'phone' => 'string|max:10',
+            ]);
 
             if ($client->company_id == $authUser->company_id) {
                 // Update the user
@@ -103,7 +103,7 @@ class ClientController extends Controller
                 // Respond with a JSON error message indicating that access is forbidden
                 return response()->json(['error' => 'Forbidden', 'client' => $client], 403);
             }
-        } catch (ValidationException $e) {
+        } catch (Error $e) {
             return response()->json(['error' => 'failed updating client']);
         }
     }
@@ -126,7 +126,7 @@ class ClientController extends Controller
                 // Respond with a JSON error message indicating that access is forbidden
                 return response()->json(['error' => 'Forbidden'], 403);
             }
-        } catch (\Exception $e) {
+        } catch (Error $e) {
             // Handle any exceptions that might occur during the deletion process
             return response()->json(['error' => 'Failed deleting client']);
         }

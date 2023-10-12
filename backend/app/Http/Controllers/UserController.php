@@ -23,7 +23,6 @@ class UserController extends Controller
         } catch (Error $error) {
             return response()->json(['error' => 'failed to get users']);
         }
-        
     }
 
     /**
