@@ -51,11 +51,10 @@ class UserControllerTest extends TestCase
         Sanctum::actingAs($user);
 
         $data = [
-            'first_name' => 1,
-            'first_login' => 0
+            'email' => 'hello',
         ];
 
-        $response = $this->putJson('api/users/2', $data);
+        $response = $this->putJson("api/users/{$user->id}", $data);
         $response->assertStatus(422);
         $user->delete(); 
     }

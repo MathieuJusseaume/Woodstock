@@ -15,11 +15,18 @@ class OrderController extends Controller
 
     public function index()
     {
+        
         // Get the authenticated user.
         $authUser = Auth::user();
-        // Retrieve orders for the user's company.
-        $orders = Order::where('company_id', $authUser->company_id)->get();
-        return response()->json(['message' => 'Orders recorvery successfully', 'order'=> $orders], 200);
+
+        try {
+            // Retrieve orders for the user's company.
+            $orders = Order::where('company_id', $authUser->company_id)->get();
+            return response()->json(['message' => 'Orders recorvery successfully', 'order'=> $orders], 200);
+        } catch (Error $error) {
+            return response()->json(['error' => 'failed to get orders']);
+        }
+     ;
 
     }
 
@@ -30,25 +37,31 @@ class OrderController extends Controller
     {
         // Get the authenticated user.
         $authUser = Auth::user();
-        // Validate the incoming order data.
-        $validatedData = $request->validate([
-            'order_number' => 'required|numeric',
-            'order_date' => 'required|date',
-            'delivery_date' => 'required|date',
-            'quantity' => 'required|numeric',
-            'log_size' => 'required|numeric',
-            'order_price' => 'required|numeric',
-            'delivery_price' => 'required|numeric',
-            'client_id' => 'required|numeric',
-            'user_id' => 'required|numeric'
-        ]);
-        // Set default values for some fields.
-        $validatedData['payment_status'] = false;
-        $validatedData['delivery_status_id'] = DeliveryStatus::getDeliveryStatusIdForName('A livrer');
-        $validatedData['company_id'] = $authUser->company_id;
-        // Create the order in the database.
-        $store = Order::create($validatedData);
-        return response()->json(['message' => 'Store created successfully', 'store'=> $store], 200);
+
+        try {
+            // Validate the incoming order data.
+            $validatedData = $request->validate([
+                'order_number' => 'required|numeric',
+                'order_date' => 'required|date',
+                'delivery_date' => 'required|date',
+                'quantity' => 'required|numeric',
+                'log_size' => 'required|numeric',
+                'order_price' => 'required|numeric',
+                'delivery_price' => 'required|numeric',
+                'client_id' => 'required|numeric',
+                'user_id' => 'required|numeric'
+            ]);
+            // Set default values for some fields.
+            $validatedData['payment_status'] = false;
+            $validatedData['delivery_status_id'] = DeliveryStatus::getDeliveryStatusIdForName('A livrer');
+            $validatedData['company_id'] = $authUser->company_id;
+            // Create the order in the database.
+            $store = Order::create($validatedData);
+            return response()->json(['message' => 'Store created successfully', 'store'=> $store], 200);
+        } catch (Error $error) {
+            return response()->json(['error' => 'failed to store order']);
+        }
+
     }
 
 
@@ -104,7 +117,7 @@ class OrderController extends Controller
                 return response()->json(['error' => 'Forbidden', 'order'=> $order ], 403);
             }
             
-        } catch (\Exception $e) {
+        } catch (Error $e) {
             // Handle the exception here
             return response()->json(['error' => 'Failed updating order']);
         }
@@ -128,7 +141,7 @@ class OrderController extends Controller
             // Respond with a JSON error message indicating that access is forbidden
             return response()->json(['error' => 'Forbidden'], 403);
         }
-        } catch (\Exception $e) {
+        } catch (Error $e) {
             // Handle any exceptions that might occur during the deletion process
             return response()->json(['error' => 'Failed deleting order']);
         }

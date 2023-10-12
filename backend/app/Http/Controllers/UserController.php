@@ -16,9 +16,14 @@ class UserController extends Controller
      */
     public function index()
     {
-        $authUser =  Auth::user();
-        $users = User::where('company_id', $authUser->company_id)->get();
-        return response()->json(['message' => 'Users recorvery successfully', 'users'=> $users], 200);
+        try {
+            $authUser =  Auth::user();
+            $users = User::where('company_id', $authUser->company_id)->get();
+            return response()->json(['message' => 'Users recorvery successfully', 'users'=> $users], 200);
+        } catch (Error $error) {
+            return response()->json(['error' => 'failed to get users']);
+        }
+        
     }
 
     /**
@@ -28,23 +33,29 @@ class UserController extends Controller
     {
 
         $authUser =  Auth::user();
-        $validated = $request->validate([
-            'first_name' => 'required|string|max:255',
-            'last_name' => 'required|string|max:255',
-            'first_login' => 'required|boolean',
-            'phone' => 'required|string|max:255',
-            'password' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users,email,',
-            'role_id' =>'required|integer', 
-        ]);
 
-        // Set default values for some fields.
-        $validated['company_id'] = $authUser->company_id;
+        try {
+            $validated = $request->validate([
+                'first_name' => 'required|string|max:255',
+                'last_name' => 'required|string|max:255',
+                'first_login' => 'required|boolean',
+                'phone' => 'required|string|max:255',
+                'password' => 'required|string|max:255',
+                'email' => 'required|string|email|max:255|unique:users,email,',
+                'role_id' =>'required|integer', 
+            ]);
+    
+            // Set default values for some fields.
+            $validated['company_id'] = $authUser->company_id;
+    
+            // Update the user
+            $user = User::Create($validated);
+    
+            return response()->json(['message' => 'User created successfully', 'user'=> $user], 200);
+        } catch (Error $error) {
+            return response()->json(['error' => 'failed to store user']);
+        }
 
-        // Update the user
-        $user = User::Create($validated);
-
-        return response()->json(['message' => 'User created successfully', 'user'=> $user], 200);
     }
 
     
@@ -58,7 +69,7 @@ class UserController extends Controller
                 : response()->json(['error' => 'Forbidden'], 403);
             
         } catch (Error $e) {
-            return response()->json(['error' => 'failed show user'], 401);
+            return response()->json(['error' => 'failed show user']);
         }
     }
 
@@ -77,6 +88,7 @@ class UserController extends Controller
                 'password' => 'string|max:255',
                 'email' => 'string|email|max:255|unique:email',
             ]);
+
             if ($user->company_id == $authUser->company_id) {    
                 // Update the user
                 $user->update($validated);
@@ -86,7 +98,7 @@ class UserController extends Controller
                 // Respond with a JSON error message indicating that access is forbidden
                 return response()->json(['error' => 'Forbidden', 'user'=> $user ], 403);
             }
-            } catch (ValidationException $e) {
+            } catch (Error $e) {
             return response()->json(['error' => 'failed updating user']);
         }
 
@@ -110,7 +122,7 @@ class UserController extends Controller
             // Respond with a JSON error message indicating that access is forbidden
             return response()->json(['error' => 'Forbidden'], 403);
         }
-    } catch (\Exception $e) {
+    } catch (Error $e) {
         // Handle any exceptions that might occur during the deletion process
         return response()->json(['error' => 'Failed deleting user']);
     }

@@ -22,7 +22,6 @@ class LoginControllerTest extends TestCase
         ];
 
         $response = $this->post('api/login', $data);
-        
         $this->assertAuthenticated();
         $user->delete(); 
     }
