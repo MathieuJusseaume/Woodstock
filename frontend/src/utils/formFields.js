@@ -1,51 +1,60 @@
 export const regex = {
-    regexString: /^[a-zA-Z]+$/,
-    regexInt: /[0-9]/,
+    regexString: /^[a-zA-ZÀ-ÖØ-öø-ÿ ]+$/,
+    regexInt: /^[0-9]+$/,
+    regexInt5Characters: /^\d{5}$/,
     regexEmail: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
-    regexStringInt: /[a-bA-Z][0-9]/,
+    regexStringInt: /^[a-zA-ZÀ-ÖØ-öø-ÿ0-9 ]+$/,
 }
 
 export const allCreateClientFields = {
-    "clientLastName": {
+    "id": {
+        "regex": regex.regexInt,
+        "errorMessage": ""
+    },
+    "last_name": {
         "regex": regex.regexString,
         "errorMessage": "Le nom ne doit pas contenir de caractères spéciaux"
     },
-    "clientFirstName": {
+    "first_name": {
         "regex": regex.regexString,
         "errorMessage": "Le prénom ne doit pas contenir de caractères spéciaux"
     },
-    "clientEmail": {
+    "email": {
         "regex": regex.regexEmail,
         "errorMessage": "L'email n'est pas conforme"
     },
-    "clientPhoneNumber": {
+    "phone": {
         "regex": regex.regexInt,
         "errorMessage": "Le numéro de téléphone ne doit pas contenir de caractères spéciaux"
     },
-    "clientBillingAdress": {
+    "billing_address": {
         "regex": regex.regexStringInt,
-        "errorMessage": "L'adresse n'est pas conforme"
+        "errorMessage": "L'addresse n'est pas conforme"
     },
-    "clientBillingZipCode": {
-        "regex": regex.regexInt,
-        "errorMessage": "Le code postal ne doit pas contenir de caractères spéciaux"
+    "billing_zip_code": {
+        "regex": regex.regexInt5Characters,
+        "errorMessage": "Le code postal doit contenir 5 chiffres"
     },
-    "clientBillingCity": {
+    "billing_city": {
         "regex": regex.regexString,
         "errorMessage": "La ville ne doit pas contenir de caractères spéciaux"
     },
-    "clientDeliveryAdress": {
+    "delivery_address": {
         "regex": regex.regexStringInt,
-        "errorMessage": "L'adresse n'est pas conforme"
+        "errorMessage": "L'addresse n'est pas conforme"
     },
-    "clientDeliveryZipCode": {
-        "regex": regex.regexInt,
-        "errorMessage": "Le code postal ne doit pas contenir de caractères spéciaux"
+    "delivery_zip_code": {
+        "regex": regex.regexInt5Characters,
+        "errorMessage": "Le code postal doit contenir 5 chiffres"
     },
-    "clientDeliveryCity": {
+    "delivery_city": {
         "regex": regex.regexString,
         "errorMessage": "La ville ne doit pas contenir de caractères spéciaux"
     },
+    "company_id": {
+      "regex": regex.regexInt,
+      "errorMessage": ""
+  },
 
 };
 

@@ -34,12 +34,14 @@ export const useAuthenticationStore = defineStore("authentication", {
             localStorage.removeItem("woodStockPlainTextToken");
         },
         async loginAction() {
+            localStorage.removeItem("woodStockPlainTextToken");
+
             const utilsStore = useUtilsStore();
             try {
                 utilsStore.toggleIsLoadingValue();
                 const response = await Axios.post(`/api/login`, { email: this.email, password: this.password });
-                console.log(`loginAction -> ${JSON.stringify(response, null, 2)}`);
-                if(response.data) {
+                // console.log(`loginAction -> ${JSON.stringify(response, null, 2)}`);
+                if (response.data) {
                     this.setEmailValue("");
                     this.setPasswordValue("");
                     localStorage.setItem("woodStockPlainTextToken", response.data.token.plainTextToken);
@@ -59,8 +61,8 @@ export const useAuthenticationStore = defineStore("authentication", {
         async refreshConnexionAction() {
             const utilsStore = useUtilsStore();
             try {
-                utilsStore.toggleIsLoadingValue(); 
-                await new Promise(resolve => setTimeout(resolve, 1000)); 
+                utilsStore.toggleIsLoadingValue();
+                await new Promise(resolve => setTimeout(resolve, 1000));
                 //const sessionToken = localStorage.getItem("woodstockSessionToken");
                 /* if(sessionToken) {
                     console.log("coucou");
