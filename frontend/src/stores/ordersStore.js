@@ -5,6 +5,16 @@ import Axios from "../_services/callerService";
 export const useOrdersStore = defineStore("orders", {
     state: () => ({
         orders: [],
+        createOderForm: {
+            clientId: "",
+            orderDate: "",
+            orderDeliveryDate: "",
+            quantity: "",
+            logSize: "",
+            userId: "",
+            deliveryPrice: "",
+            orderPrice: ""
+        }
 
     }),
     getters: {
@@ -50,6 +60,9 @@ export const useOrdersStore = defineStore("orders", {
             } finally {
                 utilsStore.toggleIsLoadingValue();
             }
+        },
+        setCreateOrderFormField(value, field) {
+            this.updateUserForm[field] = value;
         },
     }
 });

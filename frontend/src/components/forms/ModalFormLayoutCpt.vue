@@ -12,6 +12,7 @@
    <!--      <OrderCreateForm v-if="formNname === 'OrderCreateForm'" />
         <OrderUpdateForm v-if="formName === 'OrderUpdateForm'" /> -->
         <CreateClientFormCpt v-if="formName === 'CreateClientForm'" />
+        <CreateOrderFormCpt v-if="formName === 'CreateOrderForm'" />
         <EditClienFormCpt v-if="formName === 'EditClienForm'" /> 
         <AccountFormCpt v-if="formName === 'AccountForm'" />
 
@@ -20,6 +21,7 @@
 
 <script>
 import CreateClientFormCpt from "@/components/forms/CreateClientFormCpt.vue";
+import CreateOrderFormCpt from "@/components/forms/CreateOrderFormCpt.vue";
 import EditClienFormCpt from "@/components/forms/EditClienFormCpt.vue";
 import { useUtilsStore } from "@/stores/utilsStore";
 import AccountFormCpt from './AccountFormCpt.vue';
@@ -29,7 +31,8 @@ export default {
     components: {
         CreateClientFormCpt,
         EditClienFormCpt,
-        AccountFormCpt
+        AccountFormCpt,
+        CreateOrderFormCpt
     },
     computed: {
         formName() {
