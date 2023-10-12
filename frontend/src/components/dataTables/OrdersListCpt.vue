@@ -60,13 +60,13 @@ export default {
                 {
                     data: "id",
                     render: (data) => {
-                        return `<button class="updateOrderButton" id="${data}">Modifier</button>`
+                        return `<a id="${data}" class="button touch edit updateOrderButton"></a>`;
                     }
                 },
                 {
                     data: "id",
-                    render: (data) => {
-                        return `<button class="deleteOrderButton" id="${data}">Supprimer</button>`
+                    render: (data) => { 
+                        return `<a id="${data}" class="button touch delete deleteOrderButton"></a>`;
                     }
                 }
             ],
@@ -87,6 +87,7 @@ export default {
                 console.log("Id de la commande à modifier => " + event.target.id);
             } else if (event.target.classList.contains("deleteOrderButton")) {
                 console.log("Id de la commande à supprimer => " + event.target.id);
+                ordersStore.deleteOrderByIdAction(event.target.id);
             }
 
         });
@@ -107,4 +108,59 @@ export default {
 .datatable {
     max-width: 85%;
 }
+.button {
+    cursor: pointer;
+    font-family:'Open Sans';
+    font-size: 16px;
+    font-weight:400;
+    display:inline-block;
+    color:#FFF;
+    border-radius: .25em;
+    text-shadow: -1px -1px 0px rgba(0,0,0,0.4);
+}
+.primary:hover, .touch:hover {
+    opacity: 0.7;
+}
+.primary {
+  line-height:40px;
+  transition:ease-in-out .2s;
+  padding: 0 16px;
+}
+.touch {
+    border: 1px solid;
+    transition:ease-in-out .2s;
+    line-height:40px;
+    width:40px;
+    padding: 0px;
+    text-align: center;
+}
+.edit:before, .delete:before {
+    font-family: FontAwesome;
+    display: inline-block;
+    font-size:1rem;
+    padding-right:12px;
+    background:none;
+    color:#FFF;
+}
+
+.condensed.edit:before, .condensed.delete:before {
+    content:none;
+}
+.touch.edit:before, .touch.delete:before {
+    width:100%;
+    text-align:center;
+    font-size:1.25rem;
+}
+.delete {
+    background: rgb(192, 57, 43);
+}
+.delete:before {
+    content: "\f1f8";
+}
+.edit {
+  background: rgb(52, 152, 219);
+}
+.edit:before {
+    content: "\f040";
+  }
 </style>

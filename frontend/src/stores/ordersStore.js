@@ -33,6 +33,23 @@ export const useOrdersStore = defineStore("orders", {
             } finally {
                 utilsStore.toggleIsLoadingValue();
             }
-        }
+        },
+        async deleteOrderByIdAction(orderIdToDelete) {
+            const utilsStore = useUtilsStore();
+            try {
+                utilsStore.toggleIsLoadingValue();               
+                const token = localStorage.getItem("woodStockPlainTextToken");
+                const response = await Axios.delete(`/api/orders/${orderIdToDelete}`, { headers : { "Authorization": `Bearer ${token}` } });
+                console.log(response);
+                this.orders = this.orders.filter(order => order.id !== parseInt(orderIdToDelete, 10));
+            } catch (error) {
+                if(error?.response?.status === 401) {
+                    utilsStore.redirectToLogin();
+                }
+                console.log(error);
+            } finally {
+                utilsStore.toggleIsLoadingValue();
+            }
+        },
     }
 });
