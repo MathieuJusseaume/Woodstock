@@ -1,17 +1,20 @@
 <template>
     <div>
-        <h1>Ici c'est la page des commandes {{ infos }}</h1>
+        <OrdersListCpt />
     </div>
 </template>
 
 <script>
-
+import OrdersListCpt from "@/components/dataTables/OrdersListCpt.vue";
 export default {
     name: "OrdersView",
+    components: {
+        OrdersListCpt
+    },
     data() {
         return {
-            infos: "pour le moment 0 commandes"
+            
         }
-    },
+    }
 };
 </script>
