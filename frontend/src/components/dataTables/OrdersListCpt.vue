@@ -1,7 +1,7 @@
 <template>
     <div>
         <h1>Liste des commandes</h1>
-        <div>
+        <div class="datatable__orders">
             <DataTable id="dataTable" :columns="columns" :options="options" :data="orders" class="display" width="100%">
                 <thead>
                     <tr>
@@ -25,7 +25,7 @@
     </div>
 </template>
 
-<script>
+<script scoped>
 import DataTable from "datatables.net-vue3";
 import DataTablesCore from "datatables.net";
 import 'datatables.net-responsive';
@@ -99,5 +99,12 @@ export default {
 @import 'datatables.net-responsive-dt';
 .display {
     text-align: left;
+}
+.datatable__orders {
+    display: flex;
+    justify-content: center;
+}
+.datatable {
+    max-width: 85%;
 }
 </style>

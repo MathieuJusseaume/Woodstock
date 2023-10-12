@@ -21,6 +21,7 @@ export const useOrdersStore = defineStore("orders", {
                 const token = localStorage.getItem("woodStockPlainTextToken");
                 const response = await Axios.get(`/api/orders`, { headers : { "Authorization": `Bearer ${token}` } });
                 console.log(response);
+                this.orders = [];
                 response.data.order.forEach(order => {
                     this.orders.push(order);
                 });   
