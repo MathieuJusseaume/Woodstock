@@ -4,6 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User; 
+use Illuminate\Support\Facades\Auth;
+use Spatie\LaravelIgnition\Recorders\DumpRecorder\Dump;
+use Error;
+use Illuminate\Validation\ValidationException;
 
 class UserController extends Controller
 {
@@ -12,7 +16,8 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::all();
+        $authUser =  Auth::user();
+        $users = User::where('company_id', $authUser->company_id)->get();
         return response()->json(['message' => 'Users recorvery successfully', 'users'=> $users], 200);
     }
 
@@ -21,6 +26,8 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
+
+        $authUser =  Auth::user();
         $validated = $request->validate([
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
@@ -29,25 +36,28 @@ class UserController extends Controller
             'password' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users,email,',
             'role_id' =>'required|integer', 
-            'company_id' => 'required|integer',
-
         ]);
 
+        // Set default values for some fields.
+        $validated['company_id'] = $authUser->company_id;
+
         // Update the user
-        $user= User::Create($validated);
+        $user = User::Create($validated);
 
         return response()->json(['message' => 'User created successfully', 'user'=> $user], 200);
     }
 
-    /**
-     * Display the specified resource.
-     */
+    
     public function show(User $user)
     {
-        try{
-            $user = User::find($user);
-            return $user; 
-        } catch(Error $e) {
+        $authUser = Auth::user();
+        try {
+
+            return $user->company_id == $authUser->company_id 
+                ? response()->json(['user' => $user],200)
+                : response()->json(['error' => 'Forbidden'], 403);
+            
+        } catch (Error $e) {
             return response()->json(['error' => 'failed show user'], 401);
         }
     }
@@ -57,6 +67,7 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
+        $authUser = Auth::user();
         try {
             $validated = $request->validate([
                 'first_name' => 'string|max:255',
@@ -66,12 +77,16 @@ class UserController extends Controller
                 'password' => 'string|max:255',
                 'email' => 'string|email|max:255|unique:email',
             ]);
-    
-            // Update the user
-            $user->update($validated);
-    
-            return response()->json(['message' => 'User updated successfully', 'user'=> $user], 200);
-        } catch (ValidationException $e) {
+            if ($user->company_id == $authUser->company_id) {    
+                // Update the user
+                $user->update($validated);
+                // Respond with a JSON message indicating a successful deletion
+                return response()->json(['message' => 'User updated successfully', 'user'=> $user], 200);
+            } else {
+                // Respond with a JSON error message indicating that access is forbidden
+                return response()->json(['error' => 'Forbidden', 'user'=> $user ], 403);
+            }
+            } catch (ValidationException $e) {
             return response()->json(['error' => 'failed updating user']);
         }
 
@@ -81,18 +96,24 @@ class UserController extends Controller
      * Remove the specified resource from storage.
      */
     public function destroy(User $user)
-    {
-        try {
-            if ($user) {
-                // Delete the user if it exists.
-                $user->delete(); 
-                return response()->json(['message' => 'Delete successfully'], 200);
-            } else {
-                return response()->json(['message' => 'user not found'], 404);
-            }
-        } catch (\Exception $e) {
-            // Handle the exception here
-            return response()->json(['error' => 'Failed deleting user'], 500);
+{
+    // Get the currently authenticated user
+    $authUser = Auth::user();
+    try {
+        // Check if the company ID of the user to be deleted matches the company ID of the authenticated user
+        if ($user->company_id == $authUser->company_id) {    
+            // Delete the user if it exists
+            $user->delete();
+            // Respond with a JSON message indicating a successful deletion
+            return response()->json(['message' => 'Delete successfully'], 200);
+        } else {
+            // Respond with a JSON error message indicating that access is forbidden
+            return response()->json(['error' => 'Forbidden'], 403);
         }
+    } catch (\Exception $e) {
+        // Handle any exceptions that might occur during the deletion process
+        return response()->json(['error' => 'Failed deleting user']);
     }
+}
+
 }
