@@ -64,4 +64,27 @@ return [
         'encrypt_cookies' => App\Http\Middleware\EncryptCookies::class,
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | CORS Configuration
+    |--------------------------------------------------------------------------
+    |
+    | Configure your CORS settings here. You may customize these settings
+    | for your specific needs. These are the default settings provided
+    | by Sanctum, and you can modify them as needed.
+    |
+    */
+
+    'middleware' => [
+        'addResponseHeaders' => true,
+        'allowsCredentials' => true,
+        'headers' => [
+            'Access-Control-Allow-Origin' => [''],
+            'Access-Control-Allow-Methods' => [''],
+            'Access-Control-Allow-Headers' => [''],
+            'Access-Control-Expose-Headers' => ['*'],
+            'Access-Control-Max-Age' => 0,
+        ],
+    ],
+
 ];
