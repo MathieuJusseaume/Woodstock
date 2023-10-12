@@ -1,33 +1,97 @@
-import { mount } from '@vue/test-utils'
 import { expect, describe, it } from 'vitest';
-import { createPinia } from 'pinia';
-import App from '@/App.vue';
-import router from '@/router'; // les routes de l'application
-
-const pinia = createPinia();
-
-const wrapper = mount(App, {
-    global: {
-      plugins: [router, pinia],
-    },
-});
+import router from '@/router';
 
 describe("Routes test", async () => {
-    it("Navigate to login view", async () => {
+
+    it("When the user is not logged in, navigate to login page", async () => {
         await router.push('/login');
-        // Attendere que le composant de la nouvelle route soit rendu
-        await router.isReady();
-        // check si le composant de la nouvelle route est rendu
         const currentRoute = router.currentRoute.value;
         expect(currentRoute.name).toBe("login");
-      });
-    it("Navigate to login view", async () => {
-        await router.push('/commande');
-        localStorage.setItem();
-        // Attendere que le composant de la nouvelle route soit rendu
-        await router.isReady();
-        // check si le composant de la nouvelle route est rendu
+    });
+
+    it("When the user is not logged in, navigate to root page; otherwise, redirect to the login page", async () => {
+        await router.push('/');
         const currentRoute = router.currentRoute.value;
-        expect(currentRoute.name).toBe("layout");
-    });  
+        expect(currentRoute.name).toBe("login");
+    });
+
+    it("When the user is not logged in, navigate to orders page; otherwise, redirect to the login page", async () => {   
+        await router.push('/commandes');
+        const currentRoute = router.currentRoute.value;
+        expect(currentRoute.name).toBe("login");
+    }); 
+
+    it("When the user is not logged in, navigate to clients page; otherwise, redirect to the login page", async () => {
+        await router.push('/clients');
+        const currentRoute = router.currentRoute.value;
+        expect(currentRoute.name).toBe("login");
+    });
+
+    it("When the user is not logged in, navigate to single order page; otherwise, redirect to the login page", async () => {
+        await router.push('/commandes/0');
+        const currentRoute = router.currentRoute.value;
+        expect(currentRoute.name).toBe("login");
+    });
+
+    it("When the user is not logged in, navigate to single client page; otherwise, redirect to the login page", async () => {
+        await router.push('/clients/0');
+        const currentRoute = router.currentRoute.value;
+        expect(currentRoute.name).toBe("login");
+    });
+
+    it("When the user is logged in, navigate to orders page", async () => {
+        localStorage.setItem("woodStockPlainTextToken", true);   
+        await router.push('/commandes');
+        const currentRoute = router.currentRoute.value;
+        expect(currentRoute.name).toBe("OrdersView");
+        localStorage.removeItem("woodStockPlainTextToken");
+    });
+    
+    it("When the user is logged in, navigate to the login page; otherwise, redirect to the orders page", async () => {
+        localStorage.setItem("woodStockPlainTextToken", true);  
+        await router.push('/login');
+        const currentRoute = router.currentRoute.value;
+        expect(currentRoute.name).toBe("OrdersView");
+        localStorage.removeItem("woodStockPlainTextToken");
+    });
+    
+    it("When the user is logged in, navigate to unknow page; otherwise, redirect to the orders page", async () => {
+        localStorage.setItem("woodStockPlainTextToken", true);  
+        await router.push('/thisPageDoesNotExists');
+        const currentRoute = router.currentRoute.value;
+        expect(currentRoute.name).toBe("OrdersView");
+        localStorage.removeItem("woodStockPlainTextToken");
+    });
+
+    it("When the user is logged in, navigate to clients page", async () => {
+        localStorage.setItem("woodStockPlainTextToken", true);  
+        await router.push('/clients');
+        const currentRoute = router.currentRoute.value;
+        expect(currentRoute.name).toBe("ClientsView");
+        localStorage.removeItem("woodStockPlainTextToken");
+    });
+
+    it("When the user is logged in, navigate to root page; otherwise, redirect to the orders page", async () => {
+        localStorage.setItem("woodStockPlainTextToken", true);  
+        await router.push('/');
+        const currentRoute = router.currentRoute.value;
+        expect(currentRoute.name).toBe("OrdersView");
+        localStorage.removeItem("woodStockPlainTextToken");
+    });
+
+    it("When the user is logged in, navigate to single client page", async () => {
+        localStorage.setItem("woodStockPlainTextToken", true);  
+        await router.push('/clients/0');
+        const currentRoute = router.currentRoute.value;
+        expect(currentRoute.name).toBe("SingleClientView");
+        localStorage.removeItem("woodStockPlainTextToken");
+    });
+
+    it("When the user is logged in, navigate to single order page", async () => {
+        localStorage.setItem("woodStockPlainTextToken", true);  
+        await router.push('/commandes/0');
+        const currentRoute = router.currentRoute.value;
+        expect(currentRoute.name).toBe("SingleOrderView");
+        localStorage.removeItem("woodStockPlainTextToken");
+    });
 });
