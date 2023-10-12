@@ -64,7 +64,7 @@ class UserController extends Controller
                 'first_login' => 'boolean',
                 'phone' => 'string|max:255',
                 'password' => 'string|max:255',
-                'email' => 'string|email|max:255|unique:users,email,' . $user->id,
+                'email' => 'string|email|max:255|unique:email',
             ]);
     
             // Update the user
@@ -72,7 +72,7 @@ class UserController extends Controller
     
             return response()->json(['message' => 'User updated successfully', 'user'=> $user], 200);
         } catch (ValidationException $e) {
-            return response()->json(['error' => 'failed updating user'], 401);
+            return response()->json(['error' => 'failed updating user']);
         }
 
     }
