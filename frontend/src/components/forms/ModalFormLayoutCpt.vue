@@ -21,6 +21,7 @@
 <script>
 import ClientFormCpt from "@/components/forms/ClientFormCpt.vue";
 import CreateOrderFormCpt from "@/components/forms/CreateOrderFormCpt.vue";
+import { useClientsStore } from "@/stores/clientsStore";
 import { useUtilsStore } from "@/stores/utilsStore";
 import AccountFormCpt from './AccountFormCpt.vue';
 

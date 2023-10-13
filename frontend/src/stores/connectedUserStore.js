@@ -25,8 +25,8 @@ export const useConnectedUserStore = defineStore("connectedUser", {
                 const token = localStorage.getItem("woodStockPlainTextToken");
                 const userId = localStorage.getItem("connectedUserId");
                 const response = await Axios.get(`/api/users/${userId}`, { headers : { "Authorization": `Bearer ${token}` } });
-                console.log(`getUserByIdAction -> ${JSON.stringify(response, null, 2)}`);
-                const connectedUser = response.data[0];
+                console.log(response);
+                const connectedUser = response.data.user;
                 this.updateUserForm = {
                     userLastName: connectedUser.last_name,
                     userFirstName: connectedUser.first_name,
