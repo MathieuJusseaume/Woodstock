@@ -21,6 +21,9 @@ export const useOrdersStore = defineStore("orders", {
         getOrders: (state) => {
             return state.orders;
         },
+        getCreateOderForm: (state) => {
+            return state.createOderForm;
+        }
 
     },
     actions: {
@@ -64,5 +67,21 @@ export const useOrdersStore = defineStore("orders", {
         setCreateOrderFormField(value, field) {
             this.updateUserForm[field] = value;
         },
+        async createOrderAction() {
+            const utilsStore = useUtilsStore();
+            try {
+                utilsStore.toggleIsLoadingValue();
+                const token = localStorage.getItem("woodStockPlainTextToken");
+                const response = await Axios.post(`/api/orders`, { headers : { "Authorization": `Bearer ${token}` } });
+                console.log(response);         
+            } catch (error) {
+                if(error?.response?.status === 401) {
+                    utilsStore.redirectToLogin();
+                }
+                console.log(error);
+            } finally {
+                utilsStore.toggleIsLoadingValue();    
+            }
+        }
     }
 });

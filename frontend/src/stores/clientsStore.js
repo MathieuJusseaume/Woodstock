@@ -16,7 +16,7 @@ export const useClientsStore = defineStore("clients", {
             delivery_address: "",
             delivery_zip_code: "",
             delivery_city: "",
-            company_id: 1
+            company_id: 1,
         },
     }),
     getters: {

@@ -6,54 +6,54 @@
             <div class="form__field">
                     <p class="form__field__error"></p>
                     <label for="clientId">Associer un client*</label>
-                    <select id="clientId" class="form__field__input" @change="onChangeField">
-                        <option v-for="client in clients" :key="client.id">{{ client.last_name }} - {{ client.first_name }}</option>
+                    <select id="clientId" class="form__field__input" @change="onChangeField" v-model="fieldsValues.clientId">
+                        <option :value="client.id" v-for="client in clients" :key="client.id">{{ client.last_name }} - {{ client.first_name }}</option>
                     </select>
                 </div>
 
                 <div class="form__field">
                     <p class="form__field__error"></p>
                     <label for="orderDate">Date de la commande*</label>
-                    <input id="orderDate" class="form__field__input" autocomplete @change="onChangeField" type="date" v-model="fieldsValues.userFirstName">
+                    <input id="orderDate" class="form__field__input" autocomplete @change="onChangeField" type="date" v-model="fieldsValues.orderDate">
                 </div>
 
                 <div class="form__field">
                     <p class="form__field__error"></p>
                     <label for="orderDeliveryDate">Date de la livraison*</label>
-                    <input id="orderDeliveryDate" class="form__field__input" autocomplete @change="onChangeField" type="date" v-model="fieldsValues.userEmail">
+                    <input id="orderDeliveryDate" class="form__field__input" autocomplete @change="onChangeField" type="date" v-model="fieldsValues.orderDeliveryDate">
                 </div>
 
                 
                 <div class="form__field">
                     <p class="form__field__error"></p>
                     <label for="quantity">Nombre de stère*</label>
-                    <input id="quantity" class="form__field__input" autocomplete @change="onChangeField" type="text" v-model="fieldsValues.userPhoneNumber">
+                    <input id="quantity" class="form__field__input" autocomplete @change="onChangeField" type="text" v-model="fieldsValues.quantity">
                 </div>
 
                 <div class="form__field">
                     <p class="form__field__error"></p>
                     <label for="logSize">Taille des bûches*</label>
-                    <input id="logSize" class="form__field__input" autocomplete @change="onChangeField" type="text" v-model="fieldsValues.userPhoneNumber">
+                    <input id="logSize" class="form__field__input" autocomplete @change="onChangeField" type="text" v-model="fieldsValues.logSize">
                 </div>
 
-                <div class="form__field">
+<!--                 <div class="form__field">
                     <p class="form__field__error"></p>
                     <label for="userId">Assigner un livreur*</label>
                     <select id="userId" class="form__field__input" @change="onChangeField">
                         <option v-for="client in clients" :key="client.id">{{ client.last_name }} - {{ client.first_name }}</option>
                     </select>
-                </div>
+                </div> -->
 
                 <div class="form__field">
                     <p class="form__field__error"></p>
                     <label for="deliveryPrice">Coût de la commande*</label>
-                    <input id="deliveryPrice" class="form__field__input" autocomplete @change="onChangeField" type="text" v-model="fieldsValues.userPhoneNumber">
+                    <input id="deliveryPrice" class="form__field__input" autocomplete @change="onChangeField" type="text" v-model="fieldsValues.orderPrice">
                 </div>
 
                 <div class="form__field">
                     <p class="form__field__error"></p>
                     <label for="orderPrice">Coût de la livraison*</label>
-                    <input id="orderPrice" class="form__field__input" autocomplete @change="onChangeField" type="text" v-model="fieldsValues.userPhoneNumber">
+                    <input id="orderPrice" class="form__field__input" autocomplete @change="onChangeField" type="text" v-model="fieldsValues.deliveryPrice">
                 </div>
 
 <!--                 <div class="form__field">
@@ -79,6 +79,7 @@
 
 <script>
 import { useClientsStore } from "@/stores/clientsStore.js";
+import { useOrdersStore } from "@/stores/ordersStore.js";
 import { useUtilsStore } from "@/stores/utilsStore.js";
 import sanitizeHtml from 'sanitize-html';
 import { allCreateOrderFields } from '@/utils/formFields.js';
@@ -98,11 +99,11 @@ export default {
     methods: {
         onChangeFields(event) {
             console.log(event.target.value, event.target.id);
-            const clientStore = useClientsStore();
+            const ordersStore = useOrdersStore();
             const cleanInputValue = sanitizeHtml(event.target.value, {
                 allowedTags: []
             });
-            clientStore.setNewClient(cleanInputValue, event.target.id);
+            ordersStore.setCreateOrderFormField(cleanInputValue, event.target.id);
         },
         onSubmitForm() {
             console.log("submit form")
@@ -114,8 +115,8 @@ export default {
     },
     computed: {
         fieldsValues() {
-            const clientStore = useClientsStore();
-            return clientStore.getCreateClientForm;
+            const ordersStore = useOrdersStore();
+            return ordersStore.getCreateOderForm;
         },
         errors() {
             const utilsStore = useUtilsStore();
