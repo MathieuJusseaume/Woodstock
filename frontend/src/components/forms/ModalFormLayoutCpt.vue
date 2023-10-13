@@ -34,6 +34,14 @@ export default {
             return utilsStore.getFormName;
         }
     },
+    updated() {
+        const clientStore = useClientsStore();
+        const utilsStore = useUtilsStore();
+        console.log(utilsStore.getFormName);
+        if(utilsStore.getFormName === "CreateClientForm") {
+            clientStore.resetform();
+        }     
+    },
 /*     props: {
         formName: {
             type: String,

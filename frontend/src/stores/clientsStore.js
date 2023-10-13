@@ -38,7 +38,7 @@ export const useClientsStore = defineStore("clients", {
                 const token = localStorage.getItem("woodStockPlainTextToken");
                 const response = await Axios.get(`/api/clients`, { headers : { "Authorization": `Bearer ${token}` } });
                 console.log(`getClientsAction -> ${JSON.stringify(response, null, 2)}`);
-                response.data.forEach(client => {
+                response.data.client.forEach(client => {
                     this.clients.push(client);
                 });
             } catch (error) {
