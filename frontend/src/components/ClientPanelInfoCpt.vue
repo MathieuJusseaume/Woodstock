@@ -7,18 +7,18 @@
                 <li>Email :</li>
             </ul>
             <ul class="clientpanelinfo__list__b">
-                <li>Adresse de facturation :</li>
-                <li>Adresse de livraison :</li>
+                <li>addresse de facturation :</li>
+                <li>addresse de livraison :</li>
             </ul>
         </div>
-       
+
         <div class="clientpanelinfo__footer">
             <div class="clientpanelinfo__footer__buttons">
                 <button type="submit" class="clientpanelinfo__footer__buttons__edit">Editer</button>
                 <button type="submit" class="clientpanelinfo__footer__buttons__delete">Supprimer</button>
             </div>
         </div>
-        
+
     </div>
 </template>
 

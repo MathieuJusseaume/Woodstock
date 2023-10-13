@@ -7,10 +7,10 @@
                     <tr>
                         <th>Lastname</th>
                         <th>Firstname</th>
-                        <th>Delivery Adress</th>
+                        <th>Delivery address</th>
                         <th>Delivery Zipcode</th>
                         <th>Delivery city</th>
-                        <th>Billing Adress</th>
+                        <th>Billing address</th>
                         <th>Billing Zipcode</th>
                         <th>Billing city</th>
                         <th>Email</th>
@@ -28,6 +28,7 @@
 import DataTable from "datatables.net-vue3";
 import DataTablesCore from "datatables.net";
 import 'datatables.net-responsive';
+import { useUtilsStore } from "@/stores/utilsStore.js";
 
 DataTable.use(DataTablesCore);
 import { useClientsStore } from "@/stores/clientsStore.js";
@@ -75,18 +76,26 @@ export default {
             const clientStore = useClientsStore();
             return clientStore.getClients;
         },
+        succes() {
+            const utilsStore = useUtilsStore();
+            return utilsStore.getSucces;
+        }
     },
     methods: {
-        test(event) {
-            console.log(event.target.id);
-        }
+
     },
     mounted() {
         const clientStore = useClientsStore();
         clientStore.getClientsAction();
+    },
+    updated() {
+        const clientStore = useClientsStore();
+        const utilsStore = useUtilsStore();
         const dataTable = document.querySelector(".dataTable");
         dataTable.addEventListener("click", (event) => {
-            if(event.target.classList.contains("updateclientbutton")) {
+            if (event.target.classList.contains("updateclientbutton")) {
+                utilsStore.setFormName("EditClientForm");
+                clientStore.updateClientInStore(event.target.id);
                 console.log("Id du client à modifier => " + event.target.id);
             } else if (event.target.classList.contains("deleteclientbutton")) {
                 console.log("Id du client à supprimer => " + event.target.id);
@@ -94,13 +103,14 @@ export default {
             }
 
         });
-    }
+    },
 };
 </script>
 
 <style>
 @import 'datatables.net-dt';
 @import 'datatables.net-responsive-dt';
+
 .display {
     text-align: left;
 }

@@ -6,6 +6,7 @@ use App\Models\Client;
 use App\Models\Order;
 use App\Models\DeliveryStatus;
 use App\Models\User;
+use Error;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -16,20 +17,13 @@ class OrderController extends Controller
     {
         // Get the authenticated user.
         $authUser = Auth::user();
-        // Retrieve orders for the user's company.
-        $orders = Order::where('company_id', $authUser->company_id)->get();
-        return response()->json([
-            'order' => $orders,
-        ]);
-    }
-
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        // This method is empty, as it's not used for creating orders.
+        try {
+            // Retrieve orders for the user's company.
+            $orders = Order::where('company_id', $authUser->company_id)->get();
+            return response()->json(['message' => 'Orders recorvery successfully', 'order' => $orders], 200);
+        } catch (Error $error) {
+            return response()->json(['error' => 'failed to get orders']);
+        }
     }
 
     /**
@@ -39,25 +33,30 @@ class OrderController extends Controller
     {
         // Get the authenticated user.
         $authUser = Auth::user();
-        // Validate the incoming order data.
-        $validatedData = $request->validate([
-            'order_number' => 'required|numeric',
-            'order_date' => 'required|date',
-            'delivery_date' => 'required|date',
-            'quantity' => 'required|numeric',
-            'log_size' => 'required|numeric',
-            'order_price' => 'required|numeric',
-            'delivery_price' => 'required|numeric',
-            'client_id' => 'required|numeric',
-        ]);
-        // Set default values for some fields.
-        $validatedData['payment_status'] = false;
-        $validatedData['user_id'] = $authUser->id;
-        $validatedData['delivery_status_id'] = DeliveryStatus::getDeliveryStatusIdForName('A livrer');
-        $validatedData['company_id'] = $authUser->company_id;
-        // Create the order in the database.
-        Order::create($validatedData);
-        return response()->json(['message' => 'Store successfully'], 200);
+
+        try {
+            // Validate the incoming order data.
+            $validatedData = $request->validate([
+                'order_number' => 'required|numeric',
+                'order_date' => 'required|date',
+                'delivery_date' => 'required|date',
+                'quantity' => 'required|numeric',
+                'log_size' => 'required|numeric',
+                'order_price' => 'required|numeric',
+                'delivery_price' => 'required|numeric',
+                'client_id' => 'required|numeric',
+                'user_id' => 'required|numeric'
+            ]);
+            // Set default values for some fields.
+            $validatedData['payment_status'] = false;
+            $validatedData['delivery_status_id'] = DeliveryStatus::getDeliveryStatusIdForName('A livrer');
+            $validatedData['company_id'] = $authUser->company_id;
+            // Create the order in the database.
+            $store = Order::create($validatedData);
+            return response()->json(['message' => 'Store created successfully', 'store' => $store], 200);
+        } catch (Error $error) {
+            return response()->json(['error' => 'failed to store order']);
+        }
     }
 
 
@@ -67,31 +66,16 @@ class OrderController extends Controller
     public function show(Order $order)
     {
         // Retrieve the specified order by its ID.
-        $order = Order::find($order);
-        return response()->json([
-            'order' => $order,
-        ]);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Order $id)
-    {
-        // Get the authenticated user.
         $authUser = Auth::user();
-        // Retrieve the order by its ID and related data for editing.
-        $order = Order::find($id);
-        $clientsList = Client::where('company_id', $authUser->company_id)->get();
-        $deliveryStatusList = DeliveryStatus::all();
-        $usersList = User::where('company_id', $authUser->company_id)->get();
-    
-        return response()->json([
-            'order' => $order,
-            'clientsList' => $clientsList, 
-            'deliveryStatusList' => $deliveryStatusList,
-            'usersList' => $usersList,
-        ]);
+
+        try {
+
+            return $order->company_id == $authUser->company_id
+                ? response()->json(['order' => $order])
+                : response()->json(['error' => 'Forbidden'], 403);
+        } catch (Error $e) {
+            return response()->json(['error' => 'failed show order'], 401);
+        }
     }
 
     /**
@@ -99,6 +83,8 @@ class OrderController extends Controller
      */
     public function update(Request $request, Order $order)
     {
+
+        $authUser = Auth::user();
         try {
             // Validate the incoming order data.
             $validatedData = $request->validate([
@@ -114,16 +100,19 @@ class OrderController extends Controller
                 'user_id' => 'numeric',
                 'delivery_status_id' => 'numeric',
             ]);
-            if ($order) {
-                // Update the order if it exists.
+
+            if ($order->company_id == $authUser->company_id) {
+                // Update the user
                 $order->update($validatedData);
-                return response()->json(['message' => 'Order updated successfully'], 200);
+                // Respond with a JSON message indicating a successful deletion
+                return response()->json(['message' => 'Order updated successfully', 'order' => $order], 200);
             } else {
-                return response()->json(['message' => 'Order not found'], 404);
+                // Respond with a JSON error message indicating that access is forbidden
+                return response()->json(['error' => 'Forbidden', 'order' => $order], 403);
             }
-        } catch (\Exception $e) {
+        } catch (Error $e) {
             // Handle the exception here
-            return response()->json(['error' => 'Failed updating order'], 500);
+            return response()->json(['error' => 'Failed updating order']);
         }
     }
 
@@ -132,17 +121,22 @@ class OrderController extends Controller
      */
     public function destroy(Order $order)
     {
+
+        $authUser = Auth::user();
         try {
-            if ($order) {
-                // Delete the order if it exists.
-                $order->delete(); 
+            // Check if the company ID of the user to be deleted matches the company ID of the authenticated user
+            if ($order->company_id == $authUser->company_id) {
+                // Delete the user if it exists
+                $order->delete();
+                // Respond with a JSON message indicating a successful deletion
                 return response()->json(['message' => 'Delete successfully'], 200);
             } else {
-                return response()->json(['message' => 'Order not found'], 404);
+                // Respond with a JSON error message indicating that access is forbidden
+                return response()->json(['error' => 'Forbidden'], 403);
             }
-        } catch (\Exception $e) {
-            // Handle the exception here
-            return response()->json(['error' => 'Failed deleting order'], 500);
+        } catch (Error $e) {
+            // Handle any exceptions that might occur during the deletion process
+            return response()->json(['error' => 'Failed deleting order']);
         }
     }
 }

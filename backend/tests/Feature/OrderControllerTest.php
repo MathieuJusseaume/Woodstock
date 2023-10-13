@@ -2,10 +2,6 @@
 
 namespace Tests\Feature;
 
-use App\Models\Client;
-use App\Models\DeliveryStatus;
-use Faker\Factory;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 use App\Models\User;
@@ -46,6 +42,27 @@ class OrderControllerTest extends TestCase
         $user->delete();
     }
 
+    public function test_show_order_success()
+    {
+        // Creating a user with a company ID.
+        $user = User::factory()->create(['company_id' => 1]);
+        // Authenticating as the created user.
+        $this->actingAs($user);
+        // Sending a GET request to 'api/orders'.
+        $orderShow = Order::factory()->create(['company_id' => 1, 'user_id'=> $user->id, 'client_id' => 2 ]);
+        // Sending a PUT request to update an order.
+        $orderShow = Order::latest()->first();
+
+        $response = $this->get("api/orders/{$orderShow->id}");
+        // Asserting that the response status is 200 (OK).
+        $response->assertStatus(200);
+        // Asserting the JSON structure of the response.
+
+        // Cleaning up by deleting the created user.
+        $user->delete();
+        $orderShow->delete();
+    }
+
     public function test_store_order_success()
     {
         // Creating a user with a company ID.
@@ -62,13 +79,14 @@ class OrderControllerTest extends TestCase
             'order_price' => 500,
             'delivery_price' => 600,
             'client_id' => 1,
+            'user_id' => 1
         ];
         // Sending a POST request to 'api/orders' with order data.
         $response = $this->postJson('api/orders', $orderData);
         // Asserting that the response status is 200 (OK).
         $response->assertStatus(200);
         // Finding and deleting the created order to clean up.
-        $orderDelete = Order::where('order_number', 1000)->first();
+        $orderDelete = Order::where('order_number', 1000);
         $orderDelete->delete();
         // Cleaning up by deleting the created user.
         $user->delete();
@@ -110,12 +128,15 @@ class OrderControllerTest extends TestCase
             'quantity' => 245,
             'order_price' => 5,
         ];
+        $orderUpdate = Order::factory()->create(['company_id' => 1, 'user_id'=> 2, 'client_id' => 2 ]);
         // Sending a PUT request to update an order.
-        $response = $this->putJson("api/orders/1", $orderData);
+        $orderUpdate = Order::latest()->first();
+        $response = $this->putJson("api/orders/{$orderUpdate->id}", $orderData);
         // Asserting that the response status is 200 (OK).
         $response->assertStatus(200);
         // Cleaning up by deleting the created user.
         $user->delete();
+        Order::latest()->first()->delete();
     }
 
     public function test_update_order_failed()
@@ -124,17 +145,35 @@ class OrderControllerTest extends TestCase
         $user = User::factory()->create(['company_id' => 1]);
         // Authenticating as the created user.
         $this->actingAs($user);
+        $orderUpdate = Order::factory()->create(['company_id' => 1, 'user_id'=> 2, 'client_id' => 2 ]);
+        $orderNotFound = $orderUpdate->id;
+        Order::latest()->first()->delete();
         // Data for updating an order that doesn't exist.
         $orderData = [
             'quantity' => 245,
             'order_price' => 5,
         ];
         // Sending a PUT request to update a non-existing order.
-        $response = $this->putJson("api/orders/1453", $orderData);
+        $response = $this->putJson("api/orders/{$orderNotFound}", $orderData);
         // Asserting that the response status is 404 (Not Found).
         $response->assertStatus(404);
         // Cleaning up by deleting the created user.
         $user->delete();
+    }
+
+    public function test_update_order_forbidden(): void
+    {
+        $user = User::factory()->create(['company_id'=> 1]); 
+        $this->actingAs($user);
+
+        $data = [
+            'order_number' => 5,
+        ];
+        $orderUpdate = Order::factory()->create(['company_id' => 2, 'user_id'=> 2, 'client_id' => 2 ]);
+        $response = $this->putJson("api/orders/{$orderUpdate->id}", $data);
+        $response->assertStatus(403);
+        $user->delete(); 
+        $orderUpdate->delete();
     }
 
     public function test_destroy_order_success()
@@ -143,27 +182,14 @@ class OrderControllerTest extends TestCase
         $user = User::factory()->create(['company_id' => 1]);
         // Authenticating as the created user.
         $this->actingAs($user);
-        // Data for creating a new order.
-        $orderData = [
-            'order_number' => 2,
-            'order_date' => '2034-04-15',
-            'delivery_date' => '2034-04-24',
-            'quantity' => 15,
-            'log_size' => 16,
-            'order_price' => 500,
-            'delivery_price' => 600,
-            'client_id' => 1,
-        ];
-        // Sending a POST request to 'api/orders' with order data.
-        $response = $this->postJson('api/orders', $orderData);
-        // Finding order.
-        $orderDelete = Order::where('order_number', 2)->first();
+        $orderDelete = Order::factory()->create(['company_id' => 1, 'user_id'=> 2, 'client_id' => 2 ]);
+        
         // Sending a DELETE request to delete an order.
         $response = $this->delete("api/orders/{$orderDelete->id}");
         // Asserting that the response status is 200 (OK).
         $response->assertStatus(200);
         // Cleaning up by deleting the created user.
-        $user->delete();
+        $user->delete(); 
     }
 
     public function test_destroy_order_failed()
@@ -172,11 +198,29 @@ class OrderControllerTest extends TestCase
         $user = User::factory()->create(['company_id' => 1]);
         // Authenticating as the created user.
         $this->actingAs($user);
+        $orderUpdate = Order::factory()->create(['company_id' => 1, 'user_id'=> 2, 'client_id' => 2 ]);
+        $orderNotFound = $orderUpdate->id;
+        Order::latest()->first()->delete();
         // Sending a DELETE request to delete a non-existing order.
-        $response = $this->delete('api/orders/3434');
+        $response = $this->delete("api/orders/{$orderNotFound}");
         // Asserting that the response status is 404 (Not Found).
         $response->assertStatus(404);
         // Cleaning up by deleting the created user.
-        $user->delete();
+        $user->delete(); 
+    }
+
+    public function test_destroy_order_forbidden()
+    {
+        // Creating a user with a company ID.
+        $user = User::factory()->create(['company_id' => 1]);
+        // Authenticating as the created user.
+        $this->actingAs($user);
+        $orderUpdate = Order::factory()->create(['company_id' => 2, 'user_id'=> 2, 'client_id' => 2 ]);
+        $response = $this->delete("api/orders/{$orderUpdate->id}");
+        // Asserting that the response status is 404 (Not Found).
+        $response->assertStatus(403);
+        // Cleaning up by deleting the created user.
+        $user->delete(); 
+        Order::latest()->first()->delete();
     }
 }

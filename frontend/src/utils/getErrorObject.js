@@ -4,7 +4,6 @@ export const getErrorsObject = (formValues, formFields, regExp) => {
     const regex = regExp;
     const allFields = formFields;
     const errorsMessages = {};
-
     for (const keyName in formValues) {
 
         if (!allFields[keyName].regex.test(formValues[keyName])) {
@@ -12,6 +11,7 @@ export const getErrorsObject = (formValues, formFields, regExp) => {
         }
 
         if (formValues[keyName] === "") {
+
             errorsMessages[keyName] = "Le champ est vide";
         }
     }
