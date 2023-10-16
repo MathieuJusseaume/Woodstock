@@ -1,17 +1,15 @@
 <template>
     <div class="blocklogin">
-
+        <p>Hello test</p>
         <header class="blocklogin__header">
             <img src="../../assets/logoWoodStockManager.png" class="blocklogin__header__logo" alt="logo">
         </header>
-
         <form @submit.prevent="loginSubmit" class="blocklogin__form">
             <p class="form__field__error" v-show="errorMessage">{{ errorMessage }}</p>
             <div class="form__field">
                 <label for="loginEmail">Email*</label>
                 <input id="loginEmail" class="form__field__input" autocomplete @change="onChangeEmail" type="text" :value="email">
             </div>
-
             <div class="form__field">
                 <label for="loginPassword">Password*</label>
                 <input id="loginPassword" class="form__field__input" autocomplete @change="onChangePassword" type="password" :value="password">

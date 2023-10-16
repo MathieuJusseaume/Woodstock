@@ -22,9 +22,8 @@ export const useConnectedUserStore = defineStore("connectedUser", {
             try {
                 utilsStore.toggleIsLoadingValue();
 
-                const token = localStorage.getItem("woodStockPlainTextToken");
-                const userId = localStorage.getItem("connectedUserId");
-                const response = await Axios.get(`/api/users/${userId}`, { headers : { "Authorization": `Bearer ${token}` } });
+                const user = localStorage.getItem("user");
+                const response = await Axios.get(`/api/users/${user}`);
                 console.log(`getUserByIdAction -> ${JSON.stringify(response, null, 2)}`);
                 const connectedUser = response.data[0];
                 this.updateUserForm = {
@@ -47,16 +46,15 @@ export const useConnectedUserStore = defineStore("connectedUser", {
             const utilsStore = useUtilsStore();
             try {
                 utilsStore.toggleIsLoadingValue();
-                const token = localStorage.getItem("woodStockPlainTextToken");
-                const userId = localStorage.getItem("connectedUserId");
+                const user = localStorage.getItem("user");
                 const body = {
-                    "id": userId,
+                    "id": user.id,
                     "last_name": this.updateUserForm.userLastName,
                     "first_name": this.updateUserForm.userFirstName,
                     "email": this.updateUserForm.userEmail,
                     "phone": this.updateUserForm.userPhoneNumber,
                 }
-                const response = await Axios.put(`/api/users/${userId}`, body, { headers : { "Authorization": `Bearer ${token}` } });
+                const response = await Axios.put(`/api/users/${user}`, body);
                 console.log(response);
                 const connectedUser = response.data.user;
                 this.updateUserForm = {

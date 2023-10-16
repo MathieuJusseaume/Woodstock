@@ -57,7 +57,7 @@ const router = createRouter({
 });
 
 const authGuard = () => {
-    const isLogged = localStorage.getItem("woodStockPlainTextToken");   
+    const isLogged = localStorage.getItem("user");   
     if(isLogged) {
         return true;
     }
@@ -71,7 +71,7 @@ router.beforeEach((to, from, next) => {
     }
     // on login route if user is connected redirect to orders view
     if(to.matched[0].name === "login") {
-        const isLogged = localStorage.getItem("woodStockPlainTextToken");
+        const isLogged = localStorage.getItem("user");
         if(isLogged) {
             router.push("/commandes");
         }

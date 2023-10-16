@@ -35,8 +35,7 @@ export const useClientsStore = defineStore("clients", {
             const utilsStore = useUtilsStore();
             try {
                 utilsStore.toggleIsLoadingValue();
-                const token = localStorage.getItem("woodStockPlainTextToken");
-                const response = await Axios.get(`/api/clients`, { headers : { "Authorization": `Bearer ${token}` } });
+                const response = await Axios.get(`/api/clients`);
                 console.log(`getClientsAction -> ${JSON.stringify(response, null, 2)}`);
                 response.data.forEach(client => {
                     this.clients.push(client);
@@ -57,7 +56,6 @@ export const useClientsStore = defineStore("clients", {
         },
         async submitUpdateClient() {
             const utilsStore = useUtilsStore();
-            const token = localStorage.getItem("woodStockPlainTextToken");
             utilsStore.toggleIsLoadingValue();
             try {
                 const response = await Axios.put(`api/clients/${this.clientForm.id}`, this.clientForm, {
@@ -65,7 +63,6 @@ export const useClientsStore = defineStore("clients", {
                         'Content-Type': 'application/json',
                         'Accept': 'application/json',
                         'Cache-Control': 'no-cache',
-                        'Authorization': `Bearer ${token}`
                     }
                 });
                 if (response.status === 200) {
@@ -86,8 +83,7 @@ export const useClientsStore = defineStore("clients", {
             const utilsStore = useUtilsStore();
             try {
                 utilsStore.toggleIsLoadingValue();
-                const token = localStorage.getItem("woodStockPlainTextToken");
-                const response = await Axios.delete(`/api/clients/${userIdToDelete}`, { headers : { "Authorization": `Bearer ${token}` } });
+                const response = await Axios.delete(`/api/clients/${userIdToDelete}`);
                 console.log(`deleteClientAction -> ${JSON.stringify(response, null, 2)}`);
                 this.clients = this.clients.filter(client => client.id !== parseInt(userIdToDelete, 10));
             } catch (error) {

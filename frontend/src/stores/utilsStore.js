@@ -59,8 +59,7 @@ export const useUtilsStore = defineStore("utils", {
             setTimeout(() => { this.succesMessage = "" }, 5000)
         },
         redirectToLogin() {
-            localStorage.removeItem("woodStockPlainTextToken");
-            localStorage.removeItem("connectedUserId");
+            localStorage.removeItem("user");
             router.push("/login");
         }
     }

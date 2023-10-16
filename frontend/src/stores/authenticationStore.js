@@ -5,7 +5,7 @@ import router from "@/router";
 
 export const useAuthenticationStore = defineStore("authentication", {
     state: () => ({
-        email: "bhowell@example.net",
+        email: "beier.harmon@example.org",
         password: "password",
         errorMessage: ""
     }),
@@ -31,21 +31,21 @@ export const useAuthenticationStore = defineStore("authentication", {
             this.password = password;
         },
         logoutAction() {
-            localStorage.removeItem("woodStockPlainTextToken");
+            localStorage.removeItem("user");
         },
         async loginAction() {
-            localStorage.removeItem("woodStockPlainTextToken");
+            localStorage.removeItem("user");
 
             const utilsStore = useUtilsStore();
             try {
-                utilsStore.toggleIsLoadingValue();
+                utilsStore.toggleIsLoadingValue()
+                await Axios.get(`sanctum/csrf-cookie`);
                 const response = await Axios.post(`/api/login`, { email: this.email, password: this.password });
                 // console.log(`loginAction -> ${JSON.stringify(response, null, 2)}`);
                 if (response.data) {
                     this.setEmailValue("");
                     this.setPasswordValue("");
-                    localStorage.setItem("woodStockPlainTextToken", response.data.token.plainTextToken);
-                    localStorage.setItem("connectedUserId", response.data.token.accessToken.tokenable_id);
+                    localStorage.setItem("user", response.data.user);
                     router.push("/commandes");
                 } else {
                     throw new Error('Empty response');
@@ -74,8 +74,7 @@ export const useAuthenticationStore = defineStore("authentication", {
                 } */
 
             } catch (error) {
-                localStorage.removeItem("woodStockPlainTextToken");
-                localStorage.removeItem("woodstockSessionToken");
+                localStorage.removeItem("user");
                 console.log(`refreshConnexionAction -> ${error}`);
             } finally {
                 utilsStore.toggleIsLoadingValue();

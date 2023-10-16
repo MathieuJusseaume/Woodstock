@@ -17,7 +17,7 @@ return [
 
     'stateful' => explode(',', env('SANCTUM_STATEFUL_DOMAINS', sprintf(
         '%s%s',
-        'localhost,localhost:3000,127.0.0.1,127.0.0.1:8000,::1',
+        'localhost,localhost:8082,127.0.0.1,127.0.0.1:8082,::1',
         Sanctum::currentApplicationUrlWithPort()
     ))),
 
@@ -79,9 +79,9 @@ return [
         'addResponseHeaders' => true,
         'allowsCredentials' => true,
         'headers' => [
-            'Access-Control-Allow-Origin' => [''],
-            'Access-Control-Allow-Methods' => [''],
-            'Access-Control-Allow-Headers' => [''],
+            'Access-Control-Allow-Origin' => ['*'],
+            'Access-Control-Allow-Methods' => ['*'],
+            'Access-Control-Allow-Headers' => ['*'],
             'Access-Control-Expose-Headers' => ['*'],
             'Access-Control-Max-Age' => 0,
         ],
