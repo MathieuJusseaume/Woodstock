@@ -37,7 +37,7 @@ export const useClientsStore = defineStore("clients", {
                 utilsStore.toggleIsLoadingValue();
                 const response = await Axios.get(`/api/clients`);
                 console.log(`getClientsAction -> ${JSON.stringify(response, null, 2)}`);
-                response.data.forEach(client => {
+                response.data.client.forEach(client => {
                     this.clients.push(client);
                 });
             } catch (error) {
