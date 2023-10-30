@@ -1,6 +1,5 @@
 <template>
     <div class="blocklogin">
-        <p>Hello test</p>
         <header class="blocklogin__header">
             <img src="../../assets/logoWoodStockManager.png" class="blocklogin__header__logo" alt="logo">
         </header>

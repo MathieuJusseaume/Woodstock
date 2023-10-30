@@ -60,11 +60,10 @@ class ClientController extends Controller
     {
         $authUser = Auth::user();
         $client = Client::find($id);
+        $client = Client::with(['orders'])->find($id);
 
         try {
-
             return $client->company_id == $authUser->company_id
-
                 ? response()->json(['user' => $client], 200)
                 : response()->json(['error' => 'Forbidden'], 403);
         } catch (Error $e) {
