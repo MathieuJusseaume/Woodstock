@@ -22,8 +22,8 @@ class LoginControllerTest extends TestCase
         ];
 
         $response = $this->post('api/login', $data);
+        dump($response['token']);
         $this->assertAuthenticated();
-        $user->delete(); 
     }
 
     public function test_login_connection_failed(): void

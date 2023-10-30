@@ -9,8 +9,15 @@ class Comment extends Model
 {
     use HasFactory;
 
-    public function orders()
+
+    protected $fillable = [
+        'order_id',
+        'content'
+    ];
+
+    public function order()
     {
-        return $this->belongsTo(Order::class);
+        return $this->belongsTo(Order::class, 'order_id'); // Use the correct foreign key
     }
+
 }

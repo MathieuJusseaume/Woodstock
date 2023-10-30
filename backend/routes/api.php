@@ -2,7 +2,8 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\{LoginController, UserController, OrderController, ClientController};
+use App\Http\Controllers\{LoginController, UserController, OrderController, ClientController, CommentController};
+use App\Models\Comment;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,8 +22,10 @@ Route::middleware('auth:sanctum')->group(function() {
         'orders' => OrderController::class, 
         'users' => UserController::class, 
         'clients' => ClientController::class, 
+        'comments' => CommentController::class
     ]);
 });
 
 Route::post('/login', [LoginController::class, 'authenticate']);
+
 

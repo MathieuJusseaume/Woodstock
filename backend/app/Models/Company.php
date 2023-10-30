@@ -12,6 +12,8 @@ class Company extends Model
 
     protected $fillable = ['name', 'phone', 'adress'];
 
+    protected $with = ['users', 'clients', 'orders'];
+
     public function users(): HasMany
     {
         return $this->hasMany(User::class);
