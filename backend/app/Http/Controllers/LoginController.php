@@ -32,7 +32,7 @@ Handle an authentication attempt.
       // Récupérez l'utilisateur actuellement authentifié
 
       return response()->json([
-        'token' => $token
+        'user' => $user
       ], 200);
     }
     return response()->json(401);

@@ -13951,3 +13951,4 @@ Did you mean one of these?
 #45 /var/www/html/public/index.php(52): Illuminate\\Foundation\\Http\\Kernel->handle(Object(Illuminate\\Http\\Request))
 #46 {main}
 "} 
+
