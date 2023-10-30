@@ -59,7 +59,6 @@ class ClientController extends Controller
     public function show($id)
     {
         $authUser = Auth::user();
-        $client = Client::find($id);
         $client = Client::with(['orders'])->find($id);
 
         try {
