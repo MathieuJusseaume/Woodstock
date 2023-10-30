@@ -65,11 +65,11 @@ class OrderController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Order $order)
+    public function show($id)
     {
         // Retrieve the specified order by its ID.
         $authUser = Auth::user();
-
+        $order = Order::with(['clients'])->find($id);
         try {
             // $orderWithData = Order::with(['deliveryStatus', 'client', 'comments', 'user'])->find($order->id);
             $orderWithData = Order::find($order->id);

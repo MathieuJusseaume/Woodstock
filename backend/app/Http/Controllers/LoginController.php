@@ -35,17 +35,19 @@ Handle an authentication attempt.
         'user' => $user
       ], 200);
     }
-    return response()->json(401);
+    return response()->json(['error'=>'unauthorized'], 401);
   }
 
   public function logout(Request $request)
   {
-    $user = Auth::user();
-    // Revoke the user's personal access token
-    $user->tokens->each(function ($token) {
-      $token->delete();
-    });
-    return response()->json(['message' => 'Logged out successfully'], 200);
+      // Revoke the user's personal access token
+      Auth::guard('web')->logout();
+
+      $request->session()->invalidate();
+
+      $request->session()->regenerateToken();
+
+      return response()->json(['message' => 'Logged out successfully'], 200);
   }
 
   public function refreshToken(Request $request)
