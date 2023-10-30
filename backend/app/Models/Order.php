@@ -23,7 +23,7 @@ class Order extends Model
         'company_id'
     ];
     protected $with = ['deliveryStatus'];
-    
+
     use HasFactory;
 
     public function client()
