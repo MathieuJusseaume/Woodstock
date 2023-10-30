@@ -15,8 +15,9 @@ class Comment extends Model
         'content'
     ];
 
-    public function orders()
+    public function order()
     {
-        return $this->belongsTo(Order::class);
+        return $this->belongsTo(Order::class, 'order_id'); // Use the correct foreign key
     }
+
 }

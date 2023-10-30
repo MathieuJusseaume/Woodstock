@@ -23,10 +23,10 @@ class Order extends Model
         'company_id'
     ];
 
-    protected $with = [
-      'deliveryStatus', 
-      'comments'
-    ];
+    // protected $with = [
+    //   'deliveryStatus', 
+    //   'comments'
+    // ];
     
     use HasFactory;
 
