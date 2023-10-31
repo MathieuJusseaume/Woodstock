@@ -3,6 +3,23 @@
         <h1>Liste des commandes</h1>
         <div class="datatable__orders">
             <DataTable id="dataTable" :columns="columns" :options="options" :data="orders" class="display" width="100%">
+                <thead>
+                    <tr>
+                        <th>Numéro commande</th>
+                        <th>Client</th>
+                        <th>Date de commande</th>
+                        <th>Date de livraison</th>
+                        <th>Quantité</th>
+                        <th>Taille des bûches</th>
+                        <th>Statut de livraison</th>
+                        <th>Statut de paiement</th>
+                        <th>Prix de la commande</th>
+                        <th>Prix de livraison</th>
+                        <th>Utilisateur</th>
+                        <th>modifier</th>
+                        <th>supprimer</th>
+                    </tr>
+                </thead>
             </DataTable>
         </div>
     </div>
@@ -32,33 +49,26 @@ export default {
             ordersStore: useOrdersStore(),
             utilsStore: useUtilsStore(),
             columns: [
-                { data: "order_number", title: "Numéro commande" },
-                this.$route.name !== "OrdersView" ? { data: "client_id", title: "Client", visible: false } : { data: "client.first_name", title: "Client" },
-                { data: "order_date", title: "Date de commande" },
-                { data: "delivery_date", title: "Date de livraison" },
-                { data: "quantity", title: "Quantité" },
-                { data: "log_size", title: "Taille des bûches" },
-                { data: "delivery_status.name", title: "Statut de livraison" },
+                { data: "order_number" },
+                { data: "client_id" },
+                { data: "order_date" },
+                { data: "delivery_date" },
+                { data: "quantity" },
+                { data: "log_size" },
+                { data: "delivery_status_id" },
+                { data: "payment_status" },
+                { data: "order_price" },
+                { data: "delivery_price" },
+                { data: "user_id" },
                 {
-                    data: "payment_status", title: "Statut de paiement",
-                    render: (data) => {
-                        if (!data) {
-                            return `<p>non payée</p>`
-                        }
-                        return `<p>payée</p>`
-                    }
-                },
-                { data: "order_price", title: "Prix de la commande" },
-                { data: "delivery_price", title: "Prix de livraison" },
-                {
-                    data: "id", title: "Modifier",
+                    data: "id",
                     render: (data) => {
                         return `<a id="${data}" class="button touch edit updateOrderButton"></a>`;
                     }
                 },
                 {
-                    data: "id", title: "Supprimer",
-                    render: (data) => {
+                    data: "id",
+                    render: (data) => { 
                         return `<a id="${data}" class="button touch delete deleteOrderButton"></a>`;
                     }
                 }
@@ -71,7 +81,7 @@ export default {
         },
     },
     mounted() {
-        this.ordersStore.getOrdersAction();
+        //this.ordersStore.getOrdersAction();
         const dataTable = document.querySelector("#dataTable");
 
         dataTable.addEventListener("click", (event) => {
@@ -100,10 +110,11 @@ export default {
 .datatable__orders {
     display: flex;
     justify-content: center;
+    width: 100%;
 }
 
 .datatable {
-    max-width: 85%;
+    max-width: 100%;
 }
 
 .button {

@@ -130,7 +130,7 @@ export const useClientsStore = defineStore("clients", {
                 utilsStore.toggleIsLoadingValue();
                 const response = await Axios.get(`/api/clients/${clientId}`);
                 if (response.status === 200) {
-                    // console.log("🚀 ~ file: clientsStore.js:137 ~ getClientById ~ response:", response.data.client)
+                    console.log("🚀 ~ file: clientsStore.js:137 ~ getClientById ~ response:", response.data.client)
                     this.singleClient = response?.data?.client;
                     useOrdersStore().setOrders(response.data?.client?.orders ?? []);
                 }

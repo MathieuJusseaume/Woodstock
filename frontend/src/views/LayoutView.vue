@@ -2,9 +2,9 @@
     <div>
         <HeaderCpt />
         <main class="main__layout">
-            <DesktopNavigationCpt />
+            <DesktopNavigationCpt v-if="!formName"/>
             <div class="main__layout__content">
-                <RouterView />
+                <RouterView v-if="!formName"/>
                 <ModalFormLayoutCpt v-if="formName" />
             </div>
 

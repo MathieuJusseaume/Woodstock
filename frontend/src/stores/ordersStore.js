@@ -204,6 +204,10 @@ export const useOrdersStore = defineStore("orders", {
                 delivery_price: "",
                 orderPrice: ""
             };
+        },
+        setOrders(ordersArray){
+            console.log(ordersArray);
+            this.orders = ordersArray;
         }
     }
 });

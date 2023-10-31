@@ -19,7 +19,7 @@ describe("Test for request on API clients endpoints", () => {
             company_id: 1
         }
 
-        nock('http://localhost:8080',)
+        nock('http://192.168.1.15:8080',)
             .post('/api/clients/', newClientRequestBody,)
             .matchHeader('Authorization', `Bearer ${token}`)
             .reply(201, { data: newClientRequestBody });
