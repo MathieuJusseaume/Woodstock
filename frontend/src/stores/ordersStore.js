@@ -94,7 +94,9 @@ export const useOrdersStore = defineStore("orders", {
                     user_id: localStorage.getItem("connectedUserId")
                 };
                 const response = await Axios.post(`/api/orders`, body);
-                console.log(response);       
+                console.log(response);
+                this.resetOrderForm();     
+                this.getOrdersAction();
             } catch (error) {
                 if(error?.response?.status === 401) {
                     utilsStore.redirectToLogin();
