@@ -12,27 +12,42 @@
    <!--      <OrderCreateForm v-if="formNname === 'OrderCreateForm'" />
         <OrderUpdateForm v-if="formName === 'OrderUpdateForm'" /> -->
         <ClientFormCpt v-if="formName === 'CreateClientForm' || formName === 'EditClientForm'" />
-        <AccountFormCpt v-if="formName === 'AccountForm'" />
+        <CreateOrderFormCpt v-if="formName === 'Création de commande'" />
+        <UpdateOrderFormCpt v-if="formName === 'Modification de commande'" />
+        <AccountFormCpt v-if="formName === 'Modification du compte'" />
 
     </div>
 </template>
 
 <script>
 import ClientFormCpt from "@/components/forms/ClientFormCpt.vue";
+import CreateOrderFormCpt from "@/components/forms/CreateOrderFormCpt.vue";
+import { useClientsStore } from "@/stores/clientsStore";
 import { useUtilsStore } from "@/stores/utilsStore";
 import AccountFormCpt from './AccountFormCpt.vue';
+import UpdateOrderFormCpt from "./UpdateOrderFormCpt.vue";
 
 export default {
     name: "ModalFormLayoutCpt",
     components: {
-      ClientFormCpt,
-        AccountFormCpt
-    },
+    ClientFormCpt,
+    AccountFormCpt,
+    CreateOrderFormCpt,
+    UpdateOrderFormCpt
+},
     computed: {
         formName() {
             const utilsStore = useUtilsStore();
             return utilsStore.getFormName;
         }
+    },
+    updated() {
+        const clientStore = useClientsStore();
+        const utilsStore = useUtilsStore();
+        console.log(utilsStore.getFormName);
+        if(utilsStore.getFormName === "CreateClientForm") {
+            clientStore.resetform();
+        }     
     },
 /*     props: {
         formName: {

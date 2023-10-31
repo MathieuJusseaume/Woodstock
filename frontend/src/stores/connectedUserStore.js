@@ -22,10 +22,10 @@ export const useConnectedUserStore = defineStore("connectedUser", {
             try {
                 utilsStore.toggleIsLoadingValue();
 
-                const user = localStorage.getItem("user");
-                const response = await Axios.get(`/api/users/${user}`);
+                const connectedUserId = localStorage.getItem("connectedUserId");
+                const response = await Axios.get(`/api/users/${connectedUserId}`);
                 console.log(`getUserByIdAction -> ${JSON.stringify(response, null, 2)}`);
-                const connectedUser = response.data[0];
+                const connectedUser = response.data.user;
                 this.updateUserForm = {
                     userLastName: connectedUser.last_name,
                     userFirstName: connectedUser.first_name,
@@ -46,15 +46,15 @@ export const useConnectedUserStore = defineStore("connectedUser", {
             const utilsStore = useUtilsStore();
             try {
                 utilsStore.toggleIsLoadingValue();
-                const user = localStorage.getItem("user");
+                const connectedUserId = localStorage.getItem("connectedUserId");
                 const body = {
-                    "id": user.id,
+                    "id": connectedUserId.id,
                     "last_name": this.updateUserForm.userLastName,
                     "first_name": this.updateUserForm.userFirstName,
                     "email": this.updateUserForm.userEmail,
                     "phone": this.updateUserForm.userPhoneNumber,
                 }
-                const response = await Axios.put(`/api/users/${user}`, body);
+                const response = await Axios.put(`/api/users/${connectedUserId}`, body);
                 console.log(response);
                 const connectedUser = response.data.user;
                 this.updateUserForm = {
@@ -63,9 +63,6 @@ export const useConnectedUserStore = defineStore("connectedUser", {
                     userEmail: connectedUser.email,
                     userPhoneNumber: connectedUser.phone,
                 };
-
-                console.log(`updateUserAction -> ${JSON.stringify(response, null, 2)}`);
-
             } catch (error) {
                 if(error?.response?.status === 401) {
                     utilsStore.redirectToLogin();

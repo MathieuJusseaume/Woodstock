@@ -1,6 +1,5 @@
 <template>
     <div>
-        <h1>Ici c'est la page des clients {{ infos }}</h1>
         <ClientsListCpt />
     </div>
 </template>

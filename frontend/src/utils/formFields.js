@@ -76,3 +76,7 @@ export const allUpdateConnctedUserFields = {
         "errorMessage": "Le numéro de téléphone ne doit pas contenir de caractères spéciaux"
     },
 };
+
+export const allCreateOrderFields = {
+    
+};

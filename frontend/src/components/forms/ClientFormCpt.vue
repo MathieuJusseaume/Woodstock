@@ -101,10 +101,6 @@ import { allCreateClientFields } from '@/utils/formFields.js';
 
 export default {
     name: "ClientFormCpt",
-    mounted() {
-        const clientStore = useClientsStore();
-        clientStore.resetform();
-    },
     data() {
         return {
 

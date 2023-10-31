@@ -16,7 +16,7 @@ export const useClientsStore = defineStore("clients", {
             delivery_address: "",
             delivery_zip_code: "",
             delivery_city: "",
-            company_id: 1
+            company_id: 1,
         },
     }),
     getters: {
@@ -27,13 +27,14 @@ export const useClientsStore = defineStore("clients", {
             return state.clientForm;
         },
         getSingleClientById: (state) => {
-            return (clientId) => state.clients.find((client) => client.id === Number(clientId));
+            return (client_id) => state.clients.find((client) => client.id === Number(client_id));
         }
     },
     actions: {
         async getClientsAction() {
             const utilsStore = useUtilsStore();
             try {
+                this.clients = [];
                 utilsStore.toggleIsLoadingValue();
                 const response = await Axios.get(`/api/clients`);
                 console.log(`getClientsAction -> ${JSON.stringify(response, null, 2)}`);
@@ -124,8 +125,8 @@ export const useClientsStore = defineStore("clients", {
                 utilsStore.toggleIsLoadingValue();
             }
         },
-        getClientById(clientId) {
-            console.log(clientId);
+        getClientById(client_id) {
+            console.log(client_id);
         },
         setNewClient(value, field) {
             this.clientForm[field] = value;

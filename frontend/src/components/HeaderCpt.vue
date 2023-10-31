@@ -22,7 +22,7 @@ export default {
     methods: {
         openEditConnectedUserAccount() {
             const utilsStore = useUtilsStore();
-            utilsStore.setFormName("AccountForm");
+            utilsStore.setFormName("Modification du compte");
         },
         logout() {
             const authenticationStore = useAuthenticationStore();

@@ -1,8 +1,8 @@
 <template>
     <div>
         <HeaderCpt />
-        <DesktopNavigationCpt />
-        <RouterView />
+        <DesktopNavigationCpt v-if="!formName"/>
+        <RouterView v-if="!formName"/>
         <ModalFormLayoutCpt v-if="formName"/>
     </div>
 </template>
