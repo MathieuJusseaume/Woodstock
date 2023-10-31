@@ -69,7 +69,7 @@ class OrderController extends Controller
     {
         // Retrieve the specified order by its ID.
         $authUser = Auth::user();
-        $order = Order::with(['clients'])->find($id);
+        $order = Order::with(['deliveryStatus', 'client', 'comments', 'user'])->find($id);
         try {
             // $orderWithData = Order::with(['deliveryStatus', 'client', 'comments', 'user'])->find($order->id);
             $orderWithData = Order::find($order->id);

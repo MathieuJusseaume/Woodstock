@@ -23,11 +23,6 @@ class Client extends Model
         'company_id'
     ];
 
-    protected $with = [
-       'orders'
-    ];
-
-
     public function company()
     {
         return $this->belongsTo(Company::class);
