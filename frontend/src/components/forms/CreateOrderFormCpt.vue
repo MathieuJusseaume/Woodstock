@@ -42,37 +42,17 @@
                 <input id="logSize" class="form__field__input" autocomplete @change="onChangeField" type="text" v-model="fieldsValues.logSize">
             </div>
 
-<!--                 <div class="form__field">
-                    <p class="form__field__error"></p>
-                    <label for="userId">Assigner un livreur*</label>
-                    <select id="userId" class="form__field__input" @change="onChangeField">
-                        <option v-for="client in clients" :key="client.id">{{ client.last_name }} - {{ client.first_name }}</option>
-                    </select>
-                </div> -->
-
             <div class="form__field">
                 <p class="form__field__error"></p>
                 <label for="deliveryPrice">Coût de la commande*</label>
-                <input id="deliveryPrice" class="form__field__input" autocomplete @change="onChangeField" type="text" v-model="fieldsValues.orderPrice">
+                <input id="deliveryPrice" class="form__field__input" autocomplete @change="onChangeField" type="text" v-model="fieldsValues.deliveryPrice">
             </div>
 
             <div class="form__field">
                 <p class="form__field__error"></p>
                 <label for="orderPrice">Coût de la livraison*</label>
-                <input id="orderPrice" class="form__field__input" autocomplete @change="onChangeField" type="text" v-model="fieldsValues.deliveryPrice">
+                <input id="orderPrice" class="form__field__input" autocomplete @change="onChangeField" type="text" v-model="fieldsValues.orderPrice">
             </div>
-
-<!--                 <div class="form__field">
-                    <p class="form__field__error"></p>
-                    <label for="userPhoneNumber">Statut de livraison*</label>
-                    <input id="userPhoneNumber" class="form__field__input" autocomplete @change="onChangeField" type="text" v-model="fieldsValues.userPhoneNumber">
-                </div>
-
-                <div class="form__field">
-                    <p class="form__field__error"></p>
-                    <label for="userPhoneNumber">Statut de paiement*</label>
-                    <input id="userPhoneNumber" class="form__field__input" autocomplete @change="onChangeField" type="text" v-model="fieldsValues.userPhoneNumber">
-                </div> -->
 
             <div class="form__field">
                 <button class="form__field__submit" type="submit">Crée la commande</button>
@@ -104,7 +84,7 @@ export default {
         }
     },
     methods: {
-        onChangeFields(event) {
+        onChangeField(event) {
             console.log(event.target.value, event.target.id);
             const ordersStore = useOrdersStore();
             const cleanInputValue = sanitizeHtml(event.target.value, {
@@ -123,7 +103,7 @@ export default {
     computed: {
         fieldsValues() {
             const ordersStore = useOrdersStore();
-            return ordersStore.getCreateOderForm;
+            return ordersStore.getCreateOrderForm;
         },
         errors() {
             const utilsStore = useUtilsStore();

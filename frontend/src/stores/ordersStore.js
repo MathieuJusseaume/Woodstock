@@ -5,7 +5,7 @@ import Axios from "../_services/callerService";
 export const useOrdersStore = defineStore("orders", {
     state: () => ({
         orders: [],
-        createOderForm: {
+        createOrderForm: {
             orderNumber: "",
             clientId: "",
             orderDate: "",
@@ -15,14 +15,28 @@ export const useOrdersStore = defineStore("orders", {
             userId: "",
             deliveryPrice: "",
             orderPrice: ""
-        }
+        },
+        updateOrderForm: {
+            orderNumber: "",
+            clientId: "",
+            orderDate: "",
+            orderDeliveryDate: "",
+            quantity: "",
+            logSize: "",
+            userId: "",
+            deliveryPrice: "",
+            orderPrice: ""
+        },
     }),
     getters: {
         getOrders: (state) => {
             return state.orders;
         },
-        getCreateOderForm: (state) => {
-            return state.createOderForm;
+        getupdateOrderForm: (state) => {
+            return state.updateOrderForm;
+        },
+        getCreateOrderForm: (state) => {
+            return state.createOrderForm;
         }
 
     },
@@ -77,10 +91,13 @@ export const useOrdersStore = defineStore("orders", {
             }
         },
         setCreateOrderFormField(value, field) {
-            this.updateUserForm[field] = value;
+            this.createOrderForm[field] = value;
+        },
+        setUpdateOrderFormField(value, field) {
+            this.updateOrderForm[field] = value;
         },
         resetOrderForm() {
-            this.createOderForm = {
+            this.createOrderForm = {
                 orderNumber: "",
                 clientId: "",
                 orderDate: "",
@@ -97,20 +114,21 @@ export const useOrdersStore = defineStore("orders", {
             try {
                 utilsStore.toggleIsLoadingValue();
                 const body = {
-                    order_number: this.createOderForm.orderNumber,
-                    client_id: this.createOderForm.clientId,
-                    delivery_date: this.createOderForm.orderDeliveryDate,
-                    order_date: this.createOderForm.orderDate,
-                    delivery_price: this.createOderForm.deliveryPrice,
-                    order_price: this.createOderForm.orderPrice,
-                    log_size: this.createOderForm.logSize,
-                    quantity: this.createOderForm.quantity,
+                    order_number: this.createOrderForm.orderNumber,
+                    client_id: this.createOrderForm.clientId,
+                    delivery_date: this.createOrderForm.orderDeliveryDate,
+                    order_date: this.createOrderForm.orderDate,
+                    delivery_price: this.createOrderForm.deliveryPrice,
+                    order_price: this.createOrderForm.orderPrice,
+                    log_size: this.createOrderForm.logSize,
+                    quantity: this.createOrderForm.quantity,
                     user_id: localStorage.getItem("connectedUserId")
                 };
                 const response = await Axios.post(`/api/orders`, body);
                 console.log(response);
                 this.resetOrderForm();     
                 this.getOrdersAction();
+                utilsStore.setFormName("");
             } catch (error) {
                 if(error?.response?.status === 401) {
                     utilsStore.redirectToLogin();
@@ -119,6 +137,15 @@ export const useOrdersStore = defineStore("orders", {
             } finally {
                 utilsStore.toggleIsLoadingValue();    
             }
-        }
+        },
+        async updateOrderAction() {
+            try {
+                
+            } catch (error) {
+                console.log(error);
+            } finally {
+
+            }
+        },
     }
 });
