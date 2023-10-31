@@ -2,7 +2,6 @@ import { defineStore } from "pinia";
 import { useUtilsStore } from "./utilsStore";
 import Axios from "../_services/callerService";
 import router from "@/router";
-import Cookie from "js-cookie";
 
 export const useAuthenticationStore = defineStore("authentication", {
     state: () => ({
@@ -32,17 +31,16 @@ export const useAuthenticationStore = defineStore("authentication", {
             this.password = password;
         },
         logoutAction() {
-            localStorage.removeItem("user");
+            localStorage.removeItem("connectedUserId");
         },
         async loginAction() {
-            localStorage.removeItem("user");
+            localStorage.removeItem("connectedUserId");
 
             const utilsStore = useUtilsStore();
             try {
                 utilsStore.toggleIsLoadingValue()
                 await Axios.get(`sanctum/csrf-cookie`);
                 const response = await Axios.post(`/api/login`, { email: this.email, password: this.password });
-                // console.log(`loginAction -> ${JSON.stringify(response, null, 2)}`);
                 if (response.data) {
                     this.setEmailValue("");
                     this.setPasswordValue("");
@@ -54,29 +52,6 @@ export const useAuthenticationStore = defineStore("authentication", {
             } catch (error) {
                 this.errorMessage = "Identifiants invalides";
                 console.log(`loginAction -> ${error}`);
-            } finally {
-                utilsStore.toggleIsLoadingValue();
-            }
-        },
-        // TODO not implemented on back end side
-        async refreshConnexionAction() {
-            const utilsStore = useUtilsStore();
-            try {
-                utilsStore.toggleIsLoadingValue();
-                await new Promise(resolve => setTimeout(resolve, 1000));
-                //const sessionToken = localStorage.getItem("woodstockSessionToken");
-                /* if(sessionToken) {
-                    console.log("coucou");
-                    // todo call http here
-                    localStorage.setItem("woodStockPlainTextToken", response.data.jwtToken);
-                    localStorage.setItem("woodstockSessionToken", response.data.sessionToken);
-                } else {
-                    throw new Error("No session token");
-                } */
-
-            } catch (error) {
-                localStorage.removeItem("connectedUserId");
-                console.log(`refreshConnexionAction -> ${error}`);
             } finally {
                 utilsStore.toggleIsLoadingValue();
             }
