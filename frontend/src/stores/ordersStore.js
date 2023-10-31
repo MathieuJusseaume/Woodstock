@@ -6,6 +6,7 @@ export const useOrdersStore = defineStore("orders", {
     state: () => ({
         orders: [],
         createOderForm: {
+            orderNumber: "",
             clientId: "",
             orderDate: "",
             orderDeliveryDate: "",
@@ -15,7 +16,6 @@ export const useOrdersStore = defineStore("orders", {
             deliveryPrice: "",
             orderPrice: ""
         }
-
     }),
     getters: {
         getOrders: (state) => {
@@ -31,8 +31,7 @@ export const useOrdersStore = defineStore("orders", {
             const utilsStore = useUtilsStore();
             try {
                 utilsStore.toggleIsLoadingValue();               
-                const token = localStorage.getItem("woodStockPlainTextToken");
-                const response = await Axios.get(`/api/orders`, { headers : { "Authorization": `Bearer ${token}` } });
+                const response = await Axios.get(`/api/orders`);
                 console.log(response);
                 this.orders = [];
                 response.data.order.forEach(order => {
@@ -51,8 +50,7 @@ export const useOrdersStore = defineStore("orders", {
             const utilsStore = useUtilsStore();
             try {
                 utilsStore.toggleIsLoadingValue();               
-                const token = localStorage.getItem("woodStockPlainTextToken");
-                const response = await Axios.delete(`/api/orders/${orderIdToDelete}`, { headers : { "Authorization": `Bearer ${token}` } });
+                const response = await Axios.delete(`/api/orders/${orderIdToDelete}`);
                 console.log(response);
                 this.orders = this.orders.filter(order => order.id !== parseInt(orderIdToDelete, 10));
             } catch (error) {
@@ -67,13 +65,36 @@ export const useOrdersStore = defineStore("orders", {
         setCreateOrderFormField(value, field) {
             this.updateUserForm[field] = value;
         },
+        resetOrderForm() {
+            this.createOderForm = {
+                orderNumber: "",
+                clientId: "",
+                orderDate: "",
+                orderDeliveryDate: "",
+                quantity: "",
+                logSize: "",
+                userId: "",
+                deliveryPrice: "",
+                orderPrice: ""
+            };
+        },
         async createOrderAction() {
             const utilsStore = useUtilsStore();
             try {
                 utilsStore.toggleIsLoadingValue();
-                const token = localStorage.getItem("woodStockPlainTextToken");
-                const response = await Axios.post(`/api/orders`, { headers : { "Authorization": `Bearer ${token}` } });
-                console.log(response);         
+                const body = {
+                    order_number: this.createOderForm.orderNumber,
+                    client_id: this.createOderForm.clientId,
+                    delivery_date: this.createOderForm.orderDeliveryDate,
+                    order_date: this.createOderForm.orderDate,
+                    delivery_price: this.createOderForm.deliveryPrice,
+                    order_price: this.createOderForm.orderPrice,
+                    log_size: this.createOderForm.logSize,
+                    quantity: this.createOderForm.quantity,
+                    user_id: localStorage.getItem("connectedUserId")
+                };
+                const response = await Axios.post(`/api/orders`, body);
+                console.log(response);       
             } catch (error) {
                 if(error?.response?.status === 401) {
                     utilsStore.redirectToLogin();

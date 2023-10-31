@@ -56,16 +56,13 @@ class ClientController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show($id)
+    public function show(Client $client)
     {
         $authUser = Auth::user();
-        $client = Client::find($id);
-
         try {
-
+            $client = Client::with('orders.comments')->find($client->id);
             return $client->company_id == $authUser->company_id
-
-                ? response()->json(['user' => $client], 200)
+                ? response()->json(['client' => $client], 200)
                 : response()->json(['error' => 'Forbidden'], 403);
         } catch (Error $e) {
             return response()->json(['error' => 'failed show client']);

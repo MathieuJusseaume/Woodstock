@@ -6,7 +6,7 @@ import Cookie from "js-cookie";
 
 export const useAuthenticationStore = defineStore("authentication", {
     state: () => ({
-        email: "bhowell@gmail.net",
+        email: "jvonrueden@example.org",
         password: "password",
         errorMessage: ""
     }),
@@ -32,23 +32,21 @@ export const useAuthenticationStore = defineStore("authentication", {
             this.password = password;
         },
         logoutAction() {
-            localStorage.removeItem("woodStockPlainTextToken");
+            localStorage.removeItem("user");
         },
         async loginAction() {
-            localStorage.removeItem("woodStockPlainTextToken");
+            localStorage.removeItem("user");
 
             const utilsStore = useUtilsStore();
             try {
-                utilsStore.toggleIsLoadingValue();
-                const resp = await Axios.get(`/sanctum/csrf-cookie`);
-                console.log(resp);
+                utilsStore.toggleIsLoadingValue()
+                await Axios.get(`sanctum/csrf-cookie`);
                 const response = await Axios.post(`/api/login`, { email: this.email, password: this.password });
                 // console.log(`loginAction -> ${JSON.stringify(response, null, 2)}`);
                 if (response.data) {
                     this.setEmailValue("");
                     this.setPasswordValue("");
-                    localStorage.setItem("woodStockPlainTextToken", response.data.token.plainTextToken);
-                    localStorage.setItem("connectedUserId", response.data.token.accessToken.tokenable_id);
+                    localStorage.setItem("connectedUserId", response.data.user.id);
                     router.push("/commandes");
                 } else {
                     throw new Error('Empty response');
@@ -77,8 +75,7 @@ export const useAuthenticationStore = defineStore("authentication", {
                 } */
 
             } catch (error) {
-                localStorage.removeItem("woodStockPlainTextToken");
-                localStorage.removeItem("woodstockSessionToken");
+                localStorage.removeItem("connectedUserId");
                 console.log(`refreshConnexionAction -> ${error}`);
             } finally {
                 utilsStore.toggleIsLoadingValue();
