@@ -14,7 +14,7 @@
         <ClientFormCpt v-if="formName === 'CreateClientForm' || formName === 'EditClientForm'" />
         <CreateOrderFormCpt v-if="formName === 'Création de commande'" />
         <UpdateOrderFormCpt v-if="formName === 'Modification de commande'" />
-        <AccountFormCpt v-if="formName === 'AccountForm'" />
+        <AccountFormCpt v-if="formName === 'Modification du compte'" />
 
     </div>
 </template>
