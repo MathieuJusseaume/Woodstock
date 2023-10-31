@@ -6,25 +6,25 @@ export const useOrdersStore = defineStore("orders", {
     state: () => ({
         orders: [],
         createOrderForm: {
-            orderNumber: "",
-            clientId: "",
-            orderDate: "",
-            orderDeliveryDate: "",
+            order_number: "",
+            client_id: "",
+            order_date: "",
+            delivery_date: "",
             quantity: "",
-            logSize: "",
+            log_size: "",
             userId: "",
-            deliveryPrice: "",
+            delivery_price: "",
             orderPrice: ""
         },
         updateOrderForm: {
-            orderNumber: "",
-            clientId: "",
-            orderDate: "",
-            orderDeliveryDate: "",
+            order_number: "",
+            client_id: "",
+            order_date: "",
+            delivery_date: "",
             quantity: "",
-            logSize: "",
+            log_size: "",
             userId: "",
-            deliveryPrice: "",
+            delivery_price: "",
             orderPrice: ""
         },
     }),
@@ -38,7 +38,6 @@ export const useOrdersStore = defineStore("orders", {
         getCreateOrderForm: (state) => {
             return state.createOrderForm;
         }
-
     },
     actions: {
         async getOrdersAction() {
@@ -98,29 +97,52 @@ export const useOrdersStore = defineStore("orders", {
         },
         resetOrderForm() {
             this.createOrderForm = {
-                orderNumber: "",
-                clientId: "",
-                orderDate: "",
-                orderDeliveryDate: "",
+                order_number: "",
+                client_id: "",
+                order_date: "",
+                delivery_date: "",
                 quantity: "",
-                logSize: "",
+                log_size: "",
                 userId: "",
-                deliveryPrice: "",
+                delivery_price: "",
                 orderPrice: ""
             };
+            this.updateOrderForm = {
+                order_number: "",
+                client_id: "",
+                order_date: "",
+                delivery_date: "",
+                quantity: "",
+                log_size: "",
+                userId: "",
+                delivery_price: "",
+                orderPrice: ""
+            };
+        },
+        async getOrderByIdAction(orderId) {
+            const utilsStore = useUtilsStore();
+            try {
+                utilsStore.toggleIsLoadingValue();
+                const response = await Axios.get(`/api/orders/${orderId}`);
+                console.log(response);
+            } catch (error) {
+                console.log(error);
+            } finally {
+                utilsStore.toggleIsLoadingValue();
+            }
         },
         async createOrderAction() {
             const utilsStore = useUtilsStore();
             try {
                 utilsStore.toggleIsLoadingValue();
                 const body = {
-                    order_number: this.createOrderForm.orderNumber,
-                    client_id: this.createOrderForm.clientId,
-                    delivery_date: this.createOrderForm.orderDeliveryDate,
-                    order_date: this.createOrderForm.orderDate,
-                    delivery_price: this.createOrderForm.deliveryPrice,
+                    order_number: this.createOrderForm.order_number,
+                    client_id: this.createOrderForm.client_id,
+                    delivery_date: this.createOrderForm.delivery_date,
+                    order_date: this.createOrderForm.order_date,
+                    delivery_price: this.createOrderForm.delivery_price,
                     order_price: this.createOrderForm.orderPrice,
-                    log_size: this.createOrderForm.logSize,
+                    log_size: this.createOrderForm.log_size,
                     quantity: this.createOrderForm.quantity,
                     user_id: localStorage.getItem("connectedUserId")
                 };

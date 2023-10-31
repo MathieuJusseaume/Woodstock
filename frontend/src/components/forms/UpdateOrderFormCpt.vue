@@ -5,28 +5,28 @@
 
             <div class="form__field">
                 <p class="form__field__error"></p>
-                <label for="orderNumber">Numéro de commande*</label>
-                <input id="orderNumber" class="form__field__input" autocomplete @change="onChangeField" type="text" v-model="fieldsValues.orderNumber">
+                <label for="order_number">Numéro de commande*</label>
+                <input id="order_number" class="form__field__input" autocomplete @change="onChangeField" type="text" v-model="fieldsValues.order_number">
             </div>
 
             <div class="form__field">
                 <p class="form__field__error"></p>
-                <label for="clientId">Associer un client*</label>
-                <select id="clientId" class="form__field__input" @change="onChangeField" v-model="fieldsValues.clientId">
+                <label for="client_id">Associer un client*</label>
+                <select id="client_id" class="form__field__input" @change="onChangeField" v-model="fieldsValues.client_id">
                     <option :value="client.id" v-for="client in clients" :key="client.id">{{ client.last_name }} - {{ client.first_name }}</option>
                 </select>
             </div>
 
             <div class="form__field">
                 <p class="form__field__error"></p>
-                <label for="orderDate">Date de la commande*</label>
-                <input id="orderDate" class="form__field__input" autocomplete @change="onChangeField" type="date" v-model="fieldsValues.orderDate">
+                <label for="order_date">Date de la commande*</label>
+                <input id="order_date" class="form__field__input" autocomplete @change="onChangeField" type="date" v-model="fieldsValues.order_date">
             </div>
 
             <div class="form__field">
                 <p class="form__field__error"></p>
-                <label for="orderDeliveryDate">Date de la livraison*</label>
-                <input id="orderDeliveryDate" class="form__field__input" autocomplete @change="onChangeField" type="date" v-model="fieldsValues.orderDeliveryDate">
+                <label for="delivery_date">Date de la livraison*</label>
+                <input id="delivery_date" class="form__field__input" autocomplete @change="onChangeField" type="date" v-model="fieldsValues.delivery_date">
             </div>
 
                 
@@ -38,8 +38,8 @@
 
             <div class="form__field">
                 <p class="form__field__error"></p>
-                <label for="logSize">Taille des bûches*</label>
-                <input id="logSize" class="form__field__input" autocomplete @change="onChangeField" type="text" v-model="fieldsValues.logSize">
+                <label for="log_size">Taille des bûches*</label>
+                <input id="log_size" class="form__field__input" autocomplete @change="onChangeField" type="text" v-model="fieldsValues.log_size">
             </div>
 
             <div class="form__field">
@@ -52,14 +52,14 @@
 
             <div class="form__field">
                 <p class="form__field__error"></p>
-                <label for="deliveryPrice">Coût de la commande*</label>
-                <input id="deliveryPrice" class="form__field__input" autocomplete @change="onChangeField" type="text" v-model="fieldsValues.orderPrice">
+                <label for="delivery_price">Coût de la commande*</label>
+                <input id="delivery_price" class="form__field__input" autocomplete @change="onChangeField" type="text" v-model="fieldsValues.orderPrice">
             </div>
 
             <div class="form__field">
                 <p class="form__field__error"></p>
                 <label for="orderPrice">Coût de la livraison*</label>
-                <input id="orderPrice" class="form__field__input" autocomplete @change="onChangeField" type="text" v-model="fieldsValues.deliveryPrice">
+                <input id="orderPrice" class="form__field__input" autocomplete @change="onChangeField" type="text" v-model="fieldsValues.delivery_price">
             </div>
 
             <div class="form__field">
@@ -123,7 +123,7 @@ export default {
     computed: {
         fieldsValues() {
             const ordersStore = useOrdersStore();
-            return ordersStore.getCreateOderForm;
+            return ordersStore.getupdateOrderForm;
         },
         errors() {
             const utilsStore = useUtilsStore();

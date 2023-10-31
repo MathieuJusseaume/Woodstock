@@ -27,7 +27,7 @@ export const useClientsStore = defineStore("clients", {
             return state.clientForm;
         },
         getSingleClientById: (state) => {
-            return (clientId) => state.clients.find((client) => client.id === Number(clientId));
+            return (client_id) => state.clients.find((client) => client.id === Number(client_id));
         }
     },
     actions: {
@@ -125,8 +125,8 @@ export const useClientsStore = defineStore("clients", {
                 utilsStore.toggleIsLoadingValue();
             }
         },
-        getClientById(clientId) {
-            console.log(clientId);
+        getClientById(client_id) {
+            console.log(client_id);
         },
         setNewClient(value, field) {
             this.clientForm[field] = value;

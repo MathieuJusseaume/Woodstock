@@ -88,6 +88,7 @@ export default {
             if(event.target.classList.contains("updateOrderButton")) {
                 console.log("Id de la commande à modifier => " + event.target.id);
                 utilsStore.setFormName("Modification de commande");
+                ordersStore.getOrderByIdAction(event.target.id);
             } else if (event.target.classList.contains("deleteOrderButton")) {
                 console.log("Id de la commande à supprimer => " + event.target.id);
                 ordersStore.deleteOrderByIdAction(event.target.id);
