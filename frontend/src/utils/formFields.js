@@ -52,10 +52,9 @@ export const allCreateClientFields = {
         "errorMessage": "La ville ne doit pas contenir de caractères spéciaux"
     },
     "company_id": {
-      "regex": regex.regexInt,
-      "errorMessage": ""
-  },
-
+        "regex": regex.regexInt,
+        "errorMessage": ""
+    },
 };
 
 export const allUpdateConnctedUserFields = {
@@ -78,5 +77,5 @@ export const allUpdateConnctedUserFields = {
 };
 
 export const allCreateOrderFields = {
-    
+
 };

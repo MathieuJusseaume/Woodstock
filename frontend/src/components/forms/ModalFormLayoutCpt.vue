@@ -8,9 +8,6 @@
         <!-- Switch "editCommand -> <EDtidCOmmandeform" -->
         <!-- Pour le login form puisqu pas la même tronche pas besoin du header -> le faire seul ? -->
 
-        <!-- TODO CREER LES COMPOSANT POUR CHACUN DES FORMULAIRES -->
-   <!--      <OrderCreateForm v-if="formNname === 'OrderCreateForm'" />
-        <OrderUpdateForm v-if="formName === 'OrderUpdateForm'" /> -->
         <ClientFormCpt v-if="formName === 'CreateClientForm' || formName === 'EditClientForm'" />
         <CreateOrderFormCpt v-if="formName === 'Création de commande'" />
         <UpdateOrderFormCpt v-if="formName === 'Modification de commande'" />
@@ -47,7 +44,7 @@ export default {
         console.log(utilsStore.getFormName);
         if(utilsStore.getFormName === "CreateClientForm") {
             clientStore.resetform();
-        }     
+        }
     },
 /*     props: {
         formName: {

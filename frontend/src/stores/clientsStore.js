@@ -1,10 +1,13 @@
 import { defineStore } from "pinia";
 import { useUtilsStore } from "./utilsStore";
+import { useOrdersStore } from "./ordersStore";
 import Axios from "../_services/callerService";
+import router from "@/router";
 
 export const useClientsStore = defineStore("clients", {
     state: () => ({
         clients: [],
+        singleClient: null,
         clientForm: {
             last_name: "",
             first_name: "",
@@ -27,7 +30,10 @@ export const useClientsStore = defineStore("clients", {
             return state.clientForm;
         },
         getSingleClientById: (state) => {
-            return (client_id) => state.clients.find((client) => client.id === Number(client_id));
+            return (clientId) => state.clients.find((client) => client.id === Number(clientId));
+        },
+        getSingleClient(state) {
+            return state.singleClient;
         }
     },
     actions: {
@@ -37,12 +43,12 @@ export const useClientsStore = defineStore("clients", {
                 this.clients = [];
                 utilsStore.toggleIsLoadingValue();
                 const response = await Axios.get(`/api/clients`);
-                console.log(`getClientsAction -> ${JSON.stringify(response, null, 2)}`);
+                // console.log(`getClientsAction -> ${JSON.stringify(response, null, 2)}`);
                 response.data.client.forEach(client => {
                     this.clients.push(client);
                 });
             } catch (error) {
-                if(error?.response?.status === 401) {
+                if (error?.response?.status === 401) {
                     utilsStore.redirectToLogin();
                 }
                 console.log(error);
@@ -51,21 +57,21 @@ export const useClientsStore = defineStore("clients", {
             }
         },
         updateClientInStore(id) {
-            const clientToUpdate = this.getSingleClientById(id);
-            const clientToBeUpdated = { ...clientToUpdate };
+            let clientToBeUpdated;
+            if (this.clients.length > 0) {
+                const clientToUpdate = this.getSingleClientById(id);
+                clientToBeUpdated = { ...clientToUpdate };
+            } else if (this.singleClient) {
+                clientToBeUpdated = this.singleClient
+            }
+
             this.clientForm = clientToBeUpdated;
         },
         async submitUpdateClient() {
             const utilsStore = useUtilsStore();
             utilsStore.toggleIsLoadingValue();
             try {
-                const response = await Axios.put(`api/clients/${this.clientForm.id}`, this.clientForm, {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json',
-                        'Cache-Control': 'no-cache',
-                    }
-                });
+                const response = await Axios.put(`api/clients/${this.clientForm.id}`, this.clientForm);
                 if (response.status === 200) {
                     utilsStore.setSuccesMessage("Le client a été mis à jour !");
                     this.clients = this.clients.filter((client) => client.id !== this.clientForm.id);
@@ -76,6 +82,9 @@ export const useClientsStore = defineStore("clients", {
 
             } catch (error) {
                 utilsStore.setErrorsResponse(error.response.status, error.response.data);
+                if (error?.response?.status === 401) {
+                    utilsStore.redirectToLogin();
+                }
             } finally {
                 utilsStore.toggleIsLoadingValue();
             }
@@ -84,35 +93,23 @@ export const useClientsStore = defineStore("clients", {
             const utilsStore = useUtilsStore();
             try {
                 utilsStore.toggleIsLoadingValue();
-                const response = await Axios.delete(`/api/clients/${userIdToDelete}`);
-                console.log(`deleteClientAction -> ${JSON.stringify(response, null, 2)}`);
+                await Axios.delete(`/api/clients/${userIdToDelete}`);
                 this.clients = this.clients.filter(client => client.id !== parseInt(userIdToDelete, 10));
             } catch (error) {
-                if(error?.response?.status === 401) {
+                if (error?.response?.status === 401) {
                     utilsStore.redirectToLogin();
                 }
                 console.log(error);
             } finally {
                 utilsStore.toggleIsLoadingValue();
+                router.push('/clients')
             }
         },
         async submitNewClient() {
             const utilsStore = useUtilsStore();
             try {
-                const token = localStorage.getItem("woodStockPlainTextToken");
                 utilsStore.toggleIsLoadingValue();
-
-                const response = await Axios.post(`api/clients`, this.clientForm, {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json',
-                        'Cache-Control': 'no-cache',
-                        'Authorization': `Bearer ${token}`
-                    }
-                });
-                console.log("🚀 ~ file: clientsStore.js:102 ~ submitUpdateClient ~ response:", response);
-                console.log("🚀 ~ file: clientsStore.js:102 ~ submitUpdateClient ~ response.request:", response.request);
-                console.log("🚀 ~ file: clientsStore.js:102 ~ submitUpdateClient ~ response.config:", response.config);
+                const response = await Axios.post(`api/clients`, this.clientForm);
                 if (response.status === 201) {
                     utilsStore.setSuccesMessage("Un nouveau client a été créé !");
                     this.resetform();
@@ -120,13 +117,31 @@ export const useClientsStore = defineStore("clients", {
                 }
             } catch (error) {
                 utilsStore.setErrorsResponse(error.response.status, error.response.data);
-                throw new Error(error.message);
+                if (error?.response?.status === 401) {
+                    utilsStore.redirectToLogin();
+                }
             } finally {
                 utilsStore.toggleIsLoadingValue();
             }
         },
-        getClientById(client_id) {
-            console.log(client_id);
+        async getClientById(clientId) {
+            const utilsStore = useUtilsStore();
+            try {
+                utilsStore.toggleIsLoadingValue();
+                const response = await Axios.get(`/api/clients/${clientId}`);
+                if (response.status === 200) {
+                    // console.log("🚀 ~ file: clientsStore.js:137 ~ getClientById ~ response:", response.data.client)
+                    this.singleClient = response?.data?.client;
+                    useOrdersStore().setOrders(response.data?.client?.orders ?? []);
+                }
+            } catch (error) {
+                utilsStore.setErrorsResponse(error.response.status, error.response.data);
+                if (error?.response?.status === 401) {
+                    utilsStore.redirectToLogin();
+                }
+            } finally {
+                utilsStore.toggleIsLoadingValue();
+            }
         },
         setNewClient(value, field) {
             this.clientForm[field] = value;
@@ -147,6 +162,5 @@ export const useClientsStore = defineStore("clients", {
 
             }
         },
-
     }
 });

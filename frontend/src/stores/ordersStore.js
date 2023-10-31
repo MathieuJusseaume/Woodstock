@@ -37,7 +37,7 @@ export const useOrdersStore = defineStore("orders", {
         async getOrdersAction() {
             const utilsStore = useUtilsStore();
             try {
-                utilsStore.toggleIsLoadingValue();               
+                utilsStore.toggleIsLoadingValue();
                 const response = await Axios.get(`/api/orders`);
                 console.log(response);
                 this.orders = [];
@@ -57,7 +57,7 @@ export const useOrdersStore = defineStore("orders", {
                         id: order.id
                     };
                     this.orders.push(orderToPush);
-                });   
+                });
             } catch (error) {
                 if(error?.response?.status === 401) {
                     utilsStore.redirectToLogin();
@@ -70,7 +70,7 @@ export const useOrdersStore = defineStore("orders", {
         async deleteOrderByIdAction(orderIdToDelete) {
             const utilsStore = useUtilsStore();
             try {
-                utilsStore.toggleIsLoadingValue();               
+                utilsStore.toggleIsLoadingValue();
                 const response = await Axios.delete(`/api/orders/${orderIdToDelete}`);
                 console.log(response);
                 this.orders = this.orders.filter(order => order.id !== parseInt(orderIdToDelete, 10));
@@ -116,7 +116,7 @@ export const useOrdersStore = defineStore("orders", {
                 };
                 const response = await Axios.post(`/api/orders`, body);
                 console.log(response);
-                this.resetOrderForm();     
+                this.resetOrderForm();
                 this.getOrdersAction();
                 utilsStore.setFormName("");
             } catch (error) {
@@ -125,7 +125,7 @@ export const useOrdersStore = defineStore("orders", {
                 }
                 console.log(error);
             } finally {
-                utilsStore.toggleIsLoadingValue();    
+                utilsStore.toggleIsLoadingValue();
             }
         },
         async updateOrderAction() {
@@ -147,7 +147,7 @@ export const useOrdersStore = defineStore("orders", {
                 };
                 const response = await Axios.put(`/api/orders/${this.updateOrderForm.id}`, body);
                 console.log(response);
-                this.resetOrderForm();     
+                this.resetOrderForm();
                 this.getOrdersAction();
                 utilsStore.setFormName("");
             } catch (error) {

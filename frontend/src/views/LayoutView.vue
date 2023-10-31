@@ -1,9 +1,15 @@
 <template>
     <div>
         <HeaderCpt />
-        <DesktopNavigationCpt v-if="!formName"/>
-        <RouterView v-if="!formName"/>
-        <ModalFormLayoutCpt v-if="formName"/>
+        <main class="main__layout">
+            <DesktopNavigationCpt />
+            <div class="main__layout__content">
+                <RouterView />
+                <ModalFormLayoutCpt v-if="formName" />
+            </div>
+
+        </main>
+
     </div>
 </template>
 
@@ -31,5 +37,8 @@ export default {
 
 };
 </script>
-
-<style scoped></style>
+<style scoped>
+.main__layout{
+    display: flex;
+    justify-content: flex-start;
+}</style>

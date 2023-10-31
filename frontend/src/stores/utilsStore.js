@@ -48,6 +48,9 @@ export const useUtilsStore = defineStore("utils", {
         },
         setErrorsResponse(responseStatus, responseError) {
             this.errors = { errorMessage: setErrorsFromResponseStatus(responseStatus, responseError) };
+            if(responseStatus === 401){
+              this.redirectToLogin();
+            }
         },
         setSuccesMessage(message) {
             this.succesMessage = message;
@@ -61,6 +64,6 @@ export const useUtilsStore = defineStore("utils", {
         redirectToLogin() {
             localStorage.removeItem("user");
             router.push("/login");
-        }
+        },
     }
 });

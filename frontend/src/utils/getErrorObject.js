@@ -5,6 +5,10 @@ export const getErrorsObject = (formValues, formFields, regExp) => {
     const allFields = formFields;
     const errorsMessages = {};
     for (const keyName in formValues) {
+        console.log(allFields[keyName]);
+        if (allFields[keyName] === undefined) {
+            continue;
+        }
 
         if (!allFields[keyName].regex.test(formValues[keyName])) {
             errorsMessages[keyName] = allFields[keyName].errorMessage;

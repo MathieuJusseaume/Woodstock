@@ -35,10 +35,11 @@ export default {
 .desktopnavigation__nav {
     margin: 2.5rem;
     height: fit-content;
+    display: flex;
+    flex-direction: column;
 }
 .desktopnavigation__nav__link {
     padding: 1rem;
-    border: solid 2px black;
     color: black;
     text-decoration: none;
     font-weight: 600;
@@ -47,5 +48,12 @@ export default {
     cursor: pointer;
     user-select: none;
     transition: .2s;
+}
+.datatable__orders {
+    display: block;
+}
+
+.datatable {
+    max-width: 85%;
 }
 </style>

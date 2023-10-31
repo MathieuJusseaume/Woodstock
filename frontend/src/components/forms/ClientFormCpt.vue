@@ -122,7 +122,6 @@ export default {
             const utilsStore = useUtilsStore();
             utilsStore.resetErrors();
             utilsStore.setErrorsForm(clientStore.clientForm, allCreateClientFields);
-            console.log("yho");
             console.log(utilsStore.getErrors);
             if (Object.keys(utilsStore.getErrors).length === 0) {
                 if (utilsStore.getFormName === "EditClientForm") {

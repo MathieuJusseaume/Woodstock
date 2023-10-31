@@ -1,7 +1,7 @@
 <template>
     <div>
         <h1>Liste des clients</h1>
-        <div>
+        <div class="datatable__clients">
             <DataTable id="dataTable" :columns="columns" :options="options" :data="orders" class="display" width="100%">
                 <thead>
                     <tr>
@@ -17,6 +17,7 @@
                         <th>Phone number</th>
                         <th>modifier</th>
                         <th>supprimer</th>
+                        <th>détails</th>
                     </tr>
                 </thead>
             </DataTable>
@@ -29,6 +30,7 @@ import DataTable from "datatables.net-vue3";
 import DataTablesCore from "datatables.net";
 import 'datatables.net-responsive';
 import { useUtilsStore } from "@/stores/utilsStore.js";
+import router from "@/router";
 
 DataTable.use(DataTablesCore);
 import { useClientsStore } from "@/stores/clientsStore.js";
@@ -59,13 +61,19 @@ export default {
                 {
                     data: "id",
                     render: (data) => {
-                        return `<button class="updateclientbutton" id="${data}">Modifier</button>`
+                        return `<a id="${data}" class="button touch edit updateclientbutton"></a>`
                     }
                 },
                 {
                     data: "id",
                     render: (data) => {
-                        return `<button class="deleteclientbutton" id="${data}">Supprimer</button>`
+                        return `<a id="${data}" class="button touch delete deleteclientbutton"></a>`
+                    }
+                },
+                {
+                    data: "id",
+                    render: (data) => {
+                        return `<button class="selectclientbutton" id="${data}">Voir</button>`
                     }
                 }
             ],
@@ -92,7 +100,7 @@ export default {
         const clientStore = useClientsStore();
         const utilsStore = useUtilsStore();
         const dataTable = document.querySelector(".dataTable");
-        dataTable.addEventListener("click", (event) => {
+        dataTable.addEventListener("click", async (event) => {
             if (event.target.classList.contains("updateclientbutton")) {
                 utilsStore.setFormName("EditClientForm");
                 clientStore.updateClientInStore(event.target.id);
@@ -100,6 +108,10 @@ export default {
             } else if (event.target.classList.contains("deleteclientbutton")) {
                 console.log("Id du client à supprimer => " + event.target.id);
                 clientStore.deleteClientAction(event.target.id);
+            } else if (event.target.classList.contains("selectclientbutton")) {
+                console.log("Id du client à sélectionner => " + event.target.id);
+                await clientStore.getClientById(event.target.id).then(() => { router.push(`/clients/${event.target.id}`); });
+
             }
 
         });
@@ -113,5 +125,13 @@ export default {
 
 .display {
     text-align: left;
+}
+
+.datatable__clients {
+    display: flex;
+    justify-content: center;
+}
+.datatable {
+    max-width: 85%;
 }
 </style>

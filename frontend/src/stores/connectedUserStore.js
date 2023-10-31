@@ -63,6 +63,9 @@ export const useConnectedUserStore = defineStore("connectedUser", {
                     userEmail: connectedUser.email,
                     userPhoneNumber: connectedUser.phone,
                 };
+
+                // console.log(`updateUserAction -> ${JSON.stringify(response, null, 2)}`);
+
             } catch (error) {
                 if(error?.response?.status === 401) {
                     utilsStore.redirectToLogin();

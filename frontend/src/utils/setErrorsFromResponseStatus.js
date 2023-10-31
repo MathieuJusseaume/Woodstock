@@ -1,7 +1,7 @@
 export const setErrorsFromResponseStatus = (statusCode, errorMessage) => {
-    console.log("🚀 ~ file: setErrorsFromResponseStatus.js:2 ~ setErrorsFromResponseStatus ~ errorMessage:", errorMessage)
+    // console.log("🚀 ~ file: setErrorsFromResponseStatus.js:2 ~ setErrorsFromResponseStatus ~ errorMessage:", errorMessage)
 
-    console.log("🚀 ~ file: setErrorsFromResponseStatus.js:2 ~ setErrorsFromResponseStatus ~ statusCode:", statusCode)
+    // console.log("🚀 ~ file: setErrorsFromResponseStatus.js:2 ~ setErrorsFromResponseStatus ~ statusCode:", statusCode)
 
     switch (statusCode) {
         case 401:
