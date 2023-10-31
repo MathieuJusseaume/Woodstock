@@ -89,36 +89,6 @@ export const useOrdersStore = defineStore("orders", {
                 utilsStore.toggleIsLoadingValue();
             }
         },
-        setCreateOrderFormField(value, field) {
-            this.createOrderForm[field] = value;
-        },
-        setUpdateOrderFormField(value, field) {
-            this.updateOrderForm[field] = value;
-        },
-        resetOrderForm() {
-            this.createOrderForm = {
-                order_number: "",
-                client_id: "",
-                order_date: "",
-                delivery_date: "",
-                quantity: "",
-                log_size: "",
-                userId: "",
-                delivery_price: "",
-                orderPrice: ""
-            };
-            this.updateOrderForm = {
-                order_number: "",
-                client_id: "",
-                order_date: "",
-                delivery_date: "",
-                quantity: "",
-                log_size: "",
-                userId: "",
-                delivery_price: "",
-                orderPrice: ""
-            };
-        },
         async getOrderByIdAction(orderId) {
             const utilsStore = useUtilsStore();
             try {
@@ -160,7 +130,7 @@ export const useOrdersStore = defineStore("orders", {
                 utilsStore.toggleIsLoadingValue();    
             }
         },
-        async updateOrderAction() {
+        async updateOrderAction(orderId) {
             try {
                 
             } catch (error) {
@@ -169,5 +139,35 @@ export const useOrdersStore = defineStore("orders", {
 
             }
         },
+        setCreateOrderFormField(value, field) {
+            this.createOrderForm[field] = value;
+        },
+        setUpdateOrderFormField(value, field) {
+            this.updateOrderForm[field] = value;
+        },
+        resetOrderForm() {
+            this.createOrderForm = {
+                order_number: "",
+                client_id: "",
+                order_date: "",
+                delivery_date: "",
+                quantity: "",
+                log_size: "",
+                userId: "",
+                delivery_price: "",
+                orderPrice: ""
+            };
+            this.updateOrderForm = {
+                order_number: "",
+                client_id: "",
+                order_date: "",
+                delivery_date: "",
+                quantity: "",
+                log_size: "",
+                userId: "",
+                delivery_price: "",
+                orderPrice: ""
+            };
+        }
     }
 });

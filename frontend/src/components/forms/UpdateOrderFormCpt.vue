@@ -42,13 +42,13 @@
                 <input id="log_size" class="form__field__input" autocomplete @change="onChangeField" type="text" v-model="fieldsValues.log_size">
             </div>
 
-            <div class="form__field">
+<!--             <div class="form__field">
                 <p class="form__field__error"></p>
                 <label for="userId">Assigner un livreur*</label>
                 <select id="userId" class="form__field__input" @change="onChangeField">
                     <option v-for="client in clients" :key="client.id">{{ client.last_name }} - {{ client.first_name }}</option>
                 </select>
-            </div>
+            </div> -->
 
             <div class="form__field">
                 <p class="form__field__error"></p>
