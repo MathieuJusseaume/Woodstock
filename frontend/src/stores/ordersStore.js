@@ -128,13 +128,35 @@ export const useOrdersStore = defineStore("orders", {
                 utilsStore.toggleIsLoadingValue();    
             }
         },
-        async updateOrderAction(orderId) {
+        async updateOrderAction() {
+            const utilsStore = useUtilsStore();
             try {
-                
+                utilsStore.toggleIsLoadingValue();
+                const body = {
+                    order_number: this.updateOrderForm.order_number,
+                    client_id: this.updateOrderForm.client_id,
+                    delivery_date: this.updateOrderForm.delivery_date,
+                    order_date: this.updateOrderForm.order_date,
+                    delivery_price: this.updateOrderForm.delivery_price,
+                    order_price: this.updateOrderForm.orderPrice,
+                    log_size: this.updateOrderForm.log_size,
+                    quantity: this.updateOrderForm.quantity,
+                    delivery_status_id: this.updateOrderForm.delivery_status_id,
+                    payment_status: this.updateOrderForm.payment_status,
+                    user_id: localStorage.getItem("connectedUserId")
+                };
+                const response = await Axios.put(`/api/orders/${this.updateOrderForm.id}`, body);
+                console.log(response);
+                this.resetOrderForm();     
+                this.getOrdersAction();
+                utilsStore.setFormName("");
             } catch (error) {
+                if(error?.response?.status === 401) {
+                    utilsStore.redirectToLogin();
+                }
                 console.log(error);
             } finally {
-
+                utilsStore.toggleIsLoadingValue();
             }
         },
         async getDeliveryStatusAction() {

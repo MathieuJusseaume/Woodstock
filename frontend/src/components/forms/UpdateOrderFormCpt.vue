@@ -115,7 +115,7 @@ export default {
             const ordersStore = useOrdersStore();
             const utilsStore = useUtilsStore();
             //utilsStore.setErrorsForm(clientStore.getCreateOrderForm, allCreateOrderFields);
-            ordersStore.createOrderAction();
+            ordersStore.updateOrderAction();
         },
     },
     computed: {
