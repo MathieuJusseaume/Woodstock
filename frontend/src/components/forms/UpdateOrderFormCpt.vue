@@ -42,36 +42,33 @@
                 <input id="log_size" class="form__field__input" autocomplete @change="onChangeField" type="text" v-model="fieldsValues.log_size">
             </div>
 
+            <div class="form__field">
+                <p class="form__field__error"></p>
+                <label for="delivery_price">Coût de la commande*</label>
+                <input id="delivery_price" class="form__field__input" autocomplete @change="onChangeField" type="text" v-model="fieldsValues.delivery_price">
+            </div>
+
+            <div class="form__field">
+                <p class="form__field__error"></p>
+                <label for="order_price">Coût de la livraison*</label>
+                <input id="order_price" class="form__field__input" autocomplete @change="onChangeField" type="text" v-model="fieldsValues.order_price">
+            </div>
+
 <!--             <div class="form__field">
                 <p class="form__field__error"></p>
-                <label for="userId">Assigner un livreur*</label>
-                <select id="userId" class="form__field__input" @change="onChangeField">
-                    <option v-for="client in clients" :key="client.id">{{ client.last_name }} - {{ client.first_name }}</option>
+                <label for="delivery_status">Statut de livraison*</label>
+                <select id="delivery_status" class="form__field__input" @change="onChangeField" v-model="fieldsValues.delivery_status">
+                    <option :value="client.id" v-for="client in clients" :key="client.id">{{ client.last_name }} - {{ client.first_name }}</option>
                 </select>
             </div> -->
 
             <div class="form__field">
                 <p class="form__field__error"></p>
-                <label for="delivery_price">Coût de la commande*</label>
-                <input id="delivery_price" class="form__field__input" autocomplete @change="onChangeField" type="text" v-model="fieldsValues.orderPrice">
-            </div>
-
-            <div class="form__field">
-                <p class="form__field__error"></p>
-                <label for="orderPrice">Coût de la livraison*</label>
-                <input id="orderPrice" class="form__field__input" autocomplete @change="onChangeField" type="text" v-model="fieldsValues.delivery_price">
-            </div>
-
-            <div class="form__field">
-                <p class="form__field__error"></p>
-                <label for="userPhoneNumber">Statut de livraison*</label>
-                <input id="userPhoneNumber" class="form__field__input" autocomplete @change="onChangeField" type="text" v-model="fieldsValues.userPhoneNumber">
-            </div>
-
-            <div class="form__field">
-                <p class="form__field__error"></p>
-                <label for="userPhoneNumber">Statut de paiement*</label>
-                <input id="userPhoneNumber" class="form__field__input" autocomplete @change="onChangeField" type="text" v-model="fieldsValues.userPhoneNumber">
+                <label for="payment_status">Statut de paiement*</label>
+                <select id="payment_status" class="form__field__input" @change="onChangeField" v-model="fieldsValues.payment_status">
+                    <option :value="0">à payer</option>
+                    <option :value="1">payé</option>
+                </select>
             </div>
 
             <div class="form__field">
@@ -97,6 +94,7 @@ export default {
         clientsStore.getClientsAction();
         const odersStore = useOrdersStore();
         odersStore.resetOrderForm();
+        odersStore.getPaymentStatusAction();
     },
     data() {
         return {

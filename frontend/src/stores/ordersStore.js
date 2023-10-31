@@ -16,17 +16,7 @@ export const useOrdersStore = defineStore("orders", {
             delivery_price: "",
             orderPrice: ""
         },
-        updateOrderForm: {
-            order_number: "",
-            client_id: "",
-            order_date: "",
-            delivery_date: "",
-            quantity: "",
-            log_size: "",
-            userId: "",
-            delivery_price: "",
-            orderPrice: ""
-        },
+        updateOrderForm: {},
     }),
     getters: {
         getOrders: (state) => {
@@ -95,7 +85,11 @@ export const useOrdersStore = defineStore("orders", {
                 utilsStore.toggleIsLoadingValue();
                 const response = await Axios.get(`/api/orders/${orderId}`);
                 console.log(response);
+                this.updateOrderForm = response.data.order;
             } catch (error) {
+                if(error?.response?.status === 401) {
+                    utilsStore.redirectToLogin();
+                }
                 console.log(error);
             } finally {
                 utilsStore.toggleIsLoadingValue();
@@ -137,6 +131,21 @@ export const useOrdersStore = defineStore("orders", {
                 console.log(error);
             } finally {
 
+            }
+        },
+        async getPaymentStatusAction() {
+            const utilsStore = useUtilsStore();
+            try {
+                utilsStore.toggleIsLoadingValue();
+                const response = await Axios.get(`/api/deliveryStatus`);
+                console.log(response);
+            } catch (error) {
+                if(error?.response?.status === 401) {
+                    utilsStore.redirectToLogin();
+                }
+                console.log(error);
+            } finally {
+                utilsStore.toggleIsLoadingValue();
             }
         },
         setCreateOrderFormField(value, field) {

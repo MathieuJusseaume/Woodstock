@@ -12,7 +12,12 @@ class DeliveryStatusController extends Controller
      */
     public function index()
     {
-        //
+        $deliveryStatus = DeliveryStatus::get();
+        try {
+            return response()->json(['deliveryStatus' => $deliveryStatus]);
+        } catch (Error $e) {
+            return response()->json(['error' => 'failed show order'], 401);
+        }
     }
 
     /**
@@ -27,14 +32,6 @@ class DeliveryStatusController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(DeliveryStatus $deliveryStatus)
     {
         //
     }
