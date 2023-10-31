@@ -3,7 +3,7 @@ import axios from 'axios';
 
 axios.defaults.withCredentials = true;
 const Axios = axios.create({
-    baseURL: "http://192.168.1.15:8080",
+    baseURL: "http://localhost:8080",
     headers: {
       'Content-Type': 'application/json',
       'Accept': 'application/json',

@@ -2,9 +2,9 @@
 => s'assurer d'avoir docker installé & à jour  
 => lancer une seule fois `docker compose up --build -d` depuis la racine du projet  
 => lancer `docker compose up`  
-=> http://192.168.1.15:9081 pour accéder à adminer  
-=> http://192.168.1.15:8080 pour accéder à laravel  
-=> http://192.168.1.15:8082 pour accéder à vue js  
+=> http://localhost:9081 pour accéder à adminer  
+=> http://localhost:8080 pour accéder à laravel  
+=> http://localhost:8082 pour accéder à vue js  
 
 => lancer `docker compose exec backend zsh` pour accéder au container laravel
 
