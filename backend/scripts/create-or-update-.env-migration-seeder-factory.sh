@@ -50,8 +50,8 @@ fi
 php artisan db:seed --class=DatabaseSeeder
 
 if [ $? -eq 0 ]; then
-    echo "Les données ont correctement été importées en BDD ! Voir : http://192.168.1.15:9081/"
-    echo "Adminer : http://192.168.1.15:9081/"
+    echo "Les données ont correctement été importées en BDD ! Voir : http://localhost:9081/"
+    echo "Adminer : http://localhost:9081/"
 else
     echo "Erreur lors de l'importation des données en BDD."
 fi
