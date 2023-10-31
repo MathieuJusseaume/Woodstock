@@ -25,7 +25,7 @@ export default {
         },
         openOrderCreationModal() {
             const utilsStore = useUtilsStore();
-            utilsStore.setFormName("CreateOrderForm");
+            utilsStore.setFormName("Création de commande");
         }
     },
 };

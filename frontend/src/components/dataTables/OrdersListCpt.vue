@@ -32,6 +32,7 @@ import 'datatables.net-responsive';
 
 DataTable.use(DataTablesCore);
 import { useOrdersStore } from "@/stores/ordersStore";
+import { useUtilsStore } from "@/stores/utilsStore";
 
 export default {
     name: "ClientsListCpt",
@@ -80,11 +81,13 @@ export default {
     },
     mounted() {
         const ordersStore = useOrdersStore();
+        const utilsStore = useUtilsStore();
         ordersStore.getOrdersAction();
         const dataTable = document.querySelector("#dataTable");
         dataTable.addEventListener("click", (event) => {
             if(event.target.classList.contains("updateOrderButton")) {
                 console.log("Id de la commande à modifier => " + event.target.id);
+                utilsStore.setFormName("Modification de commande");
             } else if (event.target.classList.contains("deleteOrderButton")) {
                 console.log("Id de la commande à supprimer => " + event.target.id);
                 ordersStore.deleteOrderByIdAction(event.target.id);
