@@ -54,13 +54,13 @@
                 <input id="order_price" class="form__field__input" autocomplete @change="onChangeField" type="text" v-model="fieldsValues.order_price">
             </div>
 
-<!--             <div class="form__field">
+            <div class="form__field">
                 <p class="form__field__error"></p>
                 <label for="delivery_status">Statut de livraison*</label>
-                <select id="delivery_status" class="form__field__input" @change="onChangeField" v-model="fieldsValues.delivery_status">
-                    <option :value="client.id" v-for="client in clients" :key="client.id">{{ client.last_name }} - {{ client.first_name }}</option>
+                <select id="delivery_status" class="form__field__input" @change="onChangeField" v-model="fieldsValues.delivery_status_id">
+                    <option :value="status.id" v-for="status in deliveryStatus" :key="status.id">{{ status.name }}</option>
                 </select>
-            </div> -->
+            </div>
 
             <div class="form__field">
                 <p class="form__field__error"></p>
@@ -94,7 +94,7 @@ export default {
         clientsStore.getClientsAction();
         const odersStore = useOrdersStore();
         odersStore.resetOrderForm();
-        odersStore.getPaymentStatusAction();
+        odersStore.getDeliveryStatusAction();
     },
     data() {
         return {
@@ -130,6 +130,10 @@ export default {
         clients() {
             const clientStore = useClientsStore();
             return clientStore.getClients;
+        },
+        deliveryStatus() {
+            const ordersStore = useOrdersStore();
+            return ordersStore.getDeliveryStatus;
         }
     }
 };

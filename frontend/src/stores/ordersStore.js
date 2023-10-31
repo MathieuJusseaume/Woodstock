@@ -17,6 +17,7 @@ export const useOrdersStore = defineStore("orders", {
             orderPrice: ""
         },
         updateOrderForm: {},
+        deliveryStatus: []
     }),
     getters: {
         getOrders: (state) => {
@@ -27,7 +28,10 @@ export const useOrdersStore = defineStore("orders", {
         },
         getCreateOrderForm: (state) => {
             return state.createOrderForm;
-        }
+        },
+        getDeliveryStatus: (state) => {
+            return state.deliveryStatus;
+        },
     },
     actions: {
         async getOrdersAction() {
@@ -133,12 +137,13 @@ export const useOrdersStore = defineStore("orders", {
 
             }
         },
-        async getPaymentStatusAction() {
+        async getDeliveryStatusAction() {
             const utilsStore = useUtilsStore();
             try {
                 utilsStore.toggleIsLoadingValue();
                 const response = await Axios.get(`/api/deliveryStatus`);
                 console.log(response);
+                this.deliveryStatus = response.data.deliveryStatus;
             } catch (error) {
                 if(error?.response?.status === 401) {
                     utilsStore.redirectToLogin();
