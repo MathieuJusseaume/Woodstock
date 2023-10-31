@@ -34,8 +34,22 @@ export const useOrdersStore = defineStore("orders", {
                 const response = await Axios.get(`/api/orders`);
                 console.log(response);
                 this.orders = [];
-                response.data.order.forEach(order => {
-                    this.orders.push(order);
+                response.data.order.map(order => {
+                    const orderToPush = {
+                        order_number: order.order_number,
+                        client_id: order.client.first_name,
+                        order_date: order.order_date,
+                        delivery_date: order.delivery_date,
+                        quantity: order.quantity,
+                        log_size: order.log_size,
+                        delivery_status_id: order.delivery_status.name,
+                        payment_status: order.payment_status ? "payé" : "à payer",
+                        order_price: order.order_price,
+                        delivery_price: order.delivery_price,
+                        user_id: order.user.first_name,
+                        id: order.id
+                    };
+                    this.orders.push(orderToPush);
                 });   
             } catch (error) {
                 if(error?.response?.status === 401) {
