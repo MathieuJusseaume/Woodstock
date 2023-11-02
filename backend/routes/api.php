@@ -27,6 +27,6 @@ Route::middleware('auth:sanctum')->group(function() {
     ]);
 });
 
-Route::post('/login', [LoginController::class, 'authenticate']);
+Route::post('/login', [LoginController::class, 'authenticate']);   
 
 
