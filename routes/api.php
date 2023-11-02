@@ -16,17 +16,17 @@ use App\Models\Comment;
 |
 */
 
-Route::middleware('auth:sanctum')->group(function() {
+Route::middleware(['auth:sanctum', 'throttle:api'])->group(function () {
     Route::post('/logout', [LoginController::class, 'logout']);
-    Route::apiResources([ 
-        'orders' => OrderController::class, 
-        'users' => UserController::class, 
-        'clients' => ClientController::class, 
+    Route::apiResources([
+        'orders' => OrderController::class,
+        'users' => UserController::class,
+        'clients' => ClientController::class,
         'comments' => CommentController::class,
         'deliveryStatus' => DeliveryStatusController::class
     ]);
 });
 
-Route::post('/login', [LoginController::class, 'authenticate']);
-
-
+Route::middleware(['throttle:login'])->group(function () {
+    Route::post('/login', [LoginController::class, 'authenticate']);
+});
