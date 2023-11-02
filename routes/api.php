@@ -27,6 +27,12 @@ Route::middleware(['auth:sanctum', 'throttle:api'])->group(function () {
     ]);
 });
 
+<<<<<<< HEAD:routes/api.php
 Route::middleware(['throttle:login'])->group(function () {
     Route::post('/login', [LoginController::class, 'authenticate']);
 });
+=======
+Route::post('/login', [LoginController::class, 'authenticate']);   
+
+
+>>>>>>> 5fc68c41f7a2801b682e46411137abf2ead6ecaa:backend/routes/api.php
